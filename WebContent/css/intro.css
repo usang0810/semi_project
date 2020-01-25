@@ -1,0 +1,199 @@
+/* html scroll animation */
+html {
+  scroll-behavior: smooth;
+}
+
+body{
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* 요소를 정가운데로 정렬 */
+.centered{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* 네비 목록 글자 색상 및 호버 시 */
+.background-navy a {
+  color: white;
+  transition: ease-in-out color .15s;
+  font-size: large;
+}
+.background-navy a:hover {
+  color: #f15a25;
+  text-decoration: none;
+}
+
+/* 이미지 크기 */
+#logo-img{
+  max-width: 120px;
+  min-width: 60px;
+}
+
+/* 사이드바 지정 */
+#navbarCollapse-icon {
+  font-size: 1.5em;
+  color: white;
+}
+
+#navbarCollapse-icon:hover {
+  transition-duration: 0.3s;
+  color: gray;
+}
+
+.img-wrapper{
+  text-align: center;
+}
+
+.navbar-toggler{
+  color: rgba(255,255,255,.5);
+  border-color: rgba(255,255,255,.1);
+}
+
+#intro{
+  background-color: lightgray;
+  background-attachment: fixed;
+  background-image: linear-gradient(135deg, rgba(241, 90, 37, 0.25), rgba(211, 211, 211, 0.9)), url("../images/intro-bg3.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 600px;
+}
+
+/* 학습노트 마우스 오버시 색 변환 및 커서 변경 */
+.learning-note {
+  background-color: white;
+  cursor: pointer;
+}
+
+.learning-note:hover {
+  background-color: rgba(241, 90, 37, 1);
+  transition-duration: 0.3s;
+}
+
+/* 학습노트의 프로필 이미지 속성 */
+#learning-note-profile-img {
+  width: 3em;
+  height: 3em;
+}
+
+/* 학습노트의 아이콘 속성 */
+.learning-note-icon {
+  font-size: 1.2em;
+}
+
+/* 추천 첼린저스 */
+.Thumbnail{
+  background-color: #777777;
+  color: white;
+  text-align: center;
+  height: 150px;
+  line-height: 150px;
+}
+.recommend-title,
+.recommend-sub-title{
+  text-align: center;
+  margin-top : 10px;
+}
+.recommend-title{
+  margin-top : 50px;
+  font-weight : bold;
+  font-size : 35px;
+}
+.card-title{
+  font-size: 20px;
+  font-weight: bold;
+}
+.card-body .d-flex{
+  float: right;
+}
+.card-body .more-btn{
+  border: 1px solid #f15a25;
+  color: #f15a25;
+}
+.card-body .more-btn:hover{
+  border: 1px solid #f15a25;
+  background-color : #f15a25;
+  color: #ffffff;
+}
+
+/* 카테고리 추천 */
+.category-list{
+  margin-bottom:0;
+  list-style: none;
+}
+.list-1{
+  margin-top: 50px;
+}
+.category-list li{
+  float: left;
+  border: 1px solid #777777;
+  width: 12.5%;
+  padding: 5% 0;
+  text-align: center;
+  margin-top: -1px;
+  margin-left: -1px;
+  background-color: white;
+  transition: all 0.3s;
+}
+.category-list li a{
+  color : #777777;
+}
+.category-list li:hover{
+  background-color : #f15a25;
+  cursor: pointer;
+  border: 1px solid #f15a25;
+  z-index: 100;
+  position: relative;
+}
+.category-list li:hover a{
+  color : #ffffff;
+  font-weight: 600;
+}
+
+/* 푸터 */
+#footer{
+  background-color: #55595c;
+  padding: 20px 0;
+}
+#footer .footer-logo{
+    width: 120px;
+}
+#footer .copyright{
+  color: white;
+  font-size: 17px;
+  line-height: 91.5px;
+  margin-bottom: 0;
+  margin-left : 30px;
+}
+/* 탑 버튼 */
+#button-top{
+  position: fixed;
+  bottom: 100px;
+  right: 100px;
+  display:none;
+}
+#button-top .top-btn{
+  color: #ffffff;
+  width: 50px;
+  height: 50px;
+  background-color: #f15a25;
+  display: inline-block;
+  text-align: center;
+  line-height: 50px;
+  border-radius: 50px;
+  font-weight: 600;
+  border: none;
+}
+
+/* 반응형 세부 수정사항 */
+@media (max-width: 767px){ /*767px : 구조가 바뀌는 기준*/
+  #footer .footer-logo-wrap{
+    text-align: center;
+  }
+  #footer .copyright{
+    margin: 0;
+    text-align: center;
+  }
+}

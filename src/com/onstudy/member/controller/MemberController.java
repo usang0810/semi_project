@@ -1,0 +1,208 @@
+package com.onstudy.member.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Enumeration;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
+
+import com.onstudy.common.ExceptionForward;
+import com.onstudy.common.MyFileRenamePolicy;
+import com.onstudy.member.model.service.MemberService;
+import com.onstudy.member.model.vo.Image;
+import com.onstudy.member.model.vo.Member;
+import com.oreilly.servlet.MultipartRequest;
+
+@WebServlet("/member/*")
+public class MemberController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	public MemberController() {
+		super();
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String uri = request.getRequestURI();
+
+		String contextPath = request.getContextPath();
+
+		String command = uri.substring((contextPath + "/member").length());
+
+		String path = null;
+		RequestDispatcher view = null;
+		String msg = null;
+
+		MemberService memberService = new MemberService();
+
+		if (command.equals("/login")) {
+
+			path = "/WEB-INF/views/member/login.jsp";
+			view = request.getRequestDispatcher(path);
+			view.forward(request, response);
+		}
+
+		// 로그인 화면
+		else if (command.equals("/loginedIndex")) {
+
+			String memberId = request.getParameter("inputId");
+			String memberPwd = request.getParameter("inputPassword");
+
+			Member inputMember = new Member(memberId, memberPwd);
+
+			try {
+
+				Member loginMember = memberService.selectMember(inputMember);
+
+				HttpSession session = request.getSession();
+
+				if (loginMember != null) {
+
+					session.setMaxInactiveInterval(600);
+					session.setAttribute("loginMember", loginMember);
+
+					// 아이디 저장
+					String save = request.getParameter("save");
+					Cookie cookie = new Cookie("saveId", memberId);
+					if (save != null) {
+						cookie.setMaxAge(60 * 60 * 24 * 7);
+					} else {
+						cookie.setMaxAge(0);
+					}
+					cookie.setPath("/");
+					response.addCookie(cookie);
+
+					path = "/WEB-INF/views/member/loginedIndex.jsp";
+					view = request.getRequestDispatcher(path);
+					view.forward(request, response);
+
+				} else {
+					session.setAttribute("msg", "로그인 정보가 유효하지 않습니다.");
+					response.sendRedirect(request.getContextPath());
+				}
+
+			} catch (Exception e) {
+
+				ExceptionForward.errorPage(request, response, "로그인 과정", e);
+			}
+
+		// 회원가입 양식으로 포워드
+		}else if(command.equals("/signupForm")) {
+			path = "/WEB-INF/views/member/signupForm.jsp";
+			view = request.getRequestDispatcher(path);
+			view.forward(request, response);
+			
+		// TODO multipart 로 진행시 비밀번호 암호화가 안됨
+		// 회원가입
+		}else if(command.equals("/signup")) {
+			
+			try {
+				// 요청(reqqust)가 multipart/form-data 가 포함이 되어 있는지
+				if(ServletFileUpload.isMultipartContent(request)) {
+
+					int maxSize = 10 * 1024 * 1024;
+					String root = request.getSession().getServletContext().getRealPath("/");
+					
+					String savePath = root + "resource/profileImages/";
+							
+					MultipartRequest multiRequest = new MultipartRequest(request, savePath, maxSize, "UTF-8", new MyFileRenamePolicy());
+					
+					String memberId = multiRequest.getParameter("signupId");
+					String memberPwd = multiRequest.getParameter("signupPwd");
+					String memberNm = multiRequest.getParameter("signupName");
+					String memberPhone = multiRequest.getParameter("phone1") + "-"
+										+ multiRequest.getParameter("phone2") + "-"
+										+ multiRequest.getParameter("phone3");
+					int bankCode =Integer.parseInt(multiRequest.getParameter("bankCode"));
+					String memberAccount = multiRequest.getParameter("bankAccount");
+					
+					Member signupMember = new Member(memberId, memberPwd, memberNm, memberPhone, memberAccount, bankCode);
+					
+					int result = memberService.signupMember(signupMember);
+					int imgResult = 1; // 프로필 이미지를 안넣을 경우를 대비해서 초기값 1
+					
+					// 회원가입 성공 시 프로필 이미지 검사 후 DB에 저장
+					if(result > 0) {
+						
+						// 변경된 파일명을 저장할 변수
+						String saveFileName = null;
+						
+						Enumeration<String> files = multiRequest.getFileNames();
+						
+						if(files.hasMoreElements()) {
+							
+							// 업로드된 파일은 역순으로 전달됨.
+							String name = files.nextElement();
+							
+							// null이 아니면 프로필사진이 존재
+							if(multiRequest.getFilesystemName(name) != null) {
+								saveFileName = multiRequest.getFilesystemName(name);
+							}
+						}
+						
+						// 프로필 사진이 있다면 사진경로를 저장하기 위해 회원 번호를 DB에서 가져와야 함
+						if(saveFileName != null) {
+							int memberNo = memberService.selectMemberNo(memberId);
+							
+							Image profileImage = new Image();
+							profileImage.setImagePath(savePath + saveFileName);
+							profileImage.setMemberNo(memberNo);
+							
+							// DB에 경로 저장
+							imgResult = memberService.insertProfileImage(profileImage);
+						}
+					}
+					
+					if(result > 0 && imgResult > 0) msg = "회원가입 성공";
+					else msg = "회원가입 실패";
+					
+					request.getSession().setAttribute("msg", msg);
+					
+					// 성공 및 실패 시 index.jsp로 이동
+					response.sendRedirect(request.getContextPath());
+				}
+				
+			}catch(Exception e) {
+				ExceptionForward.errorPage(request, response, "회원가입", e);
+			}
+			
+		
+		// 아이디 중복 검사
+		}else if(command.equals("/idDupCheck")) {
+			
+			String inputId = request.getParameter("id");
+			
+			try {
+				int result = memberService.idDupCheck(inputId);
+				
+				PrintWriter out = response.getWriter();
+				
+				if(result > 0) out.append("no");
+				else out.append("yes");
+				
+			}catch(Exception e) {
+				ExceptionForward.errorPage(request, response, "아이디 중복 검사", e);
+			}
+			
+		}
+		
+		
+
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
+
+}
