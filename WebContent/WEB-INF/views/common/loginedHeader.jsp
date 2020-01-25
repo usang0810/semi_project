@@ -3,7 +3,12 @@
 <%@page import="com.onstudy.member.model.vo.Member"%>
 <%
 	Member loginMember = (Member) session.getAttribute("loginMember");
+	String memberImagePath = (String)session.getAttribute("memberImagePath");
+	String profileImagePath = "/images/navi-icon-default.png"; // default 이미지 경로
 	String msg = (String)session.getAttribute("msg");
+	
+	// null이 아니면 받아온 이미지 경로로 변경
+	if(memberImagePath != null) profileImagePath = memberImagePath;
 %>
 
 <!DOCTYPE html>
@@ -417,7 +422,7 @@ html body .content-title {
 						src="../images/mypage-icon.png" alt="마이페이지 버튼"></a>
 					<h1 class="my-0 mr-md-auto font-weight-normal text-white"
 						id="logo-wrap">
-						<a href="#"> <img class="logo-img"
+						<a href="<%=request.getContextPath() %>/member/main"> <img class="logo-img"
 							src="../images/logo2-white.png" alt="로고" id="logo-img">
 						</a>
 					</h1>
@@ -463,18 +468,18 @@ html body .content-title {
 	</script>
 	<div id="mypage-nav">
 		<div class="info-area">
-			<img src="../images/navi-icon-default.png" alt="회원아이콘"
+			<img src="<%=request.getContextPath() + profileImagePath %>" alt="회원아이콘"
 				class="profile-icon">
 			<ul>
-				<li>홍길동 님</li>
-				<li>10,000 포인트</li>
+				<li><%=loginMember.getMemberId() %> 님</li>
+				<li><%=loginMember.getMemberPoint() %> 포인트</li>
 				<li>팔로워 수 : 100명</li>
 				<li>팔로잉 수 : 50명</li>
 			</ul>
-			<a href="#" class="bell-setting-btn"><img
-				src="../images/bell-off.png" alt="알람벨버튼"></a> <a href="#"
-				class="bell-setting-btn"><img src="../images/setting-off.png"
-				alt="세팅버튼"></a>
+			<a href="#" class="bell-setting-btn">
+				<img src="../images/bell-off.png" alt="알람벨버튼"></a>
+			<a href="<%=request.getContextPath() %>/member/mypage"	class="bell-setting-btn">
+				<img src="../images/setting-off.png" alt="세팅버튼"></a>
 		</div>
 		<div class="mypage-btn-list">
 			<a href="#">학습노트 관리</a> <a href="#">온스터디 내역</a>

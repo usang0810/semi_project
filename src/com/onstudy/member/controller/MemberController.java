@@ -67,6 +67,15 @@ public class MemberController extends HttpServlet {
 				HttpSession session = request.getSession();
 
 				if (loginMember != null) {
+					
+					// 로그인 성공 시 회원의 프로필 이미지경로를 가져옴
+					String imagePath = memberService.selectImagePath(loginMember.getMemberNo());
+					if(imagePath != null) {
+						String[] paths = imagePath.split("\\\\"); // "\"를 기준으로 구분
+						imagePath = "/" + paths[paths.length - 1]; // "/"경로에 뒤에 제일 마지막 요소 붙임						
+					}
+					
+					session.setAttribute("memberImagePath", imagePath);
 
 					session.setMaxInactiveInterval(600);
 					session.setAttribute("loginMember", loginMember);
@@ -82,9 +91,7 @@ public class MemberController extends HttpServlet {
 					cookie.setPath("/");
 					response.addCookie(cookie);
 
-					path = "/WEB-INF/views/member/loginedIndex.jsp";
-					view = request.getRequestDispatcher(path);
-					view.forward(request, response);
+					response.sendRedirect(request.getContextPath()+"/member/main");
 
 				} else {
 					session.setAttribute("msg", "로그인 정보가 유효하지 않습니다.");
@@ -96,6 +103,12 @@ public class MemberController extends HttpServlet {
 				ExceptionForward.errorPage(request, response, "로그인 과정", e);
 			}
 
+		}else if(command.equals("/main")) {
+			path = "/WEB-INF/views/member/loginedIndex.jsp";
+			view = request.getRequestDispatcher(path);
+			view.forward(request, response);
+			
+			
 		// 회원가입 양식으로 포워드
 		}else if(command.equals("/signupForm")) {
 			path = "/WEB-INF/views/member/signupForm.jsp";
@@ -194,6 +207,54 @@ public class MemberController extends HttpServlet {
 				ExceptionForward.errorPage(request, response, "아이디 중복 검사", e);
 			}
 			
+		// 마이페이지 포워드
+		}else if(command.equals("/mypage")) {
+			path = "/WEB-INF/views/member/mypage.jsp";
+			view = request.getRequestDispatcher(path);
+			view.forward(request, response);
+			
+		// 회원탈퇴 페이지 포워드
+		}else if(command.equals("/secession")) {
+			path = "/WEB-INF/views/member/secession.jsp";
+			view = request.getRequestDispatcher(path);
+			view.forward(request, response);
+			
+		// 회원정보 수정 페이지 포워드	
+		}else if(command.equals("/update")) {
+			path = "/WEB-INF/views/member/update.jsp";
+			view = request.getRequestDispatcher(path);
+			view.forward(request, response);
+		
+		// DB에 저장된 비밀번호와 입력한 비밀번호가 일치하는지 확인 후 경로 지정
+		}else if(command.equals("/pwdCheck")) {
+			HttpSession session = request.getSession();
+			int memberNo = ((Member)(session.getAttribute("loginMember"))).getMemberNo();
+			String memberPwd = request.getParameter("inputPassword");
+			String setPath = request.getParameter("setPath");
+			
+			System.out.println("pwd : " + memberPwd);
+			System.out.println("path : " + setPath);
+			
+			try {
+				int result = memberService.pwdCheck(memberNo, memberPwd);
+				
+				if(result > 0) {
+					
+					if(setPath.equals("secession")) path="secession";
+					else path="update";
+					
+				}else {
+					msg = "비밀번호가 일치하지 않습니다.";
+					path = "mypage";
+					session.setAttribute("msg", msg);
+				}
+				
+				response.sendRedirect(path);
+				
+				
+			}catch(Exception e) {
+				ExceptionForward.errorPage(request, response, "비밀번호 일치 조회", e);
+			}
 		}
 		
 		

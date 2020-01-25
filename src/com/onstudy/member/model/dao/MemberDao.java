@@ -188,4 +188,68 @@ public class MemberDao {
 		
 		return result;
 	}
+
+	/** 회원 이미지 경로 조회용 Dao
+	 * @param conn
+	 * @param memberNo
+	 * @return imagePath
+	 * @throws Exception
+	 */
+	public String selectImagePath(Connection conn, int memberNo) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String imagePath = null;
+		
+		String query = prop.getProperty("selectImagePath");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, memberNo);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				imagePath = rset.getString(1);
+			}
+			
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return imagePath;
+	}
+
+	/** 회원 비밀번호 일치 조회용 Dao
+	 * @param conn
+	 * @param memberNo
+	 * @param memberPwd
+	 * @return result
+	 * @throws Exception
+	 */
+	public int pwdCheck(Connection conn, int memberNo, String memberPwd) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = 0;
+		
+		String query = prop.getProperty("pwdCheck");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, memberNo);
+			pstmt.setString(2, memberPwd);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				result = 1;
+			}
+			
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return result;
+	}
 }

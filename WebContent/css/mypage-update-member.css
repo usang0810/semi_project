@@ -1,0 +1,52 @@
+#container {
+  margin: 200px 0 100px 0;
+  text-align: center;
+  height: 1000px;
+}
+
+.jumbotron {
+  height: 90%;
+}
+
+.mypage-title {
+  text-align: initial;
+  margin: 50px 0;
+  font-size: 35px;
+  border-bottom: 4px solid #212529;
+  padding-bottom: 10px;
+}
+
+.profile-edit-btn,
+.profile-edit-btn:hover {
+
+  background-color: #f15a25 ;
+  color: #ffffff;
+}
+ 
+.profile-edit-btn {
+  margin-top: 35%;
+  width:50px;
+}
+
+#new-pwd1,
+#new-pwd2,
+#phone1,
+#phone2,
+#phone3,
+#bank,
+#account {
+  height:2.2em;
+}	
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+      

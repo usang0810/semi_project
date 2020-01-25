@@ -28,8 +28,20 @@ public class MemberService {
 		close(conn);
 		
 		return loginMember;
+	}
 	
+	/** 회원 이미지 경로 조회용 Service
+	 * @param memberNo
+	 * @return imagePath
+	 * @throws Exception
+	 */
+	public String selectImagePath(int memberNo) throws Exception{
+		Connection conn = getConnection();
 		
+		String imagePath = new MemberDao().selectImagePath(conn, memberNo);
+		
+		close(conn);
+		return imagePath;
 	}
 
 	/** 회원가입용 Service
@@ -104,6 +116,23 @@ public class MemberService {
 		close(conn);
 		return result;
 	}
+
+	/** 회원 비밀번호 일치 조회용 Service
+	 * @param memberNo
+	 * @param memberPwd
+	 * @return result
+	 * @throws Exception
+	 */
+	public int pwdCheck(int memberNo, String memberPwd) throws Exception{
+		Connection conn = getConnection();
+		
+		int result = new MemberDao().pwdCheck(conn, memberNo, memberPwd);
+		
+		close(conn);
+		return result;
+	}
+
+
 
 
 }

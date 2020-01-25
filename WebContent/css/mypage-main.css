@@ -1,0 +1,54 @@
+#container {
+    margin: 200px 0 100px 0;
+    text-align: center;
+    height: 1000px;
+  }
+
+  .jumbotron {
+    height: 95%;
+  }
+
+  .mypage-content{
+    text-align: initial;
+    font-size:1.5em;
+  }
+ 
+  .edit-btn,
+  .delete-btn{
+    float: right;
+    width:15%;
+  }
+
+  .member-profile{
+    display:block;
+    margin-left:auto;
+    margin-right: auto;
+    width:30%;
+  }
+
+  .mypage-point {
+    height:150px;
+  }
+
+  .mypage-point-title {
+    float:left;
+    font-size:1.2em;
+  }
+
+  .mypage-follow { 
+    height:200px;
+  }
+
+  .mypage-follow-title {
+    float:left; 
+    font-size:1.2em;
+  }
+
+  .setting-btn{ 
+    float:right; 
+    width:20%;
+  }
+  
+  .point-list li, .follow-list li {
+    float: left;
+  }

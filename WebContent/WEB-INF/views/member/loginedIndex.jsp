@@ -4,7 +4,7 @@
 <html lang="ko">
 
 <head>
-<link rel="stylesheet" href="../css/logined_main.css?ver=1">
+<!-- <link rel="stylesheet" href="../css/logined_main.css?ver=1"> -->
 <style>
 #profile-wrap .member-profile {
 	width: 25%;
@@ -106,7 +106,8 @@
 						<br>
 						<div class="mb-3" id="profile-wrap" style="display: inline-block;">
 							<img class="member-profile rounded-circle"
-								src="../images/profile_sample.jfif" alt="프로필아이콘">
+								src="<%=request.getContextPath() %>/images/mypage-icon.png" alt="프로필아이콘">
+								<%-- <%=request.getContextPath() %>/images/mypage-icon.png --%>
 							<p class="m-0">아이디</p>
 						</div>
 						<div
@@ -199,12 +200,6 @@
 	</div>
 	<!-- content end -->
 	<%@ include file="../common/footer.jsp"%>
-
-
-
-	<div id="button-top">
-		<button type="button" class="top-btn">TOP</button>
-	</div>
 
 </body>
 
