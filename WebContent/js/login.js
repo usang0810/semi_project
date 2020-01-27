@@ -1,9 +1,12 @@
+var phoneCheck = false;
+
 $(function () {
+	
     // 전화번호 입력후 확인 버튼 클릭시
     // 현재 모달 제거
-    $("#findIdBtn").click(function () {
+/*    $("#findIdBtn").click(function () {
         $("#findIdModal").modal("hide");
-    });
+    });*/
 
     $("#findId-findPwdBtn").click(function () {
         $("#findIdResultModal").modal("hide");
@@ -21,17 +24,13 @@ $(function () {
         var regExp2 = /^\d{3,4}$/; // 숫자 3~4 글자
         var regExp3 = /^\d{4,4}$/; // 숫자 4 글자
 
-        if (!regExp2.test($("#phone2").val()) || !regExp3.test($("#phone3").val())) {
-            $("#checkPhone").text("전화번호가 유효하지 않습니다.")
-                .css("color", "red");
+        if (!regExp2.test($("#findIdPhone2").val()) || !regExp3.test($("#findIdPhone3").val())) {
 
-            signUpCheck.phone = false;
+        	phoneCheck = false;
 
         } else {
-            $("#checkPhone").text("전화번호 형식이 유효합니다.")
-                .css("color", "green");
 
-            signUpCheck.phone = true;
+        	phoneCheck = true;
 
         }
     });
@@ -52,12 +51,11 @@ $(function () {
     });
 
     // 아이디 찾기 모달에서 확인 버튼 클릭 시
-    $("#findIdBtn").click(function () {
+/*    $("#findIdBtn").click(function () {
         $("#findIdModal").modal("hide");
-        console.log($("#findId-phone1").length);
         // if("#findId-phone1")
         $("#findIdResultModal").modal({ backdrop: "static" });
-    });
+    });*/
 
     // 아이디 확인 모달에서 비밀번호 찾기 클릭 시
     $("#findId-findPwdBtn").click(function () {
@@ -80,4 +78,55 @@ $(function () {
         $("#changePwdModal").modal("hide");
         alert("비밀번호가 성공적으로 변경되었습니다.");
     });
+    
+    // 아이디 찾기 버튼 클릭 시 
+    $("#findIdBtn").click(function(){
+    	console.log("check : " + phoneCheck);
+    	
+    	if(phoneCheck){
+    		var phone1 = $("#findIdPhone1").val();
+        	var phone2 = $("#findIdPhone2").val();
+        	var phone3 = $("#findIdPhone3").val();
+        	
+        	$.ajax({
+    			url: "findId",
+    			data: {phone1 : phone1, phone2 : phone2, phone3 : phone3},
+    			dataType: "json",
+    			type: "get",
+    			
+    			success : function(obj){
+    				console.log("ID찾기 통신 성공");
+    				console.log(obj);
+    				
+    				var $findIdBody = $("#findIdResultBody");
+    				
+    				$findIdBody.html("");
+    				
+    				var $result = "";
+    				$result += "<p class='small'>";
+    				$result += "아이디 : " + obj.id + "<br>";
+    				$result += "이름 : " + obj.name + "<br>";
+    				$result += "가입일 : " + obj.date;
+    				$result += "</p>";
+    				
+    				$findIdBody.append($result);
+    				
+    				$("#findIdModal").modal("hide");
+    		        $("#findIdResultModal").modal({ backdrop: "static" });
+    			},
+
+    			error : function(request,status,error){
+    				alert("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+    				$("#findIdModal").modal("hide");
+    			},
+    			
+    		});
+    		
+    	}else{
+    		alert("유효한 전화번호가 아닙니다. 다시 입력해주세요");
+    	}
+
+    });
+    
+    
 });

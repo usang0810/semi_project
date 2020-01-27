@@ -303,7 +303,7 @@ body {
 							<div class="row mb-3">
 								<!-- 전화번호1 -->
 								<div class="col-md-4">
-									<select class="custom-select" id="findId-phone1" name="phone1"
+									<select class="custom-select" id="findIdPhone1" name="phone1"
 										required>
 										<option>010</option>
 										<option>011</option>
@@ -316,17 +316,17 @@ body {
 								<!-- 전화번호2 -->
 								<div class="col-md-4">
 									<input type="number" class="form-control phone"
-										id="findId-phone2" maxlength="4" name="phone2" required>
+										id="findIdPhone2" maxlength="4" name="phone2" required>
 								</div>
 
 								<!-- 전화번호3 -->
 								<div class="col-md-4">
 									<input type="number" class="form-control phone"
-										id="findId-phone3" maxlength="4" name="phone3" required>
+										id="findIdPhone3" maxlength="4" name="phone3" required>
 								</div>
 							</div>
 							<a class="btn btn-lg main-btn-color btn-block mb-3" role="button"
-								href="#findIdResultModal" id="findIdBtn">확인하기</a>
+								id="findIdBtn">확인하기</a>
 						</div>
 
 						<!-- Modal footer -->
@@ -355,11 +355,14 @@ body {
 					<!-- Modal body -->
 					<div class="modal-body">
 						<h6 class="text-center">회원정보를 확인하세요</h6>
-						<div>
-							<p class="small">
-								아이디 : <span>programDoc***</span><br> 이름 : <span>컴박*</span><br>
-								가입일 : <span>2019.05.06</span>
-							</p>
+						<div id="findIdResultBody">
+							<!-- <p class="small">
+								아이디 : <span id="findIdResult">programDoc***</span>
+								<br>
+								 이름 : <span id="findNameResult">컴박*</span>
+								<br>
+								가입일 : <span id="findDateResult">2019.05.06</span>
+							</p> -->
 						</div>
 
 						<a class="btn btn-lg main-btn-color btn-block mb-3" role="button"

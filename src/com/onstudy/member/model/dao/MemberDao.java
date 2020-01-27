@@ -276,4 +276,36 @@ public class MemberDao {
 		}
 		return result;
 	}
+
+	/** 회원 아이디 찾기용 Dao
+	 * @param conn
+	 * @param memberPhone
+	 * @return findIdMember
+	 * @throws Exception
+	 */
+	public Member findIdMember(Connection conn, String memberPhone) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		Member findIdMember = null;
+		
+		String query = prop.getProperty("findIdMmeber");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberPhone);
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				findIdMember = new Member(rset.getString("MEMBER_ID"),
+										rset.getString("MEMBER_NM"),
+										rset.getDate("MEMBER_ENROLL_DT"));
+			}
+			
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return findIdMember;
+	}
 }

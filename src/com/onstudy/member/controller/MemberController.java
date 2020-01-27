@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
+import org.json.simple.JSONObject;
 
 import com.onstudy.common.ExceptionForward;
 import com.onstudy.common.MyFileRenamePolicy;
@@ -279,6 +280,38 @@ public class MemberController extends HttpServlet {
 				ExceptionForward.errorPage(request, response, "회원 탈퇴", e);
 			}
 			
+		// 회원 아이디 찾기
+		}else if(command.equals("/findId")) {
+			String memberPhone = request.getParameter("phone1") + "-"
+								+ request.getParameter("phone2") + "-"
+								+ request.getParameter("phone3");
+			
+			
+			try {
+				Member findIdMember = memberService.findIdMember(memberPhone);
+				String secretId = findIdMember.getMemberId().substring(0, findIdMember.getMemberId().length()-3);
+				secretId += "***";
+				findIdMember.setMemberId(secretId);
+				
+				String secretNm = findIdMember.getMemberNm().substring(0, findIdMember.getMemberNm().length()-1);
+				secretNm += "*";
+				findIdMember.setMemberNm(secretNm);
+				
+				JSONObject jsonMember = new JSONObject();
+				response.setCharacterEncoding("UTF-8");
+				
+				if(findIdMember != null) {
+					jsonMember.put("id", findIdMember.getMemberId());
+					jsonMember.put("name", findIdMember.getMemberNm());
+					jsonMember.put("date", findIdMember.getMemberEnrollDt().toString());
+					
+					response.getWriter().print(jsonMember);
+					
+				}
+				
+			}catch(Exception e) {
+				ExceptionForward.errorPage(request, response, "아이디 찾기", e);
+			}
 		}
 		
 		

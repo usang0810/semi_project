@@ -150,6 +150,20 @@ public class MemberService {
 		return result;
 	}
 
+	/** 회원 ID 찾기용 Service
+	 * @param memberPhone
+	 * @return findIdMember
+	 * @throws Exception
+	 */
+	public Member findIdMember(String memberPhone) throws Exception{
+		Connection conn = getConnection();
+		
+		Member findIdMember = new MemberDao().findIdMember(conn, memberPhone);
+		
+		close(conn);
+		return findIdMember;
+	}
+
 
 
 
