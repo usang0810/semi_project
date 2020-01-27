@@ -308,4 +308,36 @@ public class MemberDao {
 		
 		return findIdMember;
 	}
+
+	/** 회원 비밀번호 찾기용 Dao
+	 * @param conn
+	 * @param memberId
+	 * @param memberPhone
+	 * @return result
+	 * @throws Exception
+	 */
+	public int findPwdMember(Connection conn, String memberId, String memberPhone) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = 0;
+		
+		String query = prop.getProperty("findPwdMember");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberId);
+			pstmt.setString(2, memberPhone);
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				result = rset.getInt(1);
+			}
+			
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return result;
+	}
 }

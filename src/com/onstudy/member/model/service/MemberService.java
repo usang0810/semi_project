@@ -164,6 +164,21 @@ public class MemberService {
 		return findIdMember;
 	}
 
+	/** 회원 비밀번호 찾기용 Service
+	 * @param memberId
+	 * @param memberPhone
+	 * @return result
+	 * @throws Exception
+	 */
+	public int findPwdMember(String memberId, String memberPhone) throws Exception{
+		Connection conn = getConnection();
+		
+		int result = new MemberDao().findPwdMember(conn, memberId, memberPhone);
+		
+		close(conn);
+		return result;
+	}
+
 
 
 

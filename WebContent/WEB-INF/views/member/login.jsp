@@ -303,8 +303,7 @@ body {
 							<div class="row mb-3">
 								<!-- 전화번호1 -->
 								<div class="col-md-4">
-									<select class="custom-select" id="findIdPhone1" name="phone1"
-										required>
+									<select class="custom-select" id="findIdPhone1"	required>
 										<option>010</option>
 										<option>011</option>
 										<option>016</option>
@@ -316,17 +315,17 @@ body {
 								<!-- 전화번호2 -->
 								<div class="col-md-4">
 									<input type="number" class="form-control phone"
-										id="findIdPhone2" maxlength="4" name="phone2" required>
+										id="findIdPhone2" maxlength="4" required>
 								</div>
 
 								<!-- 전화번호3 -->
 								<div class="col-md-4">
 									<input type="number" class="form-control phone"
-										id="findIdPhone3" maxlength="4" name="phone3" required>
+										id="findIdPhone3" maxlength="4" required>
 								</div>
 							</div>
-							<a class="btn btn-lg main-btn-color btn-block mb-3" role="button"
-								id="findIdBtn">확인하기</a>
+							<button class="btn btn-lg main-btn-color btn-block mb-3" role="button"
+								id="findIdBtn">확인하기</button>
 						</div>
 
 						<!-- Modal footer -->
@@ -365,8 +364,8 @@ body {
 							</p> -->
 						</div>
 
-						<a class="btn btn-lg main-btn-color btn-block mb-3" role="button"
-							href="#findPwdModal" id="findId-findPwdBtn">비밀번호 찾기</a>
+						<button class="btn btn-lg main-btn-color btn-block mb-3" role="button"
+							id="findId-findPwdBtn">비밀번호 찾기</button>
 					</div>
 
 					<!-- Modal footer -->
@@ -394,10 +393,9 @@ body {
 					<div class="modal-body">
 						<form onsubmit="false" id="findPwdForm">
 							<div class="mb-3">
-								<label for="findPwd-input-id">아이디를 입력하세요</label> <input
-									type="text" id="findPwd-input-id" class="form-control"
-									placeholder="아이디를 입력해주세요." name="findPwd-input-id" required
-									autofocus>
+								<label for="findPwdId">아이디를 입력하세요</label> <input
+									type="text" id="findPwdId" class="form-control"
+									placeholder="아이디를 입력해주세요." required autofocus>
 							</div>
 
 							<div>
@@ -405,8 +403,7 @@ body {
 								<div class="row mb-3">
 									<!-- 전화번호1 -->
 									<div class="col-md-4">
-										<select class="custom-select" id="findPwd-phone1"
-											name="findPwd-phone1" required>
+										<select class="custom-select" id="findPwdPhone1" required>
 											<option>010</option>
 											<option>011</option>
 											<option>016</option>
@@ -418,20 +415,18 @@ body {
 									<!-- 전화번호2 -->
 									<div class="col-md-4">
 										<input type="number" class="form-control phone"
-											id="findPwd-phone2" maxlength="4" name="findPwd-phone2"
-											required>
+											id="findPwdPhone2" maxlength="4" required>
 									</div>
 
 									<!-- 전화번호3 -->
 									<div class="col-md-4">
 										<input type="number" class="form-control phone"
-											id="findPwd-phone3" maxlength="4" name="findPwd-phone3"
-											required>
+											id="findPwdPhone3" maxlength="4" required>
 									</div>
 								</div>
 							</div>
-							<a class="btn btn-lg main-btn-color btn-block mb-3" role="button"
-								href="#changePwdModal" id="findPwdBtn">확인하기</a>
+							<button class="btn btn-lg main-btn-color btn-block mb-3" role="button"
+								id="findPwdBtn">확인하기</button>
 						</form>
 					</div>
 
@@ -472,8 +467,8 @@ body {
 									placeholder="비밀번호를 재입력해주세요." name="changePwd-input-pwd2"
 									required autofocus>
 							</div>
-							<a class="btn btn-lg main-btn-color btn-block mb-3" role="button"
-								href="#" id="changePwdBtn">변경하기</a>
+							<button class="btn btn-lg main-btn-color btn-block mb-3" role="button"
+								id="changePwdBtn">변경하기</button>
 						</form>
 					</div>
 

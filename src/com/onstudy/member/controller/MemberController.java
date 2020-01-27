@@ -289,29 +289,53 @@ public class MemberController extends HttpServlet {
 			
 			try {
 				Member findIdMember = memberService.findIdMember(memberPhone);
-				String secretId = findIdMember.getMemberId().substring(0, findIdMember.getMemberId().length()-3);
-				secretId += "***";
-				findIdMember.setMemberId(secretId);
-				
-				String secretNm = findIdMember.getMemberNm().substring(0, findIdMember.getMemberNm().length()-1);
-				secretNm += "*";
-				findIdMember.setMemberNm(secretNm);
-				
 				JSONObject jsonMember = new JSONObject();
-				response.setCharacterEncoding("UTF-8");
 				
 				if(findIdMember != null) {
+					
+					String secretId = findIdMember.getMemberId().substring(0, findIdMember.getMemberId().length()-3);
+					secretId += "***";
+					findIdMember.setMemberId(secretId);
+					
+					String secretNm = findIdMember.getMemberNm().substring(0, findIdMember.getMemberNm().length()-1);
+					secretNm += "*";
+					findIdMember.setMemberNm(secretNm);
+					
+					jsonMember.put("check", "yes");
 					jsonMember.put("id", findIdMember.getMemberId());
 					jsonMember.put("name", findIdMember.getMemberNm());
-					jsonMember.put("date", findIdMember.getMemberEnrollDt().toString());
+					jsonMember.put("date", findIdMember.getMemberEnrollDt().toString()); // String으로 안바꿔주면 에러남
 					
-					response.getWriter().print(jsonMember);
-					
+				}else {
+					jsonMember.put("check", "no");
+				}
+				
+				response.getWriter().print(jsonMember);
+				
+			}catch(Exception e) {
+				ExceptionForward.errorPage(request, response, "아이디 찾기", e);
+			}
+			
+		// 회원 비밀번호 찾기 및 변경
+		}else if(command.equals("/findPwd")) {
+			String memberId = request.getParameter("id");
+			String memberPhone = request.getParameter("phone1") + "-"
+								+ request.getParameter("phone2") + "-"
+								+ request.getParameter("phone3");
+			
+			try {
+				int result = memberService.findPwdMember(memberId, memberPhone);
+				
+				if(result > 0) {
+					response.getWriter().print("yes");
+				}else {
+					response.getWriter().print("no");
 				}
 				
 			}catch(Exception e) {
 				ExceptionForward.errorPage(request, response, "아이디 찾기", e);
 			}
+			
 		}
 		
 		
