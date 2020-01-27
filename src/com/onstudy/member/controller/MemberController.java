@@ -214,13 +214,13 @@ public class MemberController extends HttpServlet {
 			view.forward(request, response);
 			
 		// 회원탈퇴 페이지 포워드
-		}else if(command.equals("/secession")) {
+		}else if(command.equals("/secessionForm")) {
 			path = "/WEB-INF/views/member/secession.jsp";
 			view = request.getRequestDispatcher(path);
 			view.forward(request, response);
 			
 		// 회원정보 수정 페이지 포워드	
-		}else if(command.equals("/update")) {
+		}else if(command.equals("/updateForm")) {
 			path = "/WEB-INF/views/member/update.jsp";
 			view = request.getRequestDispatcher(path);
 			view.forward(request, response);
@@ -232,16 +232,13 @@ public class MemberController extends HttpServlet {
 			String memberPwd = request.getParameter("inputPassword");
 			String setPath = request.getParameter("setPath");
 			
-			System.out.println("pwd : " + memberPwd);
-			System.out.println("path : " + setPath);
-			
 			try {
 				int result = memberService.pwdCheck(memberNo, memberPwd);
 				
 				if(result > 0) {
 					
-					if(setPath.equals("secession")) path="secession";
-					else path="update";
+					if(setPath.equals("secession")) path="secessionForm";
+					else path="updateForm";
 					
 				}else {
 					msg = "비밀번호가 일치하지 않습니다.";
@@ -255,6 +252,33 @@ public class MemberController extends HttpServlet {
 			}catch(Exception e) {
 				ExceptionForward.errorPage(request, response, "비밀번호 일치 조회", e);
 			}
+			
+		// 회원탈퇴
+		}else if(command.equals("/secession")) {
+//			String checkSecession = request.getParameter("checkSecession");
+//			String checks[] = request.getParameterValues("checkSecession");
+//			
+//			System.out.println("checkSecession : " + checkSecession);
+//			System.out.println("checks : " + checks);
+			HttpSession session = request.getSession();
+			int memberNo = ((Member)session.getAttribute("loginMember")).getMemberNo();
+			
+			try {
+				int result = memberService.secession(memberNo);
+				
+				if(result > 0) {
+					msg = "회원 탈퇴되었습니다.";
+				}else {
+					msg = "회원 탈퇴에 실패하였습니다.";
+				}
+				
+				session.setAttribute("msg", msg);
+				response.sendRedirect(request.getContextPath());
+				
+			}catch(Exception e) {
+				ExceptionForward.errorPage(request, response, "회원 탈퇴", e);
+			}
+			
 		}
 		
 		

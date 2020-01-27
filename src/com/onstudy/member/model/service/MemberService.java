@@ -132,6 +132,24 @@ public class MemberService {
 		return result;
 	}
 
+	/** 회원 탈퇴용 Service
+	 * @param memberNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int secession(int memberNo) throws Exception{
+		Connection conn = getConnection();
+		
+		int result = new MemberDao().secession(conn, memberNo);
+		
+		
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		
+		close(conn);
+		return result;
+	}
+
 
 
 

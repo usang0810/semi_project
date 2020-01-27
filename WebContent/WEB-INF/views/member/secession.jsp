@@ -1,3 +1,5 @@
+<%-- 주소로 직접접근하는 것을 막아야 함 --%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -50,7 +52,7 @@
             회원탈퇴
           </p>
           <div class="jumbotron">
-            <form method="POST" action="#" onsubmit="return validate();">
+            <form method="GET" action="secession" onsubmit="return validate();">
               <label class="control-label ml-1 mb-5 textarea-title">회원 탈퇴 약관</label>
               <textarea class="form-control mb-5 form-control input-comment textarea-content" readonly>
   제1조
@@ -77,10 +79,10 @@
   ④ 약관 내용 4
                 </textarea>
               <div>
-                <input type="checkbox" id="check-secession" name="check-secession">
-                <label for="check-secession">정말 탈퇴하시겠습니까?</label>
+                <input type="checkbox" id="checkSecession">
+                <label for="checkSecession">정말 탈퇴하시겠습니까?</label>
               </div>
-              <button class="btn mt-3 form-control orange-btn" id="confirm-btn" name="confirm-btn"
+              <button class="btn mt-3 form-control orange-btn" id="confirm-btn"
                 type="submit">확인</button>
             </form>
           </div>
@@ -92,7 +94,7 @@
   
   <script>
     function validate() {
-      if (!$("#check-secession").prop("checked")) {
+      if (!$("#checkSecession").prop("checked")) {
         alert("약관에 동의해주세요.");
         return false;
       } else {

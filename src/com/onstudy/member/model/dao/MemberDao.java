@@ -252,4 +252,28 @@ public class MemberDao {
 		
 		return result;
 	}
+
+	/** 회원 탈퇴용 Dao
+	 * @param memberNo
+	 * @param conn
+	 * @return result
+	 * @throws Exception
+	 */
+	public int secession(Connection conn, int memberNo) throws Exception{
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("secession");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, memberNo);
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close(pstmt);
+		}
+		return result;
+	}
 }
