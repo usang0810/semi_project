@@ -4,6 +4,7 @@
 
 <%
 	Member loginMember = (Member) session.getAttribute("loginMember");
+	String msg = (String)session.getAttribute("msg");
 
 	// 쿠키사용
 	boolean save = false;
@@ -30,191 +31,15 @@
 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
 	crossorigin="anonymous">
 
-<!-- css 임포트 에러 -->
-<%-- <link rel="stylesheet" href="<%= request.getContextPath() %>/css/login.css">
-    <link rel="stylesheet" href="<%= request.getContextPath() %>css/common.css"> --%>
-<style>
-/* 기본 CSS 적용 */
-ul {
-	list-style: none;
-}
+<link rel="stylesheet" href="<%= request.getContextPath() %>/css/login.css">
+<link rel="stylesheet" href="<%= request.getContextPath() %>/css/common.css">
 
-img, fieldset {
-	border: none;
-}
-
-body, input {
-	color: #333333 !important;
-}
-
-input, select, img {
-	vertical-align: middle;
-}
-
-table {
-	border-collapse: collapse;
-}
-
-html body .background-navy {
-	background: #002d4c;
-	color: #ffffff;
-}
-
-html body .background-orange {
-	background: #f15a25;
-	color: #ffffff;
-}
-
-html body .background-gray {
-	background: #9e9e9e;
-	color: #ffffff;
-}
-
-html body .form-control.navy-btn {
-	background-color: #002d4c;
-	color: #ffffff;
-	border: none;
-	padding: 0;
-}
-
-html body .form-control.orange-btn {
-	background-color: #f15a25;
-	color: #ffffff;
-	border: none;
-	padding: 0;
-}
-
-html body .form-control.navy-hover-btn {
-	background: transparent;
-	color: #002d4c;
-	border: 1px solid #002d4c;
-	transition: all 0.3s;
-}
-
-html body .form-control.navy-hover-btn:hover {
-	background: #002d4c;
-	color: #ffffff;
-}
-
-html body .form-control.orange-hover-btn {
-	background: transparent;
-	color: #f15a25;
-	border: 1px solid #f15a25;
-	transition: all 0.3s;
-}
-
-html body .form-control.orange-hover-btn:hover {
-	background: #f15a25;
-	color: #ffffff;
-}
-
-html body .form-control.gray-btn {
-	background-color: #f15a25;
-	color: #9e9e9e;
-	border: none;
-	padding: 0;
-}
-
-html body .content-seciton.orange-hover-background {
-	background-color: #9e9e9e;
-	color: #333333;
-	transition: all 0.3s;
-}
-
-html body .content-seciton.orange-hover-background:hover {
-	background-color: #f15a25;
-	color: #ffffff;
-}
-
-html body .form-control.input-comment {
-	transition: all 0.3s;
-}
-
-html body .form-control.input-comment:focus {
-	border-color: #f15a25;
-	box-shadow: 0 0 0 0.2rem rgba(241, 90, 37, .25);
-}
-
-html body .content-title {
-	text-align: initial;
-	margin: 50px 0;
-	font-size: 35px;
-	border-bottom: 2px solid #333333;
-	padding-bottom: 10px;
-}
-
-.page-link:hover, .page-link {
-	color: #f15a25;
-}
-
-.page-item.active .page-link {
-	background-color: #f15a25;
-	border-color: #f15a25;
-}
-
-.page-link:focus {
-	box-shadow: 0 0 0 0.2rem rgba(241, 90, 37, .25);
-}
-
-.pagination {
-	position: absolute;
-	left: 50%;
-	transform: translateX(-50%);
-	bottom: -80px;
-}
-/* 반응형 세부 수정사항 */
-@media ( max-width : 767px) { /*767px : 구조가 바뀌는 기준*/
-	.form-control {
-		min-width: 90px;
-	}
-}
-/* 메인 버튼 */
-.main-btn-color {
-	border: 1px solid #002d4c;
-	color: #ffffff;
-	background-color: #002d4c;
-}
-
-.main-btn-color:hover {
-	border: 1px solid #002d4c;
-	background-color: #ffffff;
-	color: #002d4c;
-}
-
-/* number 태그 화살표 제거 */
-input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button
-	{
-	-webkit-appearance: none;
-	margin: 0;
-}
-
-/* 로그인 전체요소 가운데 위치 */
-.login-wrapper {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-}
-
-/* 배경 색 */
-body {
-	background-color: #f5f5f5;
-	height: 100%;
-}
-
-/* login 이미지 */
-#login-img {
-	display: block;
-	margin: 0px auto;
-	width: 200px;
-}
-
-@media ( max-width : 991px) {
-	body {
-		font-size: 12px;
-	}
-}
-</style>
+<script>
+	<% if(msg != null) {%>
+		alert("<%= msg %>");
+		<% session.removeAttribute("msg"); %>
+	<% } %>
+</script>
 
 <title>온 스터디</title>
 </head>
@@ -454,18 +279,18 @@ body {
 					<!-- Modal body -->
 					<div class="modal-body">
 						<form onsubmit="false" id="changePwdForm">
+							<div class="caption">8~16자의 최소 하나의 문자, 숫자, 하나의 특수 문자를 포함해야
+							합니다.</div>
 							<div class="mb-3">
 								<label for="changePwd-input-pwd1">새로운 비밀번호를 입력하세요</label> <input
 									type="password" id="changePwd-input-pwd1" class="form-control"
-									placeholder="비밀번호를 입력해주세요." name="changePwd-input-pwd1"
-									required autofocus>
+									placeholder="비밀번호를 입력해주세요." required autofocus>
 							</div>
 
 							<div class="mb-3">
 								<label for="changePwd-input-pwd2">비밀번호를 재입력하세요</label> <input
 									type="password" id="changePwd-input-pwd2" class="form-control"
-									placeholder="비밀번호를 재입력해주세요." name="changePwd-input-pwd2"
-									required autofocus>
+									placeholder="비밀번호를 재입력해주세요."	required autofocus>
 							</div>
 							<button class="btn btn-lg main-btn-color btn-block mb-3" role="button"
 								id="changePwdBtn">변경하기</button>

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.onstudy.wrapper.EncryptWrapper;
 
-@WebFilter(urlPatterns= {"/member/loginedIndex", "/member/signup", "/member/pwdCheck"})
+@WebFilter(urlPatterns= {"/member/loginedIndex", "/member/signup", "/member/pwdCheck", "/member/update"})
 public class EncryptFilter implements Filter {
 
     public EncryptFilter() {

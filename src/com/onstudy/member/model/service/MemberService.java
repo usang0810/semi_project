@@ -7,10 +7,12 @@ import static com.onstudy.common.JDBCTemplate.rollback;
 
 import java.io.File;
 import java.sql.Connection;
+import java.util.List;
 
 import com.onstudy.member.model.dao.MemberDao;
 import com.onstudy.member.model.vo.Image;
 import com.onstudy.member.model.vo.Member;
+import com.onstudy.member.model.vo.Point;
 
 public class MemberService {
 
@@ -179,6 +181,153 @@ public class MemberService {
 		return result;
 	}
 
+	/** 회원 정보 수정용 Service
+	 * @param updateMember
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateMember(Member updateMember) throws Exception{
+		Connection conn = getConnection();
+		
+		int result = new MemberDao().updateMember(conn, updateMember);
+		
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		
+		close(conn);
+		return result;
+	}
+
+	/** 회원 기존 프로필 사진 삭제용 Service
+	 * @param memberNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteProfileImg(int memberNo) throws Exception{
+		Connection conn = getConnection();
+		
+		int result = new MemberDao().deleteProfileImg(conn, memberNo);
+		
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		
+		close(conn);
+		return result;
+	}
+
+	/** 회원 계정 포인트 업데이트용 Service
+	 * @param point
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updatePoint(Point point) throws Exception{
+		Connection conn = getConnection();
+		
+		int result = new MemberDao().updatePoint(conn, point);
+		
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		
+		close(conn);
+		return result;
+	}
+
+	/** 회원 포인트 조회용 Service
+	 * @param memberNo
+	 * @return point
+	 * @throws Exception
+	 */
+	public int getMemberPoint(int memberNo) throws Exception{
+		Connection conn = getConnection();
+		
+		int point = new MemberDao().getMemberPoint(conn, memberNo);
+
+		close(conn);
+		return point;
+	}
+
+	/** 회원 비밀번호 변경용 Service
+	 * @param memberId
+	 * @param memberPwd
+	 * @return result
+	 * @throws Exception
+	 */
+	public int changePwdMember(String memberId, String memberPwd) throws Exception{
+		Connection conn = getConnection();
+		
+		int result = new MemberDao().changePwdMember(conn, memberId, memberPwd);
+		
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		
+		close(conn);
+		return result;
+	}
+
+	/** 회원 포인트 내역 갯수 조회용 Service
+	 * @param memberNo
+	 * @return pListCount
+	 */
+	public int getPointListCount(int memberNo) throws Exception{
+		Connection conn = getConnection();
+		
+		int result = new MemberDao().getPointListCount(conn, memberNo);
+		
+		close(conn);
+		return result;
+	}
+
+//	/** 회원 포인트 내역 리스트 조회용 Service
+//	 * @param memberNo
+//	 * @param currentPage
+//	 * @param limit
+//	 * @return pList
+//	 * @throws Exception
+//	 */
+//	public List<Point> selectPointList(int memberNo, int currentPage, int limit) throws Exception{
+//		Connection conn = getConnection();
+//		
+//		List<Point> pList = new MemberDao().selectPointList(conn, memberNo, currentPage, limit);
+//		
+//		close(conn);
+//		return pList;
+//	}
+
+	/** 회원 포인트 내역 리스트 조회용 Service
+	 * @param memberNo
+	 * @param pointInOut
+	 * @param pointMonth
+	 * @param currentPage
+	 * @param limit
+	 * @return pList
+	 * @throws Exception
+	 */
+	public List<Point> selectPointList(int memberNo, char pointInOut, int pointMonth, int currentPage, int limit) throws Exception{
+		Connection conn = getConnection();
+		List<Point> pList = null;
+		
+		String queryTitle = null;
+		
+		if(pointInOut != 'W' && pointMonth != 0) {
+			queryTitle = "selectPointList1";
+			pList = new MemberDao().selectPointList(conn, memberNo, pointInOut, pointMonth, currentPage, limit, queryTitle);
+			
+		}else if(pointInOut != 'W' && pointMonth == 0) {
+			queryTitle = "selectPointList2";
+			pList = new MemberDao().selectPointList(conn, memberNo, pointInOut, currentPage, limit, queryTitle);
+			
+		}else if(pointInOut == 'W' && pointMonth != 0) {
+			queryTitle = "selectPointList3";
+			pList = new MemberDao().selectPointList(conn, memberNo, pointMonth, currentPage, limit, queryTitle);
+			
+		}else {
+			queryTitle = "selectPointList4";
+			pList = new MemberDao().selectPointList(conn, memberNo, currentPage, limit, queryTitle);
+		}
+		
+		close(conn);
+		return pList;
+	}
 
 
 

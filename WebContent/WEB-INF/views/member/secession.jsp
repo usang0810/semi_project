@@ -9,33 +9,6 @@
 <meta charset="UTF-8">
 
 <link rel="stylesheet" href="../css/mypage-delete-member.css">
-<style>
-#container {
-	margin: 200px 0 100px 0;
-	text-align: center;
-	height: 1000px;
-}
-
-.jumbotron {
-	height: 85%;
-}
-
-.textarea-title {
-	font-size: 1.2em;
-	float: left;
-}
-
-.textarea-content {
-	width: 100% !important;
-	height: 500px !important;
-	background-color: #ffffff !important;
-	resize: none !important;
-}
-
-#confirm-btn {
-	width: 10%;
-}
-</style>
 
 <title>온스터디</title>
 

@@ -4,9 +4,6 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-
-    <!-- <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" href="css/intro.css"> -->
     <title>온 스터디</title>
 </head>
 

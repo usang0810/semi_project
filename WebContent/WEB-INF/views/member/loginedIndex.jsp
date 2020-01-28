@@ -4,74 +4,7 @@
 <html lang="ko">
 
 <head>
-<!-- <link rel="stylesheet" href="../css/logined_main.css?ver=1"> -->
-<style>
-#profile-wrap .member-profile {
-	width: 25%;
-	min-width: 120px;
-	display: block;
-	margin: 0 auto;
-	cursor: pointer;
-}
-
-#profile-wrap .member-profile:hover {
-	transform: scale(1.1, 1.1);
-}
-
-/* 학습노트 마우스 오버시 색 변환 및 커서 변경 */
-.learning-note {
-	background-color: #9e9e9e;
-}
-
-.learning-note:hover {
-	background-color: rgba(241, 90, 37, 1);
-	transition-duration: 0.3s;
-	cursor: pointer;
-}
-
-/* 학습노트의 아이콘 속성 */
-.learning-note-icon {
-	font-size: 1.2em;
-}
-
-/* 추천 첼린저스 */
-.Thumbnail {
-	height: 150px;
-	background-repeat: no-repeat;
-	background-size: cover;
-}
-
-.recommend-title, .recommend-sub-title {
-	text-align: center;
-	margin-top: 10px;
-}
-
-.recommend-title {
-	margin-top: 50px;
-	font-weight: bold;
-	font-size: 35px;
-}
-
-.card-title {
-	font-size: 20px;
-	font-weight: bold;
-}
-
-.card-body .d-flex {
-	float: right;
-}
-
-.card-body .more-btn {
-	border: 1px solid #f15a25;
-	color: #f15a25;
-}
-
-.card-body .more-btn:hover {
-	border: 1px solid #f15a25;
-	background-color: #f15a25;
-	color: #ffffff;
-}
-</style>
+<link rel="stylesheet" href="<%=request.getContextPath() %>/css/logined_main.css">
 
 <title>온 스터디</title>
 </head>

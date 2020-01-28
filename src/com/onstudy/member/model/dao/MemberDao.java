@@ -1,15 +1,20 @@
 package com.onstudy.member.model.dao;
 
-import static com.onstudy.common.JDBCTemplate.*;
+import static com.onstudy.common.JDBCTemplate.close;
+
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import com.onstudy.member.model.vo.Image;
 import com.onstudy.member.model.vo.Member;
+import com.onstudy.member.model.vo.Point;
 
 public class MemberDao {
 	   private Properties prop = null;
@@ -340,4 +345,425 @@ public class MemberDao {
 		
 		return result;
 	}
+
+	/** 회원 정보 수정용 Dao
+	 * @param conn
+	 * @param updateMember
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateMember(Connection conn, Member updateMember) throws Exception{
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("updateMember");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, updateMember.getMemberPwd());
+			pstmt.setString(2, updateMember.getMemberPhone());
+			pstmt.setString(3, updateMember.getMemberAccount());
+			pstmt.setInt(4, updateMember.getBankCode());
+			pstmt.setInt(5, updateMember.getMemberNo());
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	/** 회원 기존 프로필 사진 삭제용 Dao
+	 * @param conn
+	 * @param memberNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteProfileImg(Connection conn, int memberNo) throws Exception{
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("deleteProfileImg");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, memberNo);
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	/** 회원 계정 포인트 업데이트용 Dao
+	 * @param conn
+	 * @param point
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updatePoint(Connection conn, Point point) throws Exception{
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("updatePoint");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, point.getPoint());
+			pstmt.setString(2, point.getPointStatus()+"");
+			pstmt.setInt(3, point.getMemberNo());
+			pstmt.setInt(4, point.getPointDetailCd());
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	/** 회원 포인트 조회용 Dao
+	 * @param conn
+	 * @param memberNo
+	 * @return point
+	 * @throws Exception
+	 */
+	public int getMemberPoint(Connection conn, int memberNo) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int point = -1;
+		
+		String query = prop.getProperty("getMemberPoint");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, memberNo);
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				point = rset.getInt(1);
+			}
+			
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return point;
+	}
+
+	/** 회원 비밀번호 변경용 Dao
+	 * @param conn
+	 * @param memberId
+	 * @param memberPwd
+	 * @return result
+	 * @throws Exception
+	 */
+	public int changePwdMember(Connection conn, String memberId, String memberPwd) throws Exception{
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("changePwdMember");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberPwd);
+			pstmt.setString(2, memberId);
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	/** 회원 포인트 내역 갯수 조회용 Dao
+	 * @param memberNo
+	 * @param conn
+	 * @return pListCount
+	 * @throws Exception
+	 */
+	public int getPointListCount(Connection conn, int memberNo) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = 0;
+		
+		String query = prop.getProperty("getPointListCount");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, memberNo);
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				result = rset.getInt(1);
+			}
+			
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return result;
+	}
+		
+//	/** 회원 포인트 내역 리스트 조회용 Dao
+//	 * @param conn
+//	 * @param memberName
+//	 * @return pList
+//	 * @throws Exception
+//	 */
+//	public List<Point> selectPointList(Connection conn, int memberNo, int currentPage, int limit) throws Exception{
+//		PreparedStatement pstmt = null;
+//		ResultSet rset = null;
+//		List<Point> pList = null;
+//		
+//		String query = prop.getProperty("selectPointList");
+//		
+//		try {
+//			int startRow = (currentPage - 1) * limit + 1;
+//			int endRow = startRow + limit - 1;
+//			
+//			pstmt = conn.prepareStatement(query);
+//			pstmt.setInt(1, memberNo);
+//			pstmt.setInt(2, startRow);
+//			pstmt.setInt(3, endRow);
+//			
+//			rset = pstmt.executeQuery();
+//			
+//			pList = new ArrayList<Point>();
+//			
+//			Point point = null;
+//			
+//			while(rset.next()) {
+//				point = new Point(rset.getInt("POINT"),
+//								rset.getString("POINT_STATUS").charAt(0),
+//								rset.getDate("POINT_UPDATE_DT"),
+//								rset.getString("MEMBER_NM"),
+//								rset.getString("POINT_DETAIL_NM"));
+//				
+//				pList.add(point);
+//			}
+//			
+//		}finally {
+//			close(rset);
+//			close(pstmt);
+//		}
+//		
+//		return pList;
+//	}
+
+	/** 회원 포인트 내역 리스트 조회용 Dao (특정 기간, 입금 또는 출금 조회)
+	 * @param conn
+	 * @param memberNo
+	 * @param pointInOut
+	 * @param pointMonth
+	 * @param currentPage
+	 * @param limit
+	 * @param queryTitle
+	 * @return pList
+	 * @throws Exception
+	 */
+	public List<Point> selectPointList(Connection conn, int memberNo, char pointInOut, int pointMonth, int currentPage,
+			int limit, String queryTitle) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<Point> pList = null;
+		
+		String query = prop.getProperty(queryTitle);
+		
+		try {
+			int startRow = (currentPage - 1) * limit + 1;
+			int endRow = startRow + limit - 1;
+			
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, memberNo);
+			pstmt.setInt(2, pointMonth);
+			pstmt.setString(3, pointInOut+"");
+			pstmt.setInt(4, startRow);
+			pstmt.setInt(5, endRow);
+			
+			rset = pstmt.executeQuery();
+			
+			pList = new ArrayList<Point>();
+			
+			Point point = null;
+			
+			while(rset.next()) {
+				point = new Point(rset.getInt("POINT"),
+								rset.getString("POINT_STATUS").charAt(0),
+								rset.getDate("POINT_UPDATE_DT"),
+								rset.getString("MEMBER_NM"),
+								rset.getString("POINT_DETAIL_NM"));
+				
+				pList.add(point);
+			}
+			
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return pList;
+	}
+
+	/** 회원 포인트 내역 리스트 조회용 Dao (모든 기간, 입금 또는 출금 조회)
+	 * @param conn
+	 * @param memberNo
+	 * @param pointInOut
+	 * @param currentPage
+	 * @param limit
+	 * @param queryTitle
+	 * @return pList
+	 * @throws Exception
+	 */
+	public List<Point> selectPointList(Connection conn, int memberNo, char pointInOut, int currentPage, int limit,
+			String queryTitle) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<Point> pList = null;
+		
+		String query = prop.getProperty(queryTitle);
+		
+		try {
+			int startRow = (currentPage - 1) * limit + 1;
+			int endRow = startRow + limit - 1;
+			
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, memberNo);
+			pstmt.setString(2, pointInOut+"");
+			pstmt.setInt(3, startRow);
+			pstmt.setInt(4, endRow);
+			
+			rset = pstmt.executeQuery();
+			
+			pList = new ArrayList<Point>();
+			
+			Point point = null;
+			
+			while(rset.next()) {
+				point = new Point(rset.getInt("POINT"),
+								rset.getString("POINT_STATUS").charAt(0),
+								rset.getDate("POINT_UPDATE_DT"),
+								rset.getString("MEMBER_NM"),
+								rset.getString("POINT_DETAIL_NM"));
+				
+				pList.add(point);
+			}
+			
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return pList;
+	}
+
+	/** 회원 포인트 내역 리스트 조회용 Dao (특정 기간, 입출금 조회)
+	 * @param conn
+	 * @param memberNo
+	 * @param pointMonth
+	 * @param currentPage
+	 * @param limit
+	 * @param queryTitle
+	 * @return pList
+	 * @throws Exception
+	 */
+	public List<Point> selectPointList(Connection conn, int memberNo, int pointMonth, int currentPage, int limit,
+			String queryTitle) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<Point> pList = null;
+		
+		String query = prop.getProperty(queryTitle);
+		
+		try {
+			int startRow = (currentPage - 1) * limit + 1;
+			int endRow = startRow + limit - 1;
+			
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, memberNo);
+			pstmt.setInt(2, pointMonth);
+			pstmt.setInt(3, startRow);
+			pstmt.setInt(4, endRow);
+			
+			rset = pstmt.executeQuery();
+			
+			pList = new ArrayList<Point>();
+			
+			Point point = null;
+			
+			while(rset.next()) {
+				point = new Point(rset.getInt("POINT"),
+								rset.getString("POINT_STATUS").charAt(0),
+								rset.getDate("POINT_UPDATE_DT"),
+								rset.getString("MEMBER_NM"),
+								rset.getString("POINT_DETAIL_NM"));
+				
+				pList.add(point);
+			}
+			
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return pList;
+	}
+
+	/** 회원 포인트 내역 리스트 조회용 Dao (모든 기간, 입출금 조회)
+	 * @param conn
+	 * @param memberNo
+	 * @param currentPage
+	 * @param limit
+	 * @param queryTitle
+	 * @return pList
+	 * @throws Exception
+	 */
+	public List<Point> selectPointList(Connection conn, int memberNo, int currentPage, int limit, String queryTitle) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<Point> pList = null;
+		
+		String query = prop.getProperty(queryTitle);
+		
+		try {
+			int startRow = (currentPage - 1) * limit + 1;
+			int endRow = startRow + limit - 1;
+			
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, memberNo);
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, endRow);
+			
+			rset = pstmt.executeQuery();
+			
+			pList = new ArrayList<Point>();
+			
+			Point point = null;
+			
+			while(rset.next()) {
+				point = new Point(rset.getInt("POINT"),
+								rset.getString("POINT_STATUS").charAt(0),
+								rset.getDate("POINT_UPDATE_DT"),
+								rset.getString("MEMBER_NM"),
+								rset.getString("POINT_DETAIL_NM"));
+				
+				pList.add(point);
+			}
+			
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return pList;
+	}
+
 }

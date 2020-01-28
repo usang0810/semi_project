@@ -1,0 +1,71 @@
+#container {
+    margin: 200px 0 100px 0;
+    text-align: center;
+    height: 1000px;
+  }
+  
+  .jumbotron {
+    height: 85%;
+  }
+
+  .follower-list,
+  .following-list {
+    display: inline-block;
+    width:45%;
+  }
+   
+  .following-list-title,
+  .follower-list-title {
+    display: inline-block;
+    width:100%;
+    padding-left: 7px;
+    border-radius: 5px;
+    font-size: 1.8em;
+    text-align: initial;
+    background-color: #002d4c;
+    color: white;
+  }
+  
+  .fa-window-close{
+    color: #f15a25;
+  }
+  
+  .following-list-content img,
+  .follower-list-content img{
+    width:1.2em;
+    height:1.2em;
+  }
+  
+  .cancle-follow-btn {
+      float: right;
+      padding:3px;
+    }
+  
+    .following-list-content,
+    .follower-list-content {
+      height: 200px;
+      overflow: auto;
+      background-color: white;
+    }
+
+    .following-list,
+    .following-list-id,
+    .follower-list-id {
+      float: left;
+    }
+
+    .follower-list,
+    .follower-list-id {
+      float: right;
+    }
+  
+   .following-list-content li,
+   .follower-list-content li {
+    text-align: initial !important;
+  }
+
+  .following-list-content li:hover,
+  .follower-list-content li:hover {
+    background-color : rgba(0,123,255,.25);
+    cursor: pointer;
+  }

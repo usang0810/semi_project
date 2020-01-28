@@ -61,11 +61,11 @@ $(function () {
         $("#findPwdModal").modal({ backdrop: "static" });
     });
     
-    // 비밀번호 변경 버튼 클릭 시
-    $("#changePwdBtn").click(function(){
-        $("#changePwdModal").modal("hide");
-        alert("비밀번호가 성공적으로 변경되었습니다.");
-    });
+//    // 비밀번호 변경 버튼 클릭 시
+//    $("#changePwdBtn").click(function(){
+//        $("#changePwdModal").modal("hide");
+//        alert("비밀번호가 성공적으로 변경되었습니다.");
+//    });
     
     // 아이디 찾기 버튼 클릭 시 
     $("#findIdBtn").click(function(){
@@ -126,7 +126,7 @@ $(function () {
     	console.log("check : " + phoneCheck2);
     	
     	if(phoneCheck2){
-    		var id = $("#findPwdId").val();
+    		id = $("#findPwdId").val();
     		var phone1 = $("#findPwdPhone1").val();
         	var phone2 = $("#findPwdPhone2").val();
         	var phone3 = $("#findPwdPhone3").val();
@@ -159,6 +159,51 @@ $(function () {
     	}else{
     		alert("유효한 전화번호가 아닙니다. 다시 입력해주세요");
     	}
+
+    });
+    
+    // 비밀번호 변경 버튼 클릭 시
+    $("#changePwdBtn").click(function(){
+    	var $pwd1 = $("#changePwd-input-pwd1");
+		var $pwd2 = $("#changePwd-input-pwd2");
+		
+		var regExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&~^])[A-Za-z\d$@$!%*#?&~^]{8,16}$/;
+		
+		if(!regExp.test($pwd1.val())){
+			alert("비밀번호가 유효하지 않습니다.");
+			
+		}else{
+			
+			if($pwd1.val().trim() != $pwd2.val().trim()){
+				alert("비밀번호가 일치하지 않습니다.");
+				
+			}else{
+				$.ajax({
+					url: "changePwd",
+					data: {id : id, pwd1 : $pwd1.val()},
+					dataType: "text",
+					type: "post",
+					
+					success : function(result){
+						console.log("Pwd변경 통신 성공");
+						console.log(result);
+						
+						if(result == "yes"){
+							alert("비밀번호가 변경되었습니다");
+						}else{
+							alert("비밀번호 변경에 실패하였습니다");
+						}
+						
+					},
+
+					error : function(request,status,error){
+						alert("code = "+ request.status + " message = " + request.responseText + " error = " + error);
+						$("#findIdModal").modal("hide");
+					},
+					
+				});
+			}
+		}
 
     });
     

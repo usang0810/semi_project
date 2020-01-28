@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -8,72 +9,22 @@
 
 <link rel="stylesheet"
 	href="<%=request.getContextPath() %>/css/mypage-main.css">
-<style>
-#container {
-	margin: 200px 0 100px 0;
-	text-align: center;
-	height: 1000px;
-}
 
-.jumbotron {
-	height: 95%;
-}
-
-.mypage-content {
-	text-align: initial;
-	font-size: 1.5em;
-}
-
-.edit-btn, .delete-btn {
-	float: right;
-	width: 15%;
-}
-
-.member-profile {
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	width: 30%;
-}
-
-.mypage-point {
-	height: 150px;
-}
-
-.mypage-point-title {
-	float: left;
-	font-size: 1.2em;
-}
-
-.mypage-follow {
-	height: 200px;
-}
-
-.mypage-follow-title {
-	float: left;
-	font-size: 1.2em;
-}
-
-.setting-btn {
-	float: right;
-	width: 20%;
-}
-
-.point-list li, .follow-list li {
-	float: left;
-}
-
-html body .form-control.orange-hover-btn {
-	width: 20%;
-}
-
-</style>
 <title>온스터디</title>
-
 </head>
 
 <body>
 	<%@ include file="../common/loginedHeader.jsp"%>
+	<%
+		String bankName = "";
+		switch(loginMember.getBankCode()){
+		case 0: bankName = "없음"; break;
+		case 1: bankName = "국민"; break;
+		case 2: bankName = "신한"; break;
+		case 3: bankName = "농협"; break;
+		case 4: bankName = "우리"; break;
+		}
+	%>
 	
 	<div id="container" style="color: #333333;">
 		<div class="container">
@@ -155,7 +106,7 @@ html body .form-control.orange-hover-btn {
 												<h6>계좌번호</h6>
 											</div>
 											<div class="col-md-5">
-												<h6 id="account"><%= loginMember.getBankCode() %>
+												<h6 id="account"><%= bankName %>
 													<%=(loginMember.getMemberAccount() != null) ? loginMember.getMemberAccount() : "" %></h6>
 											</div>
 										</div>
@@ -167,8 +118,10 @@ html body .form-control.orange-hover-btn {
 							<div class="jumbotron p-4 mypage-point">
 								<div>
 									<p class="mypage-point-title ml-1">포인트</p>
-									<span><a
-										class="btn form-control orange-hover-btn setting-btn" href="#">관리</a></span>
+									<span>
+										<a class="btn form-control orange-hover-btn setting-btn" href="pointDetail?pointInOut=W&pointMonth=0">
+										관리</a>
+									</span>
 								</div>
 								<ul class="point-list mt-5 ml-1 mb-1">
 									<li><%= loginMember.getMemberPoint() %> 포인트</li>
@@ -178,7 +131,7 @@ html body .form-control.orange-hover-btn {
 								<div>
 									<p class="mypage-follow-title ml-1">팔로우</p>
 									<span><a
-										class="btn form-control orange-hover-btn setting-btn" href="#">관리</a></span>
+										class="btn form-control orange-hover-btn setting-btn" href="followDetail">관리</a></span>
 								</div>
 								<ul class="follow-list mt-5 ml-1 mb-1">
 									<li>내가 팔로우하는 회원 5</li>
