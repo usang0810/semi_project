@@ -141,13 +141,13 @@
 										<img class="member-profile"	src="<%=request.getContextPath() + profileImagePath%>"
 										alt="프로필아이콘" style="width: 40%" id="profileImg">
 										<br>
-										<row class="mt-1">
+										<div class="mt-4">
 											<label for="upload"	id="upBtn" style="width: 50px"
-											class="btn btn-sm form-control orange-hover-btn">수정</label>
+											class="btn btn-sm form-control orange-hover-btn mb-0">수정</label>
 											<input type="file" id="upload" onchange="LoadImg(this)" name="filename">
 											<button class="btn btn-sm form-control orange-hover-btn" type="submit"
 												style="width: 50px">확인</button>										
-										</row>
+										</div>
 									</form>
 								</div>
 								<div class="profile-sub-list-wrap">

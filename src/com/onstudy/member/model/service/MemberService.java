@@ -12,6 +12,7 @@ import java.util.List;
 import com.onstudy.member.model.dao.MemberDao;
 import com.onstudy.member.model.vo.Image;
 import com.onstudy.member.model.vo.Member;
+import com.onstudy.member.model.vo.Order;
 import com.onstudy.member.model.vo.Point;
 
 public class MemberService {
@@ -266,32 +267,37 @@ public class MemberService {
 
 	/** 회원 포인트 내역 갯수 조회용 Service
 	 * @param memberNo
+	 * @param pointInOut
+	 * @param pointMonth
 	 * @return pListCount
+	 * @throws Exception
 	 */
-	public int getPointListCount(int memberNo) throws Exception{
+	public int getPointListCount(int memberNo, char pointInOut, int pointMonth) throws Exception{
 		Connection conn = getConnection();
 		
-		int result = new MemberDao().getPointListCount(conn, memberNo);
+		int pListCount = 0;
+		String queryTitle = null;
+		
+		if(pointInOut != 'W' && pointMonth != 0) {
+			queryTitle = "getPointListCount1";
+			pListCount = new MemberDao().getPointListCount(conn, memberNo, pointInOut, pointMonth, queryTitle);
+			
+		}else if(pointInOut != 'W' && pointMonth == 0) {
+			queryTitle = "getPointListCount2";
+			pListCount = new MemberDao().getPointListCount(conn, memberNo, pointInOut, queryTitle);
+			
+		}else if(pointInOut == 'W' && pointMonth != 0) {
+			queryTitle = "getPointListCount3";
+			pListCount = new MemberDao().getPointListCount(conn, memberNo, pointMonth, queryTitle);
+			
+		}else {
+			queryTitle = "getPointListCount4";
+			pListCount = new MemberDao().getPointListCount(conn, memberNo, queryTitle);
+		}
 		
 		close(conn);
-		return result;
+		return pListCount;
 	}
-
-//	/** 회원 포인트 내역 리스트 조회용 Service
-//	 * @param memberNo
-//	 * @param currentPage
-//	 * @param limit
-//	 * @return pList
-//	 * @throws Exception
-//	 */
-//	public List<Point> selectPointList(int memberNo, int currentPage, int limit) throws Exception{
-//		Connection conn = getConnection();
-//		
-//		List<Point> pList = new MemberDao().selectPointList(conn, memberNo, currentPage, limit);
-//		
-//		close(conn);
-//		return pList;
-//	}
 
 	/** 회원 포인트 내역 리스트 조회용 Service
 	 * @param memberNo
@@ -329,6 +335,59 @@ public class MemberService {
 		return pList;
 	}
 
+	/** 상품정보 삽입용 Service
+	 * @param order
+	 * @return merchantUid
+	 * @throws Exception
+	 */
+	public String insertOrder(Order order) throws Exception{
+		Connection conn = getConnection();
+		
+		MemberDao memberDao = new MemberDao();
+		
+		String merchantUid = memberDao.createMerchantUid(conn);
+		
+		int result = 0;
+		
+		if(merchantUid != null) {
+			result = memberDao.insertOrder(conn, order, merchantUid);
+			
+			if(result > 0) {
+				commit(conn);
+			}else {
+				rollback(conn);
+				merchantUid = null;
+			}
+		}
+		
+		close(conn);
+		return merchantUid;
+	}
+
+	/** 상품정보 수정용 Service
+	 * @param order
+	 * @param point
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateOrder(Order order, Point point) throws Exception{
+		Connection conn = getConnection();
+		
+		MemberDao memberDao = new MemberDao();
+		
+		int result = memberDao.updateOrder(conn, order);
+		
+		if(result > 0) {
+			result = memberDao.updatePoint(conn, point);
+			
+			if(result > 0) commit(conn);
+			else rollback(conn);
+			
+		}else rollback(conn);
+		
+		close(conn);
+		return result;
+	}
 
 
 }

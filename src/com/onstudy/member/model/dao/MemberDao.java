@@ -14,6 +14,7 @@ import java.util.Properties;
 
 import com.onstudy.member.model.vo.Image;
 import com.onstudy.member.model.vo.Member;
+import com.onstudy.member.model.vo.Order;
 import com.onstudy.member.model.vo.Point;
 
 public class MemberDao {
@@ -482,27 +483,32 @@ public class MemberDao {
 		
 		return result;
 	}
-
-	/** 회원 포인트 내역 갯수 조회용 Dao
-	 * @param memberNo
+	
+	/** 회원 포인트 내역 갯수 조회용 Dao(특정 기간, 입금 또는 출금 조회)
 	 * @param conn
+	 * @param memberNo
+	 * @param pointInOut
+	 * @param pointMonth
+	 * @param queryTitle
 	 * @return pListCount
 	 * @throws Exception
 	 */
-	public int getPointListCount(Connection conn, int memberNo) throws Exception{
+	public int getPointListCount(Connection conn, int memberNo, char pointInOut, int pointMonth, String queryTitle) throws Exception{
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		int result = 0;
+		int pListCount = 0;
 		
-		String query = prop.getProperty("getPointListCount");
+		String query = prop.getProperty(queryTitle);
 		
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, memberNo);
+			pstmt.setInt(2, pointMonth);
+			pstmt.setString(3, pointInOut+"");
 			rset = pstmt.executeQuery();
 			
 			if(rset.next()) {
-				result = rset.getInt(1);
+				pListCount = rset.getInt(1);
 			}
 			
 		}finally {
@@ -510,54 +516,106 @@ public class MemberDao {
 			close(pstmt);
 		}
 		
-		return result;
+		return pListCount;
 	}
+	
+	/** 회원 포인트 내역 갯수 조회용 Dao(모든 기간, 입금 또는 출금 조회)
+	 * @param conn
+	 * @param memberNo
+	 * @param pointInOut
+	 * @param queryTitle
+	 * @return pListCount
+	 * @throws Exception
+	 */
+	public int getPointListCount(Connection conn, int memberNo, char pointInOut, String queryTitle) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int pListCount = 0;
 		
-//	/** 회원 포인트 내역 리스트 조회용 Dao
-//	 * @param conn
-//	 * @param memberName
-//	 * @return pList
-//	 * @throws Exception
-//	 */
-//	public List<Point> selectPointList(Connection conn, int memberNo, int currentPage, int limit) throws Exception{
-//		PreparedStatement pstmt = null;
-//		ResultSet rset = null;
-//		List<Point> pList = null;
-//		
-//		String query = prop.getProperty("selectPointList");
-//		
-//		try {
-//			int startRow = (currentPage - 1) * limit + 1;
-//			int endRow = startRow + limit - 1;
-//			
-//			pstmt = conn.prepareStatement(query);
-//			pstmt.setInt(1, memberNo);
-//			pstmt.setInt(2, startRow);
-//			pstmt.setInt(3, endRow);
-//			
-//			rset = pstmt.executeQuery();
-//			
-//			pList = new ArrayList<Point>();
-//			
-//			Point point = null;
-//			
-//			while(rset.next()) {
-//				point = new Point(rset.getInt("POINT"),
-//								rset.getString("POINT_STATUS").charAt(0),
-//								rset.getDate("POINT_UPDATE_DT"),
-//								rset.getString("MEMBER_NM"),
-//								rset.getString("POINT_DETAIL_NM"));
-//				
-//				pList.add(point);
-//			}
-//			
-//		}finally {
-//			close(rset);
-//			close(pstmt);
-//		}
-//		
-//		return pList;
-//	}
+		String query = prop.getProperty(queryTitle);
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, memberNo);
+			pstmt.setString(2, pointInOut+"");
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				pListCount = rset.getInt(1);
+			}
+			
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return pListCount;
+	}
+	
+	/** 회원 포인트 내역 갯수 조회용 Dao(특정 기간, 입출금 모두 조회)
+	 * @param conn
+	 * @param memberNo
+	 * @param pointMonth
+	 * @param queryTitle
+	 * @return pListCount
+	 * @throws Exception
+	 */
+	public int getPointListCount(Connection conn, int memberNo, int pointMonth, String queryTitle) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int pListCount = 0;
+		
+		String query = prop.getProperty(queryTitle);
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, memberNo);
+			pstmt.setInt(2, pointMonth);
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				pListCount = rset.getInt(1);
+			}
+			
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return pListCount;
+	}
+
+	/** 회원 포인트 내역 갯수 조회용 Dao(모든 조건)
+	 * @param memberNo
+	 * @param conn
+	 * @param queryTitle
+	 * @return pListCount
+	 * @throws Exception
+	 */
+	public int getPointListCount(Connection conn, int memberNo, String queryTitle) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int pListCount = 0;
+		
+		String query = prop.getProperty(queryTitle);
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, memberNo);
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				pListCount = rset.getInt(1);
+			}
+			
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return pListCount;
+	}
+	
 
 	/** 회원 포인트 내역 리스트 조회용 Dao (특정 기간, 입금 또는 출금 조회)
 	 * @param conn
@@ -765,5 +823,93 @@ public class MemberDao {
 		
 		return pList;
 	}
+
+	/** 상품 고유번호 생성용 Dao
+	 * @param conn
+	 * @return merchantUid
+	 * @throws Exception
+	 */
+	public String createMerchantUid(Connection conn) throws Exception{
+		Statement stmt = null;
+		ResultSet rset = null;
+		String merchantUid = null;
+		
+		String query = prop.getProperty("createMerchantUid");
+		
+		try {
+			stmt = conn.createStatement();
+			
+			rset = stmt.executeQuery(query);
+			
+			if(rset.next()) {
+				merchantUid = rset.getString(1);
+			}
+			
+		}finally {
+			close(rset);
+			close(stmt);
+		}
+		
+		return merchantUid;
+		
+	}
+
+	/** 상품정보 삽입용 Dao
+	 * @param conn
+	 * @param order
+	 * @param merchantUid
+	 * @return result
+	 * @throws Exception
+	 */
+	public int insertOrder(Connection conn, Order order, String merchantUid) throws Exception{
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("insertOrder");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, merchantUid);
+			pstmt.setString(2, order.getName());
+			pstmt.setInt(3, order.getAmount());
+			pstmt.setString(4, order.getBuyerName());
+			pstmt.setString(5, order.getBuyerTel());
+			
+			result = pstmt.executeUpdate();
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	/** 상품정보 수정용 Dao
+	 * @param conn
+	 * @param order
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateOrder(Connection conn, Order order) throws Exception{
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("updateOrder");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, order.getImpUid());
+			pstmt.setString(2, order.getStatusCode() + "");
+			pstmt.setString(3, order.getMerchantUid());
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	
 
 }

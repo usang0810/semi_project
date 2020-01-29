@@ -22,6 +22,7 @@ import com.onstudy.common.MyFileRenamePolicy;
 import com.onstudy.member.model.service.MemberService;
 import com.onstudy.member.model.vo.Image;
 import com.onstudy.member.model.vo.Member;
+import com.onstudy.member.model.vo.Order;
 import com.onstudy.member.model.vo.PageInfo;
 import com.onstudy.member.model.vo.Point;
 import com.onstudy.wrapper.EncryptWrapper;
@@ -73,32 +74,42 @@ public class MemberController extends HttpServlet {
 				HttpSession session = request.getSession();
 
 				if (loginMember != null) {
-					
-					// 로그인 성공 시 회원의 프로필 이미지경로를 가져옴
-					String imagePath = memberService.selectImagePath(loginMember.getMemberNo());
-					if(imagePath != null) {
-						String[] paths = imagePath.split("\\\\"); // "\"를 기준으로 구분
-						imagePath = "/" + paths[paths.length - 1]; // "/"경로에 뒤에 제일 마지막 요소 붙임						
+					// 접속자가 관리자 일시 관리자 페이지로 이동
+					if(loginMember.getMemberGrade() == 'A') {
+						session.setMaxInactiveInterval(600);
+						session.setAttribute("loginMember", loginMember);
+						path = request.getContextPath() + "/admin/memberList";
+						
+					}else {
+						
+						// 로그인 성공 시 회원의 프로필 이미지경로를 가져옴
+						String imagePath = memberService.selectImagePath(loginMember.getMemberNo());
+						if(imagePath != null) {
+							String[] paths = imagePath.split("\\\\"); // "\"를 기준으로 구분
+							imagePath = "/" + paths[paths.length - 1]; // "/"경로에 뒤에 제일 마지막 요소 붙임						
+						}
+						
+						session.setAttribute("memberImagePath", imagePath);
+						
+						session.setMaxInactiveInterval(600);
+						session.setAttribute("loginMember", loginMember);
+						
+						// 아이디 저장
+						String save = request.getParameter("save");
+						Cookie cookie = new Cookie("saveId", memberId);
+						if (save != null) {
+							cookie.setMaxAge(60 * 60 * 24 * 7);
+						} else {
+							cookie.setMaxAge(0);
+						}
+						cookie.setPath("/");
+						response.addCookie(cookie);
+						
+						path = request.getContextPath()+"/member/main";
 					}
 					
-					session.setAttribute("memberImagePath", imagePath);
-
-					session.setMaxInactiveInterval(600);
-					session.setAttribute("loginMember", loginMember);
-
-					// 아이디 저장
-					String save = request.getParameter("save");
-					Cookie cookie = new Cookie("saveId", memberId);
-					if (save != null) {
-						cookie.setMaxAge(60 * 60 * 24 * 7);
-					} else {
-						cookie.setMaxAge(0);
-					}
-					cookie.setPath("/");
-					response.addCookie(cookie);
-
-					response.sendRedirect(request.getContextPath()+"/member/main");
-
+					response.sendRedirect(path);
+					
 				} else {
 					session.setAttribute("msg", "로그인 정보가 유효하지 않습니다.");
 					response.sendRedirect(request.getContextPath()+"/member/login");
@@ -487,7 +498,7 @@ public class MemberController extends HttpServlet {
 				// 나머지는 페이지로 구분하여 숫자 형태로 보여주게하는 방법
 			
 				// 현재 회원의 포인트 내역 전체 수
-				int pListCount = memberService.getPointListCount(memberNo);
+				int pListCount = memberService.getPointListCount(memberNo, pointInOut, pointMonth);
 				
 				int limit = 5; // 한 페이지에 보여질 게시글의 수
 				int pagingBarSize = 10; // 보여질 페이징바의 페이지 개수
@@ -518,7 +529,6 @@ public class MemberController extends HttpServlet {
 				
 				PageInfo pInf = new PageInfo(pListCount, limit, pagingBarSize, currentPage, maxPage, startPage, endPage);
 				
-//				List<Point> pList = memberService.selectPointList(memberNo, currentPage, limit);
 				List<Point> pList = memberService.selectPointList(memberNo, pointInOut, pointMonth, currentPage, limit);
 				
 				request.setAttribute("pInf", pInf);
@@ -546,7 +556,7 @@ public class MemberController extends HttpServlet {
 			view = request.getRequestDispatcher(path);
 			view.forward(request, response);
 			
-		// 회원 포인트 충전
+		// 회원 포인트 충전(무통장 입금)
 		}else if(command.equals("/pointCharge")) {
 			HttpSession session = request.getSession();
 			int memberNo = ((Member)session.getAttribute("loginMember")).getMemberNo();
@@ -580,6 +590,59 @@ public class MemberController extends HttpServlet {
 			}catch(Exception e) {
 				ExceptionForward.errorPage(request, response, "포인트 충전", e);
 			}
+			
+		// 회원 포인트 충전(카드)
+		}else if(command.equals("/pointCardCharge")) {
+			Order order = new Order(request.getParameter("name"),
+									Integer.parseInt(request.getParameter("amount")),
+									request.getParameter("buyer_name"),
+									request.getParameter("buyer_tel"));
+			
+			try {
+				String merchantUid = memberService.insertOrder(order);
+				response.getWriter().print(merchantUid);
+				
+			}catch(Exception e) {
+				ExceptionForward.errorPage(request, response, "카드 결제", e);
+			}
+			
+		// 카드 결제 성공 시
+		}else if(command.equals("/insertImpUid")) {
+			
+			int memberNo = ((Member)request.getSession().getAttribute("loginMember")).getMemberNo();
+			int pointCharge = Integer.parseInt(request.getParameter("amount"));
+			Point point = new Point(pointCharge, 'A', memberNo, 1);
+			
+			String impUid = request.getParameter("imp_uid");
+			String merchantUid = request.getParameter("merchant_uid");
+			Order order = new Order(merchantUid, impUid, '2');
+			
+			System.out.println(impUid);
+			System.out.println(merchantUid);
+			
+			int memberPoint = 0;
+			try {
+				int result = memberService.updateOrder(order, point);
+				
+				if(result > 0) {
+					memberPoint = memberService.getMemberPoint(memberNo);
+					
+					if(memberPoint != -1) {
+						HttpSession session = request.getSession();
+						Member loginMember = (Member)session.getAttribute("loginMember");
+						loginMember.setMemberPoint(memberPoint);
+						
+						session.setAttribute("loginMember", loginMember);
+					}
+				}
+				
+				response.getWriter().print(result);
+				
+			}catch(Exception e) {
+				ExceptionForward.errorPage(request, response, "카드 결제", e);
+			}
+			
+			
 			
 		// 회원 포인트 환급
 		}else if(command.equals("/pointPayBack")) {

@@ -37,11 +37,11 @@
 								<div>
 									<p class="mypage-content">회원정보
 									 <span>
-											<button type="button" class="form-control orange-hover-btn delete-btn"
+											<button type="button" class="form-control orange-hover-btn delete-btn" style="width: auto"
 												id="secession" data-toggle="modal" data-target="#checkPwdModal1">탈퇴</button>
 									</span>
 									<span>
-											<button type="button" class="mr-1 form-control orange-hover-btn edit-btn"
+											<button type="button" class="mr-1 form-control orange-hover-btn edit-btn" style="width: auto"
 												id="update" data-toggle="modal" data-target="#checkPwdModal1">수정</button>
 										</span>
 									</p>
@@ -119,8 +119,8 @@
 								<div>
 									<p class="mypage-point-title ml-1">포인트</p>
 									<span>
-										<a class="btn form-control orange-hover-btn setting-btn" href="pointDetail?pointInOut=W&pointMonth=0">
-										관리</a>
+										<a class="btn form-control orange-hover-btn setting-btn" href="pointDetail?pointInOut=W&pointMonth=0"
+											style="width: auto">관리</a>
 									</span>
 								</div>
 								<ul class="point-list mt-5 ml-1 mb-1">
@@ -130,7 +130,7 @@
 							<div class="jumbotron p-4 mypage-follow">
 								<div>
 									<p class="mypage-follow-title ml-1">팔로우</p>
-									<span><a
+									<span><a style="width: auto"
 										class="btn form-control orange-hover-btn setting-btn" href="followDetail">관리</a></span>
 								</div>
 								<ul class="follow-list mt-5 ml-1 mb-1">

@@ -53,6 +53,33 @@ public class Member {
 		this.memberAccount = memberAccount;
 		this.bankCode = bankCode;
 	}
+	
+	public Member(int memberNo, String memberId, String memberNm, String memberPhone, int memberPoint,
+			int memberDeclarCount, char memberStatus) {
+		super();
+		this.memberNo = memberNo;
+		this.memberId = memberId;
+		this.memberNm = memberNm;
+		this.memberPhone = memberPhone;
+		this.memberPoint = memberPoint;
+		this.memberDeclarCount = memberDeclarCount;
+		this.memberStatus = memberStatus;
+	}
+
+	public Member(int memberNo, String memberId, String memberNm, String memberPhone, Date memberEnrollDt,
+			int memberPoint, int memberDeclarCount, char memberStatus, String memberAccount, int bankCode) {
+		super();
+		this.memberNo = memberNo;
+		this.memberId = memberId;
+		this.memberNm = memberNm;
+		this.memberPhone = memberPhone;
+		this.memberEnrollDt = memberEnrollDt;
+		this.memberPoint = memberPoint;
+		this.memberDeclarCount = memberDeclarCount;
+		this.memberStatus = memberStatus;
+		this.memberAccount = memberAccount;
+		this.bankCode = bankCode;
+	}
 
 	public Member(int memberNo, String memberId, String memberPwd, String memberNm, String memberPhone,
 			char memberGrade, Date memberEnrollDt, int memberPoint, int memberDeclarCount, char memberStatus,
