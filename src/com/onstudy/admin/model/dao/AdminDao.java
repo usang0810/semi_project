@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -34,16 +35,16 @@ public class AdminDao {
 	 * @throws Exception
 	 */
 	public int getMemberListCount(Connection conn, String subQuery) throws Exception{
-		PreparedStatement pstmt = null;
+		Statement stmt = null;
 		ResultSet rset = null;
 		
 		int mListCount = 0;
 		
 		String query = prop.getProperty("getMemberListCount");
 		try {
-			pstmt = conn.prepareStatement(query + subQuery);
+			stmt = conn.createStatement();
 			
-			rset = pstmt.executeQuery();
+			rset = stmt.executeQuery(query + subQuery);
 			
 			if(rset.next()) {
 				mListCount = rset.getInt(1);
@@ -51,7 +52,7 @@ public class AdminDao {
 			
 		}finally {
 			close(rset);
-			close(pstmt);
+			close(stmt);
 		}
 		
 		return mListCount;
@@ -276,6 +277,98 @@ public class AdminDao {
 		}
 		
 		return result;
+	}
+
+	/** 회원 삭제용 Dao
+	 * @param conn
+	 * @param memberNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteMember(Connection conn, int memberNo) throws Exception{
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("deleteMember");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, memberNo);
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	/** 온스터디 수 조회용 Dao
+	 * @param conn
+	 * @param subQuery
+	 * @return oListCount
+	 * @throws Exception
+	 */
+	public int getOnstudyListCount(Connection conn, String subQuery) throws Exception{
+		Statement stmt = null;
+		ResultSet rset = null;
+		int result = 0;
+		
+		String query = prop.getProperty("getOnstudyListCount");
+		
+		try {
+			stmt = conn.createStatement();
+			
+			rset = stmt.executeQuery(query + subQuery);
+			
+			if(rset.next()) {
+				result = rset.getInt(1);
+			}
+			
+		}finally {
+			close(stmt);
+		}
+		
+		return result;
+	}
+
+	/** 온스터디 목록 조회용 Dao
+	 * @param conn
+	 * @param subQuery
+	 * @return oList
+	 * @throws Exception
+	 */
+	public List<Onstudy> selectOnstudyList(Connection conn, String subQuery) throws Exception{
+		Statement stmt = null;
+		ResultSet rset = null;
+		List<Onstudy> oList = null;
+		
+		String query = prop.getProperty("selectOnstudyList");
+		
+		try {
+			stmt = conn.createStatement();
+			
+			rset = stmt.executeQuery(query + subQuery);
+			
+			oList = new ArrayList<Onstudy>();
+			
+			while(rset.next()) {
+				Onstudy onstudy = new Onstudy(rset.getInt("ONSTUDY_NO"),
+											rset.getString("ONSTUDY_TITLE"),
+											rset.getDate("ONSTUDY_START_DT"),
+											rset.getDate("ONSTUDY_END_DT"),
+											rset.getInt("ONSTUDY_FEE"), 
+											rset.getString("CATEGORY_NM"),
+											rset.getInt("ALL_COUNT"));
+				oList.add(onstudy);
+			}
+				
+		}finally {
+			close(rset);
+			close(stmt);
+		}
+		
+		return oList;
 	}
 
 

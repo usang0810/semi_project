@@ -33,12 +33,12 @@ public class AdminService {
 		if(condition != null) {
 			switch(condition) {
 			case "회원번호":	subQuery = " AND MEMBER_NO='" + content + "'"; break;
-			case "아이디":	subQuery = " AND MEMBER_ID='" + content + "'"; break;
-			case "이름":		subQuery = " AND MEMBER_NM='" + content + "'"; break;
 			case "전화번호":	subQuery = " AND MEMBER_PHONE='" + content + "'"; break;
 			case "포인트":	subQuery = " AND MEMBER_POINT='" + content + "'"; break;
 			case "신고회수":	subQuery = " AND MEMBER_DECLAR_COUNT='" + content + "'"; break;
 			case "정지여부":	subQuery = " AND MEMBER_STATUS='" + content + "'"; break;
+			case "아이디":	subQuery = " AND MEMBER_ID LIKE '%' || '" + content + "' || '%'"; break;
+			case "이름":		subQuery = " AND MEMBER_NM LIKE '%' || '" + content + "' || '%'"; break;
 			}
 		}
 
@@ -66,18 +66,18 @@ public class AdminService {
 		int endRow = startRow + limit - 1;
 		
 		String subQuery = ") WHERE RNUM BETWEEN " + startRow + " AND " + endRow;
-		String thirdQuery = "'" + content + "') WHERE RNUM BETWEEN " + startRow + " AND " + endRow;
+		String thirdQuery = "'" + content + "'";
 		
 		// 회원번호, 아이디, 이름, 전화번호, 포인트, 신고회수, 정지여부
 		if(condition != null) {
 			switch(condition) {
-			case "회원번호":	subQuery = " WHERE MEMBER_NO=" + thirdQuery; break;
-			case "아이디":	subQuery = " WHERE MEMBER_ID=" + thirdQuery; break;
-			case "이름":		subQuery = " WHERE MEMBER_NM=" + thirdQuery; break;
-			case "전화번호":	subQuery = " WHERE MEMBER_PHONE=" + thirdQuery; break;
-			case "포인트":	subQuery = " WHERE MEMBER_POINT=" + thirdQuery; break;
-			case "신고회수":	subQuery = " WHERE MEMBER_DECLAR_COUNT=" + thirdQuery; break;
-			case "정지여부":	subQuery = " WHERE MEMBER_STATUS=" + thirdQuery; break;
+			case "회원번호":	subQuery = " WHERE MEMBER_NO=" + thirdQuery + subQuery; break;
+			case "전화번호":	subQuery = " WHERE MEMBER_PHONE=" + thirdQuery + subQuery; break;
+			case "포인트":	subQuery = " WHERE MEMBER_POINT=" + thirdQuery + subQuery; break;
+			case "신고회수":	subQuery = " WHERE MEMBER_DECLAR_COUNT=" + thirdQuery + subQuery; break;
+			case "정지여부":	subQuery = " WHERE MEMBER_STATUS=" + thirdQuery + subQuery; break;
+			case "아이디":	subQuery = " WHERE MEMBER_ID LIKE '%' || " + thirdQuery +" || '%'" + subQuery; break;
+			case "이름":		subQuery = " WHERE MEMBER_NM LIKE '%' || " + thirdQuery +" || '%'" + subQuery; break;
 			}
 		}
 		
@@ -163,6 +163,96 @@ public class AdminService {
 		
 		close(conn);
 		return result;
+	}
+
+	/** 회원 삭제용 Service
+	 * @param memberNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteMember(int memberNo) throws Exception{
+		Connection conn = getConnection();
+		
+		int result = new AdminDao().deleteMember(conn, memberNo);
+		
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		
+		close(conn);
+		return result;
+	}
+
+	/** 온스터디 수 조회용 Service
+	 * @param condition
+	 * @param content
+	 * @return oListCount
+	 * @throws Exception
+	 */
+	public int getOnstudyListCount(String condition, String content) throws Exception{
+		Connection conn = getConnection();
+		
+		AdminDao adminDao = new AdminDao();
+		
+		// condition이 null일 경우 쿼리에 null이 들어가는 것을 방지
+		String subQuery = "";
+		int mListCount = 0;
+		
+		// 회원번호, 아이디, 이름, 전화번호, 포인트, 신고회수, 정지여부
+		if(condition != null) {
+			switch(condition) {
+			case "온스터디번호":	subQuery = " WHERE ONSTUDY_NO='" + content + "'"; break;
+			case "참여인원":		subQuery = " WHERE ALL_COUNT='" + content + "'"; break;
+			case "시작일":		subQuery = " WHERE ONSTUDY_START_DT='" + content + "'"; break;
+			case "종료일":		subQuery = " WHERE ONSTUDY_END_DT='" + content + "'"; break;
+			case "참가비":		subQuery = " WHERE ONSTUDY_FEE='" + content + "'"; break;
+			case "온스터디명":		subQuery = " WHERE ONSTUDY_TITLE LIKE '%' || '" + content + "' || '%'"; break;
+			case "카테고리":		subQuery = " WHERE CATEGORY_NM LIKE '%' || '" + content + "' || '%'"; break;
+			}
+		}
+
+		mListCount = adminDao.getOnstudyListCount(conn, subQuery);				
+			
+		close(conn);
+		return mListCount;
+	}
+
+	/** 온스터디 목록 조회용 Service
+	 * @param condition
+	 * @param content
+	 * @param currentPage
+	 * @param limit
+	 * @return oList
+	 * @throws Exception
+	 */
+	public List<Onstudy> selectOnstudyList(String condition, String content, int currentPage, int limit) throws Exception{
+		Connection conn = getConnection();
+		
+		AdminDao adminDao = new AdminDao();
+		List<Onstudy> oList = null;
+		
+		int startRow = (currentPage - 1) * limit + 1;
+		int endRow = startRow + limit - 1;
+		
+		String subQuery = ") WHERE RNUM BETWEEN " + startRow + " AND " + endRow;
+		String thirdQuery = "'" + content + "'";
+		
+		// 회원번호, 아이디, 이름, 전화번호, 포인트, 신고회수, 정지여부
+		if(condition != null) {
+			switch(condition) {
+			case "온스터디번호":	subQuery = " WHERE ONSTUDY_NO=" + thirdQuery + subQuery; break;
+			case "참여인원":		subQuery = " WHERE ALL_COUNT=" + thirdQuery + subQuery; break;
+			case "시작일":		subQuery = " WHERE ONSTUDY_START_DT=" + thirdQuery + subQuery; break;
+			case "종료일":		subQuery = " WHERE ONSTUDY_END_DT=" + thirdQuery + subQuery; break;
+			case "참가비":		subQuery = " WHERE ONSTUDY_FEE=" + thirdQuery + subQuery; break;
+			case "온스터디명":		subQuery = " WHERE ONSTUDY_TITLE LIKE '%' || " + thirdQuery +" || '%'" + subQuery; break;
+			case "카테고리":		subQuery = " WHERE CATEGORY_NM LIKE '%' || " + thirdQuery +" || '%'" + subQuery; break;
+			}
+		}
+		
+		oList = adminDao.selectOnstudyList(conn, subQuery);
+		
+		close(conn);
+		return oList;
 	}
 
 }

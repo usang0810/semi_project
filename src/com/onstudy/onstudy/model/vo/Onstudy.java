@@ -17,9 +17,22 @@ public class Onstudy {
 	private String categoryNm;
 	private int categoryCd;
 	private String thumbnailPath;
+	private int partiMembers;
 
 	public Onstudy() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public Onstudy(int onstudyNo, String onstudyTitle, Date onstudyStartDt, Date onstudyEndDt, int onstudyFee,
+			String categoryNm, int partiMembers) {
+		super();
+		this.onstudyNo = onstudyNo;
+		this.onstudyTitle = onstudyTitle;
+		this.onstudyStartDt = onstudyStartDt;
+		this.onstudyEndDt = onstudyEndDt;
+		this.onstudyFee = onstudyFee;
+		this.categoryNm = categoryNm;
+		this.partiMembers = partiMembers;
 	}
 
 	public Onstudy(int onstudyNo, String onstudyTitle, Date onstudyCreateDt, Date onstudyStartDt, Date onstudyEndDt,
@@ -40,6 +53,14 @@ public class Onstudy {
 		this.categoryNm = categoryNm;
 		this.categoryCd = categoryCd;
 		this.thumbnailPath = thumbnailPath;
+	}
+
+	public int getPartiMembers() {
+		return partiMembers;
+	}
+
+	public void setPartiMembers(int partiMembers) {
+		this.partiMembers = partiMembers;
 	}
 
 	public int getOnstudyNo() {
@@ -161,7 +182,8 @@ public class Onstudy {
 				+ ", onstudyWeeks=" + onstudyWeeks + ", onstudyCertifyCount=" + onstudyCertifyCount + ", onstudyFee="
 				+ onstudyFee + ", onstudyAddComment=" + onstudyAddComment + ", onstudyStatus=" + onstudyStatus
 				+ ", memberNo=" + memberNo + ", categoryNm=" + categoryNm + ", categoryCd=" + categoryCd
-				+ ", thumbnailPath=" + thumbnailPath + "]";
+				+ ", thumbnailPath=" + thumbnailPath + ", partiMembers=" + partiMembers + "]";
 	}
+
 
 }

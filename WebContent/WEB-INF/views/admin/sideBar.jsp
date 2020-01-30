@@ -6,6 +6,7 @@
 	if(admin == null){
 		response.sendRedirect(request.getContextPath());
 	}
+	String msg = (String)session.getAttribute("msg");
 %>
 <!DOCTYPE html>
 <html>
@@ -20,6 +21,13 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"
 	integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
 	crossorigin="anonymous"></script>
+	
+<script>
+	<% if(msg != null) {%>
+		alert("<%= msg %>");
+		<% session.removeAttribute("msg"); %>
+	<% } %>
+</script>
 <link rel="shortcut icon" href="img/favicon.png">
 <link rel="apple-touch-icon-precomposed" href="img/icon57.png">
 <link rel="apple-touch-icon-precomposed" href="img/icon114.png">
@@ -33,6 +41,11 @@
 <script type="text/javascript" charset="utf8"
 	src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 <title>온 스터디</title>
+<style>
+	a{
+		text-decoration: none;
+	}
+</style>
 </head>
 <body>
 	<!-- 관리자 페이지 사이드바 메뉴 -->
@@ -42,7 +55,7 @@
 		<hr>
 		<a href="<%=request.getContextPath() %>/admin/memberList">회원 목록 조회</a>
 		<hr>
-		<a href="#">온스터디 목록 조회</a>
+		<a href="<%=request.getContextPath() %>/admin/onstudyList">온스터디 목록 조회</a>
 		<hr>
 		<p id="boardTitle">게시판</p>
 		<a href="#">-자유게시판</a> <a href="#">-건의게시판</a> <a href="#">-신고게시판</a>

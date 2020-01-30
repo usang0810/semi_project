@@ -16,7 +16,7 @@
 
   <title>온스터디</title>
   <%@ include file="sideBar.jsp"%>
-  <link rel="stylesheet" href="../css/02.adminPage-member-info.css">
+  <link rel="stylesheet" href="../css/adminPage-member-info.css">
 </head>
 
 <body>
@@ -118,7 +118,7 @@
         </div>
 
         <!-- 회원정지, 회원복구, 삭제 버튼 -->
-        <div id="btn-area">
+        <div id="btn-area" style="margin-bottom: 100px;">
 
 		<%if(member.getMemberStatus() == 'Y'){ %>
 			<button type="button" class="btn form-control orange-hover-btn " data-toggle="modal" data-target="#stopMember"
@@ -198,51 +198,10 @@
   
   <script>
   	$(function(){
-  		// 모달 버튼 클릭 시
   		$(".modal-footer button:first-child").on("click", function(){
   			var status = $(this).val();
-  			$.ajax({
-  				url : "changeMemberStatus",
-  				data : {
-  					no : <%=member.getMemberNo() %>,
-  					status : status
-  				},
-  				dataType : "text",
-  				type : "GET",
-  				success : function(result){
-  					
-  					var $btnArea = $("#btn-area");
-  					$btnArea.html("");
-  					
-  					var $result = "";
-  					
-  					alert("회원 정보 수정 성공");
-  					
-  					console.log("result : " + result);
-  					
-					$(".modal-backdrop").prop("display", "none");
-  					if(result == "Y"){
-  						<%member.setMemberStatus('Y'); %>
-  						$result = "<button type='button' class='btn form-control orange-hover-btn' data-toggle='modal'"
-								+ "data-target='#stopMember' id='stopMemberButton'>회원 정지</button>";
-						$btnArea.append($result);
-
-  					}else if(result == "S"){
-	  					<%member.setMemberStatus('S'); %>
-	  					$result = "<button type='button' class='btn form-control orange-hover-btn' data-toggle='modal'"
-							+ "data-target='#reMember' id='reMemberButton'>회원 복구</button>";
-						$btnArea.append($result);
-  					
-  					}else{
-  						location.href = "memberList";
-  					}
-  				},
-  				error : function(){
-  					alert("정보 수정 실패");
-  				}
-  			});
+  			location.href="changeMemberStatus?memberNo=<%=member.getMemberNo() %>&status=" + status;
   		});
-  		
   	});
   </script>
   

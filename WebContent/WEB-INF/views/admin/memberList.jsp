@@ -18,13 +18,13 @@
 
 <head>
 <meta charset="UTF-8">
+	<%@ include file="sideBar.jsp"%>
 <link rel="stylesheet"
 	href="<%=request.getContextPath() %>/css/adminPage-member-List.css">
 <title>온스터디</title>
 </head>
 
 <body>
-	<%@ include file="sideBar.jsp"%>
 
 	<div id="container">
 		<div class="container">
@@ -175,7 +175,7 @@
 			$("#simulate_log td").click(function(){
 				var memberNo = $(this).parent().children().eq(0).text();
 				// 쿼리스트링을 이용하여 get 방식으로 글 번호를 server로 전달
-				location.href="<%= request.getContextPath() %>/admin/memberDetail?no=" + memberNo;
+				location.href="<%= request.getContextPath() %>/admin/memberDetail?memberNo=" + memberNo;
 			
 			}).mouseenter(function(){
 				$(this).parent().css("cursor", "pointer");
