@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="com.onstudy.member.model.vo.PageInfo, java.util.List"%>
+<%@page import="com.onstudy.member.model.vo.PageInfo, java.util.List, com.onstudy.member.model.vo.Member"%>
 <%
 	PageInfo pInf = (PageInfo)request.getAttribute("pInf");
 	List<Member> mList = (List<Member>)request.getAttribute("mList");
@@ -25,6 +25,7 @@
 
 <body>
 	<%@ include file="sideBar.jsp"%>
+
 	<div id="container">
 		<div class="container">
 
@@ -151,13 +152,6 @@
 	<!-- 테이블 sorting  ( datatable 기능 ) -->
 	<script>
 		$(document).ready(function() {
-			$('#simulate_log').DataTable({
-				lengthChange : false,
-				searching : false,
-				info : false,
-				paging : false
-			});
-			
 			var condition = "<%= condition %>";
 			var content = "<%= content %>";
 			
@@ -170,6 +164,25 @@
 				
 				$("input[name=content]").val(content);
 			}
+			
+			$('#simulate_log').DataTable({
+				lengthChange : false,
+				searching : false,
+				info : false,
+				paging : false
+			});
+			
+			$("#simulate_log td").click(function(){
+				var memberNo = $(this).parent().children().eq(0).text();
+				// 쿼리스트링을 이용하여 get 방식으로 글 번호를 server로 전달
+				location.href="<%= request.getContextPath() %>/admin/memberDetail?no=" + memberNo;
+			
+			}).mouseenter(function(){
+				$(this).parent().css("cursor", "pointer");
+			
+			});
+			
+			
 		});
 	</script>
 

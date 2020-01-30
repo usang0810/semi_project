@@ -14,6 +14,8 @@ import com.onstudy.admin.model.service.AdminService;
 import com.onstudy.common.ExceptionForward;
 import com.onstudy.member.model.vo.Member;
 import com.onstudy.member.model.vo.PageInfo;
+import com.onstudy.onstudy.model.vo.Onstudy;
+import com.onstudy.studynote.model.vo.StudyNote;
 
 @WebServlet("/admin/*")
 public class AdminController extends HttpServlet {
@@ -50,11 +52,8 @@ public class AdminController extends HttpServlet {
 			}
 			
 			try {
-				System.out.println("condition : " + condition);
-				System.out.println("content : " + content);
 				// 조건에 맞는 회원 수 조회
 				int mListCount = adminService.getMemberListCount(condition, content);
-				System.out.println("회원 수 : " + mListCount);
 				
 				int limit = 10; // 한 페이지에 보여질 게시글의 수
 				int pagingBarSize = 10; // 보여질 페이징바의 페이지 개수
@@ -90,6 +89,52 @@ public class AdminController extends HttpServlet {
 				
 			}catch(Exception e) {
 				ExceptionForward.errorPage(request, response, "회원 목록 출력", e);
+			}
+			
+		// 회원 상세보기 포워드
+		}else if(command.equals("/memberDetail")) {
+			int memberNo = Integer.parseInt(request.getParameter("no"));
+			
+			try {
+				Member member = adminService.getMember(memberNo);
+				
+				// 학습노트 목록 가져옴
+				List<StudyNote> noteList = adminService.getNoteList(memberNo);
+				
+				// 참여중인 온스터디 목록 가져옴
+				List<Onstudy> pOnstudyList = adminService.getOnstudyList(memberNo, 1);
+				
+				// 참여했던 온스터디 목록 가져옴
+				List<Onstudy> eOnstudyList = adminService.getOnstudyList(memberNo, 2);
+				
+				request.setAttribute("member", member);
+				request.setAttribute("noteList", noteList);
+				request.setAttribute("pOnstudyList", pOnstudyList);
+				request.setAttribute("eOnstudyList", eOnstudyList);
+				
+				path = "/WEB-INF/views/admin/memberDetail.jsp";
+				view = request.getRequestDispatcher(path);
+				view.forward(request, response);
+				
+			}catch(Exception e) {
+				ExceptionForward.errorPage(request, response, "회원 상세보기", e);
+			}
+			
+		// 회원 상태정보 수정
+		}else if(command.equals("/changeMemberStatus")) {
+			int memberNo = Integer.parseInt(request.getParameter("no"));
+			String status = request.getParameter("status");
+
+			System.out.println("memberNo : " + memberNo);
+			System.out.println("status : " + status);
+			
+			try {
+				int result = adminService.changeMemberStatus(memberNo, status);
+				
+				response.getWriter().print(status);
+					
+			}catch(Exception e) {
+				ExceptionForward.errorPage(request, response, "회원 상태 변경", e);
 			}
 		}
 	}

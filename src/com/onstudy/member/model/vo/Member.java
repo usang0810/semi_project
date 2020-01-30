@@ -15,6 +15,7 @@ public class Member {
 	private char memberStatus;
 	private String memberAccount;
 	private int bankCode;
+	private String bankName;
 
 	public Member() {
 		super();
@@ -79,6 +80,23 @@ public class Member {
 		this.memberStatus = memberStatus;
 		this.memberAccount = memberAccount;
 		this.bankCode = bankCode;
+	}
+	
+	
+
+	public Member(int memberNo, String memberId, String memberNm, String memberPhone, Date memberEnrollDt,
+			int memberPoint, int memberDeclarCount, char memberStatus, String memberAccount, String bankName) {
+		super();
+		this.memberNo = memberNo;
+		this.memberId = memberId;
+		this.memberNm = memberNm;
+		this.memberPhone = memberPhone;
+		this.memberEnrollDt = memberEnrollDt;
+		this.memberPoint = memberPoint;
+		this.memberDeclarCount = memberDeclarCount;
+		this.memberStatus = memberStatus;
+		this.memberAccount = memberAccount;
+		this.bankName = bankName;
 	}
 
 	public Member(int memberNo, String memberId, String memberPwd, String memberNm, String memberPhone,
@@ -194,6 +212,14 @@ public class Member {
 	public void setBankCode(int bankCode) {
 		this.bankCode = bankCode;
 	}
+	
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
 
 	@Override
 	public String toString() {
@@ -201,7 +227,7 @@ public class Member {
 				+ memberNm + ", memberPhone=" + memberPhone + ", memberGrade=" + memberGrade + ", memberEnrollDt="
 				+ memberEnrollDt + ", memberPoint=" + memberPoint + ", memberDeclarCount=" + memberDeclarCount
 				+ ", memberStatus=" + memberStatus + ", memberAccount=" + memberAccount + ", bankCode=" + bankCode
-				+ "]";
+				+ ", bankName=" + bankName + "]";
 	}
 
 }

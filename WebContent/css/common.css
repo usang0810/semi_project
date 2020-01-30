@@ -22,18 +22,21 @@ html body .form-control.navy-btn{
   color: #ffffff;
   border: none;
   padding: 0;
+  width: auto;
 }
 html body .form-control.orange-btn{
   background-color: #f15a25;
   color: #ffffff;
   border: none;
   padding: 0;
+  width: auto;
 }
 html body .form-control.navy-hover-btn{
   background: transparent;
   color: #002d4c;
   border: 1px solid #002d4c;
   transition: all 0.3s;
+  width: auto;
 }
 html body .form-control.navy-hover-btn:hover{
   background:  #002d4c;
@@ -44,6 +47,7 @@ html body .form-control.orange-hover-btn{
   color: #f15a25;
   border: 1px solid #f15a25;
   transition: all 0.3s;
+  width: auto;
 }
 html body .form-control.orange-hover-btn:hover{
   background:  #f15a25;

@@ -103,7 +103,7 @@
 
 					<!-- Modal footer -->
 					<div class="modal-footer">
-						<button type="button" class="btn sub-btn-color-rev"
+						<button type="button" class="btn background-gray"
 							data-dismiss="modal">Close</button>
 					</div>
 				</div>
@@ -180,13 +180,6 @@
 					<div class="modal-body">
 						<h6 class="text-center">회원정보를 확인하세요</h6>
 						<div id="findIdResultBody">
-							<!-- <p class="small">
-								아이디 : <span id="findIdResult">programDoc***</span>
-								<br>
-								 이름 : <span id="findNameResult">컴박*</span>
-								<br>
-								가입일 : <span id="findDateResult">2019.05.06</span>
-							</p> -->
 						</div>
 
 						<button class="btn btn-lg main-btn-color btn-block mb-3" role="button"
