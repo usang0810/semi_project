@@ -165,13 +165,6 @@
 				$("input[name=content]").val(content);
 			}
 			
-			$('#simulate_log').DataTable({
-				lengthChange : false,
-				searching : false,
-				info : false,
-				paging : false
-			});
-			
 			$("#simulate_log td").click(function(){
 				var memberNo = $(this).parent().children().eq(0).text();
 				// 쿼리스트링을 이용하여 get 방식으로 글 번호를 server로 전달

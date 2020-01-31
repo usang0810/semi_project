@@ -1,18 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@page import="java.util.List, com.onstudy.member.model.vo.Point, com.onstudy.member.model.vo.PageInfo"%>
-<% 
-	List<Point> pList = (List<Point>)request.getAttribute("pList");
-	PageInfo pInf = (PageInfo)request.getAttribute("pInf");
-	char pointInOut = request.getParameter("pointInOut").charAt(0);
-	int pointMonth = Integer.parseInt(request.getParameter("pointMonth"));
-	
-	int listCount = pInf.getListCount();
-	int currentPage = pInf.getCurrentPage();
-	int maxPage = pInf.getMaxPage();
-	int startPage = pInf.getStartPage();
-	int endPage = pInf.getEndPage();
-%>
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -26,6 +14,18 @@
 
 <body>
 <%@ include file="../common/loginedHeader.jsp"%>
+<% 
+	List<Point> pList = (List<Point>)request.getAttribute("pList");
+	PageInfo pInf = (PageInfo)request.getAttribute("pInf");
+	char pointInOut = request.getParameter("pointInOut").charAt(0);
+	int pointMonth = Integer.parseInt(request.getParameter("pointMonth"));
+	
+	int listCount = pInf.getListCount();
+	int currentPage = pInf.getCurrentPage();
+	int maxPage = pInf.getMaxPage();
+	int startPage = pInf.getStartPage();
+	int endPage = pInf.getEndPage();
+%>
 <%	
 	String bankName = "";
 	switch(loginMember.getBankCode()){

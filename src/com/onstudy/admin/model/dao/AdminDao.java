@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import com.onstudy.board.model.vo.Board;
 import com.onstudy.member.model.dao.MemberDao;
 import com.onstudy.member.model.vo.Member;
 import com.onstudy.onstudy.model.vo.Onstudy;
@@ -359,7 +360,9 @@ public class AdminDao {
 											rset.getDate("ONSTUDY_END_DT"),
 											rset.getInt("ONSTUDY_FEE"), 
 											rset.getString("CATEGORY_NM"),
-											rset.getInt("ALL_COUNT"));
+											rset.getInt("ALL_COUNT"),
+											rset.getString("ONSTUDY_STATUS"));
+				
 				oList.add(onstudy);
 			}
 				
@@ -369,6 +372,183 @@ public class AdminDao {
 		}
 		
 		return oList;
+	}
+
+	/** 온스터디 상세 조회용 Dao
+	 * @param conn
+	 * @param onstudyNo
+	 * @return onstudy
+	 * @throws Exception
+	 */
+	public Onstudy selectOnstudy(Connection conn, int onstudyNo) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		Onstudy onstudy = null;
+		
+		String query = prop.getProperty("selectOnstudy");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, onstudyNo);
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				onstudy = new Onstudy(onstudyNo,
+									rset.getString("ONSTUDY_TITLE"),
+									rset.getDate("ONSTUDY_START_DT"),
+									rset.getDate("ONSTUDY_END_DT"),
+									rset.getInt("ONSTUDY_CERTIFY_COUNT"),
+									rset.getInt("ONSTUDY_FEE"),
+									rset.getString("ONSTUDY_STATUS"),
+									rset.getString("MEMBER_ID"),
+									rset.getString("CATEGORY_NM"),
+									rset.getInt("ALL_COUNT"),
+									rset.getInt("MEMBER_NO"));
+			}
+			
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return onstudy;
+	}
+
+	/** 온스터디 상태 변경용 Dao
+	 * @param conn
+	 * @param onstudyNo
+	 * @param status
+	 * @return result
+	 * @throws Exception
+	 */
+	public int changeOnstudyStatus(Connection conn, int onstudyNo, String status) throws Exception{
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("changeOnstudyStatus");
+		
+		try {
+			
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, status);
+			pstmt.setInt(2, onstudyNo);
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	/** 게시판 목록 수 조회용 Dao
+	 * @param conn
+	 * @param subQuery
+	 * @return bListCount
+	 * @throws Exception
+	 */
+	public int getBoardListCount(Connection conn, String subQuery) throws Exception{
+		Statement stmt = null;
+		ResultSet rset = null;
+		
+		int bListCount = 0;
+		String query = prop.getProperty("getBoardListCount");
+		
+		try {
+			stmt = conn.createStatement();
+			rset = stmt.executeQuery(query + subQuery);
+			
+			if(rset.next()) {
+				bListCount = rset.getInt(1);
+			}
+			
+		}finally {
+			close(rset);
+			close(stmt);
+		}
+		
+		return bListCount;
+	}
+
+	/** 게시판 목록 조회용 Dao
+	 * @param conn
+	 * @param subQuery
+	 * @return bList
+	 * @throws Exception
+	 */
+	public List<Board> selectBoardList(Connection conn, String subQuery) throws Exception{
+		Statement stmt = null;
+		ResultSet rset = null;
+		
+		List<Board> bList = null;
+		
+		String query = prop.getProperty("getBoardList");
+		
+		try {
+			stmt = conn.createStatement();
+			rset = stmt.executeQuery(query + subQuery);
+			
+			bList = new ArrayList<Board>();
+			Board board = null;
+			
+			while(rset.next()) {
+				board = new Board(rset.getInt("RNUM"),
+								rset.getInt("BOARD_NO"),
+								rset.getString("BOARD_TITLE"),
+								rset.getString("BOARD_CONTENT"),
+								rset.getDate("BOARD_MODIFY_DT"),
+								rset.getString("BOARD_STATUS").charAt(0),
+								rset.getString("MEMBER_ID"));
+				bList.add(board);
+			}
+			
+			
+		}finally {
+			close(rset);
+			close(stmt);
+		}
+		
+		return bList;
+	}
+
+	/** 게시글 상세조회용 Dao
+	 * @param conn
+	 * @param boardNo
+	 * @return board
+	 * @throws Exception
+	 */
+	public Board selectBoard(Connection conn, int boardNo) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		Board board = null;
+		
+		String query = prop.getProperty("selectBoard");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, boardNo);
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				board = new Board(boardNo,
+								rset.getString("BOARD_TYPE"),
+								rset.getString("BOARD_TITLE"),
+								rset.getString("BOARD_CONTENT"),
+								rset.getDate("BOARD_MODIFY_DT"),
+								rset.getString("BOARD_STATUS").charAt(0),
+								rset.getInt("BOARD_COUNT"),
+								rset.getString("MEMBER_ID"));
+			}
+			
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return board;
 	}
 
 

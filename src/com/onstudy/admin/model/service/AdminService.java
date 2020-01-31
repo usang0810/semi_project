@@ -1,16 +1,19 @@
 package com.onstudy.admin.model.service;
 
-import static com.onstudy.common.JDBCTemplate.*;
+import static com.onstudy.common.JDBCTemplate.close;
+import static com.onstudy.common.JDBCTemplate.commit;
+import static com.onstudy.common.JDBCTemplate.getConnection;
+import static com.onstudy.common.JDBCTemplate.rollback;
 
 import java.sql.Connection;
 import java.util.List;
 
 import com.onstudy.admin.model.dao.AdminDao;
+import com.onstudy.board.model.dao.BoardDao;
+import com.onstudy.board.model.vo.Board;
 import com.onstudy.member.model.vo.Member;
 import com.onstudy.onstudy.model.vo.Onstudy;
 import com.onstudy.studynote.model.vo.StudyNote;
-
-import oracle.sql.DATE;
 
 public class AdminService {
 
@@ -205,6 +208,7 @@ public class AdminService {
 			case "시작일":		subQuery = " WHERE ONSTUDY_START_DT='" + content + "'"; break;
 			case "종료일":		subQuery = " WHERE ONSTUDY_END_DT='" + content + "'"; break;
 			case "참가비":		subQuery = " WHERE ONSTUDY_FEE='" + content + "'"; break;
+			case "삭제여부":		subQuery = " WHERE ONSTUDY_STATUS='" + content + "'"; break;
 			case "온스터디명":		subQuery = " WHERE ONSTUDY_TITLE LIKE '%' || '" + content + "' || '%'"; break;
 			case "카테고리":		subQuery = " WHERE CATEGORY_NM LIKE '%' || '" + content + "' || '%'"; break;
 			}
@@ -244,6 +248,7 @@ public class AdminService {
 			case "시작일":		subQuery = " WHERE ONSTUDY_START_DT=" + thirdQuery + subQuery; break;
 			case "종료일":		subQuery = " WHERE ONSTUDY_END_DT=" + thirdQuery + subQuery; break;
 			case "참가비":		subQuery = " WHERE ONSTUDY_FEE=" + thirdQuery + subQuery; break;
+			case "삭제여부":		subQuery = " WHERE ONSTUDY_STATUS=" + thirdQuery + subQuery; break;
 			case "온스터디명":		subQuery = " WHERE ONSTUDY_TITLE LIKE '%' || " + thirdQuery +" || '%'" + subQuery; break;
 			case "카테고리":		subQuery = " WHERE CATEGORY_NM LIKE '%' || " + thirdQuery +" || '%'" + subQuery; break;
 			}
@@ -253,6 +258,142 @@ public class AdminService {
 		
 		close(conn);
 		return oList;
+	}
+
+	/** 온스터디 상세 조회용 Service
+	 * @param onstudyNo
+	 * @return onstudy
+	 * @throws Exception
+	 */
+	public Onstudy selectOnstudy(int onstudyNo) throws Exception{
+		Connection conn = getConnection();
+		
+		Onstudy onstudy = new AdminDao().selectOnstudy(conn,  onstudyNo);
+		
+		close(conn);
+		return onstudy;
+	}
+
+	/** 온스터디 상태 변경용 Service
+	 * @param onstudyNo
+	 * @param status
+	 * @return result
+	 * @throws Exception
+	 */
+	public int changeOnstudyStatus(int onstudyNo, String status) throws Exception{
+		Connection conn = getConnection();
+		
+		int result = new AdminDao().changeOnstudyStatus(conn, onstudyNo, status);
+		
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		
+		close(conn);
+		return result;
+	}
+
+	/** 게시판 수 조회용 Service
+	 * @param boardType
+	 * @param searchKey
+	 * @param searchValue
+	 * @return bListCount
+	 * @throws Exception
+	 */
+	public int getBoardListCount(String boardType, String searchKey, String searchValue) throws Exception{
+		Connection conn = getConnection();
+		
+		AdminDao adminDao = new AdminDao();
+		
+		String subQuery = "'" + boardType + "'";
+		int mListCount = 0;
+		
+		if(searchKey != null) {
+			switch(searchKey) {
+			case "게시글번호":	subQuery += " AND BOARD_NO='" + searchValue + "'"; break;
+			case "제목":		subQuery += " AND BOARD_TITLE LIKE '%' || '" + searchValue + "' || '%'"; break;
+			case "작성자":	subQuery += " AND MEMBER_ID LIKE '%' || '" + searchValue + "' || '%'"; break;
+			case "작성일":	subQuery += " AND BOARD_MODIFY_DT='" + searchValue + "'"; break;
+			case "내용":		subQuery += " AND BOARD_CONTENT LIKE '%' || '" + searchValue + "' || '%'"; break;
+			case "삭제여부":	subQuery += " AND BOARD_STATUS='" + searchValue + "'"; break;
+			}
+		}
+
+		mListCount = adminDao.getBoardListCount(conn, subQuery);				
+			
+		close(conn);
+		return mListCount;
+	}
+
+	/** 게시판 목록 조회용 Service
+	 * @param boardType
+	 * @param searchKey
+	 * @param searchValue
+	 * @param currentPage
+	 * @param limit
+	 * @return bList
+	 * @throws Exception
+	 */
+	public List<Board> selectBoardList(String boardType, String searchKey, String searchValue, int currentPage,
+			int limit) throws Exception{
+		
+		Connection conn = getConnection();
+		
+		AdminDao adminDao = new AdminDao();
+		List<Board> bList = null;
+		
+		int startRow = (currentPage - 1) * limit + 1;
+		int endRow = startRow + limit - 1;
+		
+		String subQuery = "'" + boardType + "'";
+		String thirdQuery = " ORDER BY BOARD_MODIFY_DT DESC)) WHERE RNUM BETWEEN " + startRow + " AND " + endRow;
+		
+		if(searchKey != null) {
+			switch(searchKey) {
+			case "게시글번호":	subQuery += " AND BOARD_NO='" + searchValue + "'" + thirdQuery; break;
+			case "제목":		subQuery += " AND BOARD_TITLE LIKE '%' || '" + searchValue + "' || '%'" + thirdQuery; break;
+			case "작성자":	subQuery += " AND MEMBER_ID LIKE '%' || '" + searchValue + "' || '%'" + thirdQuery; break;
+			case "작성일":	subQuery += " AND BOARD_MODIFY_DT='" + searchValue + "'" + thirdQuery; break;
+			case "내용":		subQuery += " AND BOARD_CONTENT LIKE '%' || '" + searchValue + "' || '%'" + thirdQuery; break;
+			case "삭제여부":	subQuery += " AND BOARD_STATUS='" + searchValue + "'" + thirdQuery; break;
+			}
+		}else {
+			subQuery += thirdQuery;
+		}
+		
+		bList = adminDao.selectBoardList(conn, subQuery);
+		
+		close(conn);
+		return bList;
+		
+	}
+
+	/** 게시판 상세조회용 Service
+	 * @param boardNo
+	 * @return board
+	 * @throws Exception
+	 */
+	public Board selectBoard(int boardNo) throws Exception{
+		Connection conn = getConnection();
+		
+		// 1) 게시글 상세 조회
+		Board board = new AdminDao().selectBoard(conn, boardNo);
+		
+		if(board != null) {
+			int result = new BoardDao().increaseCount(conn, boardNo);
+			
+			if(result>0) {
+				commit(conn);
+				// 반환되는 notice는 조회수 증가가 되어있지 않으므로
+				// 리턴 시 조회수를 +1 시켜주어야 한다.
+				board.setBoardCount(board.getBoardCount()+1);
+			}else {
+				rollback(conn);
+				board = null; //  조회수 증가 실패 시 조회되지 않게 처리.
+			}
+		}
+		
+		close(conn);
+		return board;
 	}
 
 }

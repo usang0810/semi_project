@@ -58,9 +58,6 @@ public class EncryptWrapper extends HttpServletRequestWrapper{
 		
 		encPwd = Base64.getEncoder().encodeToString(md.digest());
 		
-		System.out.println("암호화 전 : " + pwd);
-		System.out.println("암호화 후 : " + encPwd);
-		
 		return encPwd;
 	}
 }

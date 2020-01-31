@@ -49,6 +49,7 @@
                   <option value="시작일">시작일</option>
                   <option value="종료일">종료일</option>
                   <option value="참가비">참가비</option>
+                  <option value="삭제여부">삭제여부</option>
                 </select>
               </div>
               <!-- 카테고리, 검색input, 버튼 -->
@@ -66,12 +67,13 @@
                         <th scope="col">시작일</th>
                         <th scope="col">종료일</th>
                         <th scope="col">참가비</th>
+                        <th scope="col">삭제여부</th>
                       </tr>
                     </thead>
                     <tbody>
                       <% if(oList.isEmpty()){ %>
 						<tr>
-							<td colspan="7">존재하는 게시글이 없습니다.</td>
+							<td colspan="8">존재하는 게시글이 없습니다.</td>
 						</tr>
 					  <% }else{ %>
 					  <% for(Onstudy onstudy : oList){ %>
@@ -83,6 +85,7 @@
 							<td><%= onstudy.getOnstudyStartDt() %></td>
 							<td><%= onstudy.getOnstudyEndDt() %></td>
 							<td><%= onstudy.getOnstudyFee() %></td>
+							<td><%= onstudy.getOnstudyStatus() %></td>
 						</tr>
 					  <% } } %>
                     </tbody>
@@ -149,13 +152,6 @@
 
   <script>
 	$(document).ready(function() {
-		$('#simulate_log').DataTable({
-          lengthChange: false,
-          searching: false,
-          info: false,
-          paging: false
-        });
-		
 		var condition = "<%= condition %>";
 		var content = "<%= content %>";
 		

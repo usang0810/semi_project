@@ -1,0 +1,89 @@
+/* 자유게시판 */
+#container{
+  margin: 200px 0 100px 0;
+  text-align: center;
+}
+#board-wrap .board-title{
+  font-weight: bold;
+  margin-bottom : 50px;
+}
+#board-wrap #search-wrap{
+  overflow: hidden;
+  margin-bottom: 30px;
+  height: 45px;
+  padding-top: 5px;
+}
+#board-wrap #search-wrap>*{
+  float: right;
+}
+#board-wrap .board-form select{
+  width: 15%;
+  margin-right: 10px;
+}
+#board-wrap .board-form .input-content{
+  width: 35%;
+  margin-right: 10px;
+}
+#board-wrap .board-form .orange-btn-style{
+  width: 7%;
+  padding: 0;
+}
+#board-wrap .board-form .board{
+  width: 100%;
+  border: 1px solid #efefef;
+  margin-bottom: 30px;
+}
+#board-wrap .board-form .board thead tr{
+  background-color: #002d4c;
+  color: #ffffff;
+  height: 40px;
+}
+#board-wrap .board-form .board tbody tr:hover{
+  background-color : rgba(0,123,255,.25);
+  cursor: pointer;
+}
+#board-wrap .board-form .board tbody tr{
+  height: 35px;
+  border-bottom: 1px solid #efefef;
+}
+#board-wrap .board-form .board th:first-child{
+  width: 10%;
+}
+#board-wrap .board-form .board th:nth-child(2){
+  width: 55%;
+}
+#board-wrap .board-form .board th:nth-child(3){
+  width: 20%;
+}
+#board-wrap .board-form .board th:last-child{
+  width: 15%;
+}
+#board-wrap .board-form  .write-content-btn{
+  padding: .375rem 0;
+  position: absolute;
+  right: 0;
+  bottom: -20px;
+}
+
+/* 부트스트랩 색상 조정*/
+.page-link:hover,
+.page-link{
+  color : #f15a25;
+}
+.page-item.active .page-link{
+  background-color: #f15a25;
+  border-color: #f15a25;
+}
+.form-control:focus,
+.page-link:focus{
+  box-shadow: 0 0 0 0.2rem rgba(241,90,37,.25);
+}
+.form-control:focus{
+  border-color : #f15a25;
+}
+
+@media (max-width: 767px){
+  #board-wrap .board-form .orange-btn-style{
+    width: 10%;
+  }
+}

@@ -3,6 +3,13 @@
 <%@page import="com.onstudy.member.model.vo.Member"%>
 <%
 	Member loginMember = (Member) session.getAttribute("loginMember");
+	System.out.println("로그인 헤더 " + loginMember);
+	if(loginMember == null){
+		System.out.println("세션 만료 실행");
+		session.setAttribute("msg", "세션이 만료되어 메인페이지로 돌아갑니다.");
+		response.sendRedirect(request.getContextPath());
+	}
+	
 	String memberImagePath = (String)session.getAttribute("memberImagePath");
 	String profileImagePath = "/images/navi-icon-default.png"; // default 이미지 경로
 	String msg = (String)session.getAttribute("msg");

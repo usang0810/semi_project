@@ -1,22 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%
-	String[] phone = ((Member) session.getAttribute("loginMember")).getMemberPhone().split("-");
-%>
+
 <!DOCTYPE html>
 <html lang="ko">
 
 <head>
 <meta charset="UTF-8">
+<%@ include file="/WEB-INF/views/common/loginedHeader.jsp"%>
 <link rel="stylesheet" href="../css/mypage-update-member.css">
-
 <title>온스터디</title>
 
 </head>
 
 <body>
-	<%@ include file="../common/loginedHeader.jsp"%>
-
+	<%
+		String[] phone = ((Member) session.getAttribute("loginMember")).getMemberPhone().split("-");
+	%>
 	<div id="container" style="color: #333333;">
 		<div class="container">
 			<div class="row">
@@ -194,7 +193,7 @@
 		</div>
 	</div>
 
-	<%@ include file="../common/footer.jsp"%>
+	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 	<script>
     var formatCheck = {
       "newPwd1": false,

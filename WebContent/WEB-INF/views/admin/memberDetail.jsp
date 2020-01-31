@@ -67,10 +67,10 @@
                       	  <%if(pList.isEmpty()){ %>
 	                  	  	  <span>-</span>
                       	  <%}else{ %>
-	                   		  <a href="#"><%=pList.get(0).getOnstudyTitle() %></a>                  	  
+	                   		  <a href="onstudyDetail?onstudyNo=<%=pList.get(0).getOnstudyNo() %>"><%=pList.get(0).getOnstudyTitle() %></a>                  	  
                       	  <%} %>
 	                      <%for(int i=1; i < pList.size(); i++){ %>
-	                      	, <a href="#"><%=pList.get(i).getOnstudyTitle() %></a>
+	                      	, <a href="onstudyDetail?onstudyNo=<%=pList.get(i).getOnstudyNo() %>"><%=pList.get(i).getOnstudyTitle() %></a>
 	                      <%} %>
                       </td>
                     </tr>
@@ -108,7 +108,7 @@
                       <td><%=member.getMemberDeclarCount() %></td>
                     </tr>
                     <tr>
-                      <th>정지여부</th>
+                      <th>정지여부(Y : 정상, S : 정지, N : 탈퇴)</th>
                       <td><%=member.getMemberStatus() %></td>
                     </tr>
               </tbody>

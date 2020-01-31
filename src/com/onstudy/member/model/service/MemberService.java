@@ -207,10 +207,25 @@ public class MemberService {
 	public int deleteProfileImg(int memberNo) throws Exception{
 		Connection conn = getConnection();
 		
-		int result = new MemberDao().deleteProfileImg(conn, memberNo);
+		MemberDao memberDao = new MemberDao();
 		
-		if(result > 0) commit(conn);
-		else rollback(conn);
+		String profileImage = memberDao.selectImagePath(conn, memberNo);
+		int result = memberDao.deleteProfileImg(conn, memberNo);
+		
+		if(result > 0) {
+			
+			// 기존 이미지 있을 시 삭제
+			if(profileImage != null) {
+				File deleteFile = new File(profileImage);
+				
+				deleteFile.delete();
+			}
+			
+			commit(conn);
+			
+		}else {
+			rollback(conn);
+		}
 		
 		close(conn);
 		return result;

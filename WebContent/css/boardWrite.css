@@ -1,0 +1,55 @@
+/* 자유게시판 */
+#container{
+  margin: 200px 0 100px 0;
+  text-align: center;
+}
+#board-write-wrap .board-title{
+  font-weight: bold;
+  margin-bottom : 50px;
+}
+.warning{
+  text-align: end;
+  color: #ee4135;
+}
+.board-write table{
+  margin: 0 auto;
+  width: 100%;
+}
+.board-write table th{
+  width: 20%;
+  background: #002d4c;
+  color: #ffffff;
+  border-radius: .25rem;
+}
+.board-write .input-content{
+    resize: none;
+}
+.file{
+  padding: 10px;
+  height: 50px;
+}
+.board-write .submit-btn{
+  background-color: #f15a25;
+  color: #ffffff;
+  border: none;
+  padding: 0;
+  width: 11%;
+  margin-top: 15px;
+  float: right;
+}
+.board-write .cancel-btn{
+  float: right;
+  background-color: #9e9e9e;
+  color: #ffffff;
+  margin-top: 15px;
+  border: none;
+  padding: 0;
+  width: 8%;
+  float: right;
+  line-height: 38px;
+  margin-right: 5px;
+}
+#board-write-wrap .form-control:focus:focus{
+  border-color: #f15a25;
+  box-shadow: 0 0 0 0.2rem rgba(241,90,37,.25);
+}

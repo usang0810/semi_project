@@ -11,6 +11,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script>
+	<% if(msg != null) {%>
+		alert("<%= msg %>");
+		<% session.removeAttribute("msg"); %>
+	<% } %>
+</script>
+
 <meta charset="UTF-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -22,24 +29,13 @@
 	integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
 	crossorigin="anonymous"></script>
 	
-<script>
-	<% if(msg != null) {%>
-		alert("<%= msg %>");
-		<% session.removeAttribute("msg"); %>
-	<% } %>
-</script>
 <link rel="shortcut icon" href="img/favicon.png">
 <link rel="apple-touch-icon-precomposed" href="img/icon57.png">
 <link rel="apple-touch-icon-precomposed" href="img/icon114.png">
 <link rel="stylesheet" href="<%=request.getContextPath() %>/css/common.css">
 
-<!-- data table -->
 <script type="text/javascript"
 	src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
-<script type="text/javascript" charset="utf8"
-	src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 <title>온 스터디</title>
 <style>
 	a{
@@ -58,7 +54,9 @@
 		<a href="<%=request.getContextPath() %>/admin/onstudyList">온스터디 목록 조회</a>
 		<hr>
 		<p id="boardTitle">게시판</p>
-		<a href="#">-자유게시판</a> <a href="#">-건의게시판</a> <a href="#">-신고게시판</a>
+		<a href="boardList?boardType=F">-자유게시판</a>
+		<a href="boardList?boardType=S">-건의게시판</a>
+		<a href="boardList?boardType=D">-신고게시판</a>
 	</div>
 	<!-- 관리자 페이지 사이드바 메뉴 -->
 

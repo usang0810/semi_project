@@ -14,6 +14,7 @@ public class Onstudy {
 	private String onstudyAddComment;
 	private String onstudyStatus;
 	private int memberNo;
+	private String memberId;
 	private String categoryNm;
 	private int categoryCd;
 	private String thumbnailPath;
@@ -24,7 +25,7 @@ public class Onstudy {
 	}
 
 	public Onstudy(int onstudyNo, String onstudyTitle, Date onstudyStartDt, Date onstudyEndDt, int onstudyFee,
-			String categoryNm, int partiMembers) {
+			String categoryNm, int partiMembers, String onstudyStatus) {
 		super();
 		this.onstudyNo = onstudyNo;
 		this.onstudyTitle = onstudyTitle;
@@ -33,6 +34,23 @@ public class Onstudy {
 		this.onstudyFee = onstudyFee;
 		this.categoryNm = categoryNm;
 		this.partiMembers = partiMembers;
+		this.onstudyStatus = onstudyStatus;
+	}
+	
+	public Onstudy(int onstudyNo, String onstudyTitle, Date onstudyStartDt, Date onstudyEndDt, int onstudyCertifyCount,
+			int onstudyFee, String onstudyStatus, String memberId, String categoryNm, int partiMembers, int memberNo) {
+		super();
+		this.onstudyNo = onstudyNo;
+		this.onstudyTitle = onstudyTitle;
+		this.onstudyStartDt = onstudyStartDt;
+		this.onstudyEndDt = onstudyEndDt;
+		this.onstudyCertifyCount = onstudyCertifyCount;
+		this.onstudyFee = onstudyFee;
+		this.onstudyStatus = onstudyStatus;
+		this.memberId = memberId;
+		this.categoryNm = categoryNm;
+		this.partiMembers = partiMembers;
+		this.memberNo = memberNo;
 	}
 
 	public Onstudy(int onstudyNo, String onstudyTitle, Date onstudyCreateDt, Date onstudyStartDt, Date onstudyEndDt,
@@ -53,6 +71,14 @@ public class Onstudy {
 		this.categoryNm = categoryNm;
 		this.categoryCd = categoryCd;
 		this.thumbnailPath = thumbnailPath;
+	}
+	
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
 	}
 
 	public int getPartiMembers() {
@@ -181,9 +207,8 @@ public class Onstudy {
 				+ onstudyCreateDt + ", onstudyStartDt=" + onstudyStartDt + ", onstudyEndDt=" + onstudyEndDt
 				+ ", onstudyWeeks=" + onstudyWeeks + ", onstudyCertifyCount=" + onstudyCertifyCount + ", onstudyFee="
 				+ onstudyFee + ", onstudyAddComment=" + onstudyAddComment + ", onstudyStatus=" + onstudyStatus
-				+ ", memberNo=" + memberNo + ", categoryNm=" + categoryNm + ", categoryCd=" + categoryCd
-				+ ", thumbnailPath=" + thumbnailPath + ", partiMembers=" + partiMembers + "]";
+				+ ", memberNo=" + memberNo + ", memberId=" + memberId + ", categoryNm=" + categoryNm + ", categoryCd="
+				+ categoryCd + ", thumbnailPath=" + thumbnailPath + ", partiMembers=" + partiMembers + "]";
 	}
-
-
+	
 }
