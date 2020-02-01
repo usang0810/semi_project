@@ -33,6 +33,7 @@
 <link rel="apple-touch-icon-precomposed" href="img/icon57.png">
 <link rel="apple-touch-icon-precomposed" href="img/icon114.png">
 <link rel="stylesheet" href="<%=request.getContextPath() %>/css/common.css">
+<link rel="stylesheet" href="<%=request.getContextPath() %>/css/adminPage-sideBar.css">
 
 <script type="text/javascript"
 	src="https://code.jquery.com/jquery-3.3.1.js"></script>
@@ -53,7 +54,7 @@
 		<hr>
 		<a href="<%=request.getContextPath() %>/admin/onstudyList">온스터디 목록 조회</a>
 		<hr>
-		<p id="boardTitle">게시판</p>
+		<p id="adminBoardTitle">게시판</p>
 		<a href="boardList?boardType=F">-자유게시판</a>
 		<a href="boardList?boardType=S">-건의게시판</a>
 		<a href="boardList?boardType=D">-신고게시판</a>

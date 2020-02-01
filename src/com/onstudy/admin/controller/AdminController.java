@@ -308,6 +308,12 @@ public class AdminController extends HttpServlet {
 				
 				if(board!=null) {
 					
+					// 신고 게시판일 경우 대상자의 아이디를 가져옴
+					if(board.getBoardType().equals("D")) {
+						String declarId = adminService.selectDeclarId(boardNo);
+						request.setAttribute("declarId", declarId);
+					}
+					
 					List<BoardImage> files = new BoardService().selectFiles(boardNo);
 					
 					if(!files.isEmpty()) {
@@ -327,6 +333,52 @@ public class AdminController extends HttpServlet {
 				
 			}catch(Exception e) {
 				ExceptionForward.errorPage(request, response, "온스터디 상세보기", e);
+			}
+			
+		// 게시판 상태 변경	
+		}else if(command.equals("/changeBoardStatus")) {
+			int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+			String status = request.getParameter("status");
+			
+			try {
+				int result = adminService.changeBoardStatus(boardNo, status);
+				
+				path = "boardDetail?boardNo=" + boardNo;
+				if(result > 0) msg = "게시판 상태 변경 성공";
+				else msg="게시판 상태 변경 실패";
+				
+				request.getSession().setAttribute("msg", msg);
+				response.sendRedirect(path);
+				
+			}catch(Exception e) {
+				ExceptionForward.errorPage(request, response, "게시판 상태 변경", e);
+			}
+			
+		// 게시판 신고 처리
+		}else if(command.equals("/declar")) {
+			int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+			String declarId = request.getParameter("declarId");
+			String status = request.getParameter("status");
+			
+			try {
+				// 신고 처리상태 N에서 Y로 변경
+				int result = adminService.changeDeclarStatus(boardNo);
+				
+				// status에 따라 회원의 신고횟수 증가
+				if(status.equals("Y") && result > 0) {
+					result = adminService.updateDeclarCount(declarId);
+				}
+				
+				if(result > 0) msg="신고 처리가 완료되었습니다.";
+				else msg="신고 처리에 실패하였습니다.";
+				
+				path = "boardDetail?boardNo=" + boardNo;
+				
+				request.getSession().setAttribute("msg", msg);
+				response.sendRedirect(path);
+				
+			}catch(Exception e) {
+				ExceptionForward.errorPage(request, response, "게시판 신고 처리", e);
 			}
 		}
 	}

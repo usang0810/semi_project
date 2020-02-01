@@ -3,13 +3,13 @@
 <%@page import="com.onstudy.member.model.vo.Member"%>
 <%
 	Member loginMember = (Member) session.getAttribute("loginMember");
-	System.out.println("로그인 헤더 " + loginMember);
 	if(loginMember == null){
 		System.out.println("세션 만료 실행");
 		session.setAttribute("msg", "세션이 만료되어 메인페이지로 돌아갑니다.");
 		response.sendRedirect(request.getContextPath());
 	}
 	
+	int[] follow = (int[])session.getAttribute("follow");
 	String memberImagePath = (String)session.getAttribute("memberImagePath");
 	String profileImagePath = "/images/navi-icon-default.png"; // default 이미지 경로
 	String msg = (String)session.getAttribute("msg");
@@ -113,8 +113,8 @@
 			<ul>
 				<li><%=loginMember.getMemberId() %> 님</li>
 				<li><%=loginMember.getMemberPoint() %> 포인트</li>
-				<li>팔로워 수 : 100명</li>
-				<li>팔로잉 수 : 50명</li>
+				<li>팔로워 수 : <span id="mypage-follower"><%=follow[1] %></span>명</li>
+				<li>팔로잉 수 : <span id="mypage-following"><%=follow[0] %></span>명</li>
 			</ul>
 			<a href="#" class="bell-setting-btn">
 				<img src="../images/bell-off.png" alt="알람벨버튼"></a>

@@ -315,6 +315,7 @@ public class AdminService {
 			case "작성일":	subQuery += " AND BOARD_MODIFY_DT='" + searchValue + "'"; break;
 			case "내용":		subQuery += " AND BOARD_CONTENT LIKE '%' || '" + searchValue + "' || '%'"; break;
 			case "삭제여부":	subQuery += " AND BOARD_STATUS='" + searchValue + "'"; break;
+			case "신고처리상태":subQuery += " AND DECLAR_STATUS='" + searchValue + "'"; break;
 			}
 		}
 
@@ -323,7 +324,7 @@ public class AdminService {
 		close(conn);
 		return mListCount;
 	}
-
+	
 	/** 게시판 목록 조회용 Service
 	 * @param boardType
 	 * @param searchKey
@@ -355,6 +356,7 @@ public class AdminService {
 			case "작성일":	subQuery += " AND BOARD_MODIFY_DT='" + searchValue + "'" + thirdQuery; break;
 			case "내용":		subQuery += " AND BOARD_CONTENT LIKE '%' || '" + searchValue + "' || '%'" + thirdQuery; break;
 			case "삭제여부":	subQuery += " AND BOARD_STATUS='" + searchValue + "'" + thirdQuery; break;
+			case "신고처리상태":subQuery += " AND DECLAR_STATUS='" + searchValue + "'" + thirdQuery; break;
 			}
 		}else {
 			subQuery += thirdQuery;
@@ -395,5 +397,76 @@ public class AdminService {
 		close(conn);
 		return board;
 	}
+
+	/** 게시판 상태변경용 Service
+	 * @param boardNo
+	 * @param status
+	 * @return result
+	 * @throws Exception
+	 */
+	public int changeBoardStatus(int boardNo, String status) throws Exception{
+		Connection conn = getConnection();
+		
+		if(status.equals("Y")) status = "N";
+		else if(status.equals("N")) status = "Y";
+		
+		int result = new AdminDao().changeBoardStatus(conn, boardNo, status);
+		
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		
+		close(conn);
+		return result;
+	}
+
+	/** 신고 대상자 아이디 조회용 Service
+	 * @param boardNo
+	 * @return declarId
+	 * @throws Exception
+	 */
+	public String selectDeclarId(int boardNo) throws Exception{
+		Connection conn = getConnection();
+		
+		String declarId = new AdminDao().selectDeclarId(conn, boardNo);
+		
+		close(conn);
+		return declarId;
+	}
+
+	/** 신고 게시판 처리 상태 변경용 Service
+	 * @param boardNo
+	 * @return
+	 * @throws Exception
+	 */
+	public int changeDeclarStatus(int boardNo) throws Exception{
+		Connection conn = getConnection();
+		
+		int result = new AdminDao().changeDeclarStatus(conn, boardNo);
+		
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		
+		close(conn);
+		return result;
+	}
+
+	/** 회원 신고횟수 증가용 Service
+	 * @param declarId
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateDeclarCount(String declarId) throws Exception{
+		Connection conn = getConnection();
+		
+		int result = new AdminDao().updateDeclarCount(conn, declarId);
+		
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		
+		close(conn);
+		return result;
+	}
+
+
 
 }

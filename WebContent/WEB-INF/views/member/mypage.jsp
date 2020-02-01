@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -134,9 +133,9 @@
 										class="btn form-control orange-hover-btn setting-btn" href="followDetail">관리</a></span>
 								</div>
 								<ul class="follow-list mt-5 ml-1 mb-1">
-									<li>내가 팔로우하는 회원 5</li>
+									<li>내가 팔로우하는 회원 <%=follow[0] %></li>
 									<br>
-									<li>나를 팔로우하는 회원 10</li>
+									<li>나를 팔로우하는 회원 <%=follow[1] %></li>
 								</ul>
 							</div>
 						</div>

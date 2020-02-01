@@ -3,19 +3,23 @@
 <%@page import="java.util.ArrayList, com.onstudy.board.model.vo.Board, com.onstudy.board.model.vo.BoardImage"%>
 <% 
 	Board board = (Board)request.getAttribute("board");
+	String declarId = (String)request.getAttribute("declarId");
 	ArrayList<BoardImage> files = (ArrayList<BoardImage>)request.getAttribute("files");
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="../css/boardContent.css">
+<link rel="stylesheet" href="../css/adminPage-boardDetail.css">
+<style>
+
+</style>
 <title>온스터디</title>
 </head>
 
 <body>
 	<%@ include file="../admin/sideBar.jsp" %>
-		<div id="container">
+ 		<div id="container">
           <div class="container">
             <div class="row">
               <div id="board-content-wrap" class="col-md-12">
@@ -51,7 +55,9 @@
                       	<% } %>
                       </div>
                       <% } %>
-                    
+                      <%if(board.getBoardType().equals("D")){ %>
+                      <span class="writer"><strong>신고 대상자 : <%= declarId %></strong></span>
+                      <%} %>
                     </div>
                     <div class="comment-wrap">
                       <p class="comment-title">댓글</p>	
@@ -69,7 +75,20 @@
                       </div>
                     </div>
                     <div class="bottom-btn-wrap">
-	                   <a href="javascript:" id="board-delete-btn" class="form-control orange-hover-btn go-list-btn">삭제</a>
+                    	<%if(board.getBoardStatus() == 'Y'){ %>
+		                   <a href="changeBoardStatus?boardNo=<%=board.getBoardNo() %>&status=<%=board.getBoardStatus() %>"
+		                   		 id="board-delete-btn" class="form-control orange-hover-btn go-list-btn">게시판 삭제</a>                	
+                    	<%}else{ %>
+		                   <a href="changeBoardStatus?boardNo=<%=board.getBoardNo() %>&status=<%=board.getBoardStatus() %>"
+		                   		 id="board-re-btn" class="form-control orange-hover-btn go-list-btn">게시판 복구</a>                	
+                    	<%} %>
+                    	
+                    	<%if(board.getBoardType().equals("D")){ %>
+                     		<%if(board.getDeclarStatus().equals("N")){ %>
+                    		<button type="button" id="board-no-declar-btn" class="form-control orange-hover-btn go-list-btn" value="N">신고무효</button>  
+                    		<button type="button" id="board-declar-btn" class="form-control orange-hover-btn go-list-btn" value="Y">신고처리</button>
+                    		<%} %>
+                    	<%} %>
                     </div>
                   </form>
                 </div>
@@ -78,17 +97,21 @@
           </div>
     </div>
 	<script>
-	
-		$("#board-delete-btn").on("click",function(){
-			if(confirm("정말 삭제 하시겠습니까?")) location.href = "deleteBoard?boardType=F&no=<%= board.getBoardNo() %>";
+		$(function(){
+			$(".bottom-btn-wrap button").on("click", function(){
+				var status = $(this).val();
+				
+				location.href="declar?boardNo=<%=board.getBoardNo()%>&declarId=<%=declarId %>&status=" + status;
+			});
 		});
+
 		
-		// 댓글 출력 함수
+		<%-- // 댓글 출력 함수
 		function selectRlist(){
 			var boardNo = <%= board.getBoardNo() %>;
 			
 			$.ajax({
-				url : "selectReplyList",
+				url : "<%=request.getContextPath()%>/board/selectReplyList",
 				type : "post",
 				dataType : "json",
 				data : {boardNo : boardNo},
@@ -120,10 +143,10 @@
 				var boardNo = <%= board.getBoardNo() %>;
 				var content = $("#commentContent").val();
 				
-				writer = "<%= admin.getMemberNo()%>";
+				writer = "<%=admin.getMemberNo()%>";
 				
 				$.ajax({
-					url : "insertReply", // URL을 필수 속성!!!
+					url : "<%=request.getContextPath()%>/board/insertReply", // URL을 필수 속성!!!
 					type : "post",
 					data : {writer:writer, content:content, boardNo:boardNo},
 					success : function(result){
@@ -155,7 +178,7 @@
 			setInterval(function(){
 				selectRlist();
 			}, 3000);
-		});
+		}); --%>
 		
 	</script>
 </body>

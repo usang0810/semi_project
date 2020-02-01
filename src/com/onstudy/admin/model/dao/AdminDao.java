@@ -497,10 +497,10 @@ public class AdminDao {
 				board = new Board(rset.getInt("RNUM"),
 								rset.getInt("BOARD_NO"),
 								rset.getString("BOARD_TITLE"),
-								rset.getString("BOARD_CONTENT"),
 								rset.getDate("BOARD_MODIFY_DT"),
 								rset.getString("BOARD_STATUS").charAt(0),
-								rset.getString("MEMBER_ID"));
+								rset.getString("MEMBER_ID"),
+								rset.getString("DECLAR_STATUS"));
 				bList.add(board);
 			}
 			
@@ -540,7 +540,8 @@ public class AdminDao {
 								rset.getDate("BOARD_MODIFY_DT"),
 								rset.getString("BOARD_STATUS").charAt(0),
 								rset.getInt("BOARD_COUNT"),
-								rset.getString("MEMBER_ID"));
+								rset.getString("MEMBER_ID"),
+								rset.getString("DECLAR_STATUS"));
 			}
 			
 		}finally {
@@ -549,6 +550,113 @@ public class AdminDao {
 		}
 		
 		return board;
+	}
+
+	/** 게시판 상태 변경용 Dao
+	 * @param conn
+	 * @param boardNo
+	 * @param status
+	 * @return result
+	 * @throws Exception
+	 */
+	public int changeBoardStatus(Connection conn, int boardNo, String status) throws Exception{
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("changeBoardStatus");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, status);
+			pstmt.setInt(2, boardNo);
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	/** 신고 대상자 아이디 조회용 Dao
+	 * @param conn
+	 * @param boardNo
+	 * @return declarId
+	 * @throws Exception
+	 */
+	public String selectDeclarId(Connection conn, int boardNo) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String declarId = null;
+		String query = prop.getProperty("selectDeclarId");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, boardNo);
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				declarId = rset.getString(1);
+			}
+			
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return declarId;
+	}
+
+	/** 신고 게시판 처리 상태 변경용 Dao
+	 * @param conn
+	 * @param boardNo
+	 * @return
+	 * @throws Exception
+	 */
+	public int changeDeclarStatus(Connection conn, int boardNo) throws Exception{
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("changeDeclarStatus");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, boardNo);
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	/** 회원 신고 횟수 증가용 Dao
+	 * @param conn
+	 * @param declarId
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateDeclarCount(Connection conn, String declarId) throws Exception{
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("updateDeclarCount");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, declarId);
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
 	}
 
 

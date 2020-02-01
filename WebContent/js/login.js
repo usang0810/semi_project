@@ -81,7 +81,7 @@ $(function () {
     			data: {phone1 : phone1, phone2 : phone2, phone3 : phone3},
     			dataType: "json",
     			type: "post",
-    			
+    			async : false,
     			success : function(obj){
     				console.log("ID찾기 통신 성공");
     				console.log(obj);
@@ -136,7 +136,7 @@ $(function () {
     			data: {id : id, phone1 : phone1, phone2 : phone2, phone3 : phone3},
     			dataType: "text",
     			type: "post",
-    			
+    			async : false,
     			success : function(result){
     				console.log("Pwd찾기 통신 성공");
     				console.log(result);
@@ -183,7 +183,7 @@ $(function () {
 					data: {id : id, pwd1 : $pwd1.val()},
 					dataType: "text",
 					type: "post",
-					
+					async : false,
 					success : function(result){
 						console.log("Pwd변경 통신 성공");
 						console.log(result);

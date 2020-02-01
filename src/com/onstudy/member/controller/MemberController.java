@@ -3,7 +3,9 @@ package com.onstudy.member.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,7 +29,6 @@ import com.onstudy.member.model.vo.PageInfo;
 import com.onstudy.member.model.vo.Point;
 import com.onstudy.wrapper.EncryptWrapper;
 import com.oreilly.servlet.MultipartRequest;
-import com.sun.xml.internal.ws.api.message.Attachment;
 
 @WebServlet("/member/*")
 public class MemberController extends HttpServlet {
@@ -57,10 +58,9 @@ public class MemberController extends HttpServlet {
 			path = "/WEB-INF/views/member/login.jsp";
 			view = request.getRequestDispatcher(path);
 			view.forward(request, response);
-		}
 
 		// 로그인 화면
-		else if (command.equals("/loginedIndex")) {
+		}else if (command.equals("/loginedIndex")) {
 
 			String memberId = request.getParameter("inputId");
 			String memberPwd = request.getParameter("inputPassword");
@@ -81,6 +81,10 @@ public class MemberController extends HttpServlet {
 						path = request.getContextPath() + "/admin/memberList";
 						
 					}else {
+						// 팔로우 수 가져옴
+						int[] follow = memberService.selectFollowCount(loginMember.getMemberNo());
+						
+						session.setAttribute("follow", follow);
 						
 						// 로그인 성공 시 회원의 프로필 이미지경로를 가져옴
 						String imagePath = memberService.selectImagePath(loginMember.getMemberNo());
@@ -234,9 +238,22 @@ public class MemberController extends HttpServlet {
 			
 		// 마이페이지 포워드
 		}else if(command.equals("/mypage")) {
-			path = "/WEB-INF/views/member/mypage.jsp";
-			view = request.getRequestDispatcher(path);
-			view.forward(request, response);
+			
+			HttpSession session = request.getSession();
+			int memberNo = ((Member)session.getAttribute("loginMember")).getMemberNo();
+			try {
+				// 팔로우 수 가져옴
+				int[] follow = memberService.selectFollowCount(memberNo);
+				
+				session.setAttribute("follow", follow);
+				
+				path = "/WEB-INF/views/member/mypage.jsp";
+				view = request.getRequestDispatcher(path);
+				view.forward(request, response);
+			}catch(Exception e) {
+				ExceptionForward.errorPage(request, response, "마이페이지", e);
+			}
+				
 			
 		// 회원탈퇴 페이지 포워드
 		}else if(command.equals("/secessionForm")) {
@@ -280,11 +297,6 @@ public class MemberController extends HttpServlet {
 			
 		// 회원탈퇴
 		}else if(command.equals("/secession")) {
-//			String checkSecession = request.getParameter("checkSecession");
-//			String checks[] = request.getParameterValues("checkSecession");
-//			
-//			System.out.println("checkSecession : " + checkSecession);
-//			System.out.println("checks : " + checks);
 			HttpSession session = request.getSession();
 			int memberNo = ((Member)session.getAttribute("loginMember")).getMemberNo();
 			
@@ -681,11 +693,63 @@ public class MemberController extends HttpServlet {
 			
 		// 회원 팔로우 관리 페이지 포워드
 		}else if(command.equals("/followDetail")) {
-			path = "/WEB-INF/views/member/followDetail.jsp";
-			view = request.getRequestDispatcher(path);
-			view.forward(request, response);
+			
+			HttpSession session = request.getSession();
+			int memberNo = ((Member)session.getAttribute("loginMember")).getMemberNo();
+			
+			// 팔로잉, 팔로워의 회원번호, 아이디를 가져온 뒤
+			// Map에 회원번호를 담고 Service로 보냄
+			try {
+				// 팔로잉, 팔로워 갱신
+				int[] follow = memberService.selectFollowCount(memberNo);				
+				session.setAttribute("follow", follow);
+				
+				List<Member>[] followList = memberService.selectFollowList(memberNo);
+				
+				if(!followList[0].isEmpty() || !followList[1].isEmpty() ) {
+					// 회원번호, 이미지 경로
+					List<Image> imageList = memberService.selectImageList();
+					
+					HashMap<Integer, String> followImageMap = new HashMap<Integer, String>();
+					
+					for(Member member : followList[0]) followImageMap.put(member.getMemberNo(), null);
+					for(Member member : followList[1]) followImageMap.put(member.getMemberNo(), null);
+					
+					Set<Integer> memberNoSet = followImageMap.keySet();
+					for(int followNo : memberNoSet) {
+						for(Image image : imageList) {
+							if(image.getMemberNo() == followNo && image.getImagePath() != null) {
+								String[] paths = image.getImagePath().split("\\\\"); // "\"를 기준으로 구분
+								followImageMap.put(followNo, "/" + paths[paths.length - 1]);
+							}
+						}
+					}
+					
+					request.setAttribute("followImageMap", followImageMap);
+				}
+				request.setAttribute("followList", followList);
+				
+				path = "/WEB-INF/views/member/followDetail.jsp";
+				view = request.getRequestDispatcher(path);
+				view.forward(request, response);
+				
+			}catch(Exception e) {
+				ExceptionForward.errorPage(request, response, "팔로우 페이지 이동", e);
+			}
+			
+		// 언팔로우 ajax 처리
+		}else if(command.equals("/unFollow")) {
+			int memberNo = ((Member)request.getSession().getAttribute("loginMember")).getMemberNo();
+			int unFollowNo = Integer.parseInt(request.getParameter("memberNo"));
+			
+			try {
+				int result = memberService.unFollow(memberNo, unFollowNo);
+				response.getWriter().print(result);
+				
+			}catch(Exception e) {
+				ExceptionForward.errorPage(request, response, "언팔로우", e);
+			}
 		}
-
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

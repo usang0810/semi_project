@@ -21,7 +21,7 @@
   <meta charset="UTF-8">
   <title>온스터디</title>
   <%@ include file="sideBar.jsp"%>
-  <link rel="stylesheet" href="../css/adminPage-onstudy-List.css">
+  <link rel="stylesheet" href="../css/adminPage-list.css">
 </head>
 
 <body>

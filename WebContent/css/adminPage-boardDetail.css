@@ -1,0 +1,212 @@
+/* 게시판상세 */
+#container{
+  margin: 50px 50px 50px 0;
+  text-align: center;
+}
+#board-content-wrap .board-title{
+  font-weight: bold;
+  margin-bottom : 50px;
+}
+#board-content-wrap .content-wrap{
+  border: 1px solid #efefef;
+  margin-bottom: 20px;
+}
+#board-content-wrap .board-content-title{
+  text-align: initial;
+  background: #002d4c;
+  color: #ffffff;
+  height: 50px;
+  line-height: 50px;
+  margin-bottom: 0;
+  padding-left: 25px;
+  font-weight: bold;
+}
+#board-content-wrap .board-content-title .numbering{
+  border-right: 1px solid #efefef;
+  height: 50px;
+  display: inline-block;
+  padding-right: 16px;
+  margin-right: 10px;
+}
+#board-content-wrap .writer-date{
+  overflow: hidden;
+  border-bottom: 1px solid #efefef;
+  height: 40px;
+  line-height: 40px;
+}
+#board-content-wrap .writer-date .writer{
+  float: left;
+  margin-left: 25px;
+}
+#board-content-wrap .writer-date .date{
+  float: right;
+  margin-right: 10px;
+}
+#board-content-wrap .content{
+  text-align: initial;
+  padding-left: 40px;
+  padding-bottom: 50px;
+  margin-bottom: 0;
+}
+#board-content-wrap .comment-wrap{
+  border: 1px solid #efefef;
+  border-radius: 20px;
+  width: 100%;
+  margin: 0 auto;
+}
+#board-content-wrap .comment-title{
+  text-align: initial;
+  background: #9e9e9e;
+  color: #ffffff;
+  height: 40px;
+  border-radius: 20px 20px 0 0;
+  line-height: 40px;
+  padding-left: 25px;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+#board-content-wrap .comment{
+  overflow: hidden;
+  height: 40px;
+  width: 100%;
+  border-bottom: 1px solid #efefef;
+  line-height: 40px;
+  margin-bottom: 0;
+}
+#replyListArea{
+    width: 100%;
+    display: inline-block;
+    border-bottom: 1px solid #efefef;
+    line-height: 30px;
+}
+#replyListArea span.rWriter{
+    display: inline-block;
+    width: 15%;
+    margin: 0 10px;
+    float: left;
+    font-weight: bold;
+}
+#replyListArea span.rDate{
+    display: inline-block;
+    width: 13%;
+    color: gray;
+    float: left;
+    margin: 0 10px;
+    font-size: 0.8em;
+}
+#replyListArea p.rContent{
+  width: 100%;
+  float: left;
+  text-align: initial;
+  padding-left: 6%;
+}
+#board-content-wrap .comment-id{
+  float: left;
+  width: 15%;
+}
+#board-content-wrap .comment-content{
+    float: left;
+}
+#board-content-wrap .your-comment-wrap{
+  padding: 1%;
+  overflow: hidden;
+  width: 100%;
+}
+#board-content-wrap .input-comment{
+  width: 71%;
+  float: left;
+  margin-right: 1%;
+}
+#board-content-wrap .submit-btn{
+    width: 10%;
+    float: left;
+    transform: translateY(10px);
+}
+.orange-btn-style,
+.orange-btn-style:focus{
+  background-color: #f15a25;
+  color: #ffffff;
+  border: none;
+  padding: 0;
+}
+.input-comment.form-control:focus{
+  border-color: #f15a25;
+  box-shadow: 0 0 0 0.2rem rgba(241,90,37,.25);
+}
+.prev-next-title-wrap{
+    overflow: hidden;
+}
+.prev-next-title-wrap .prev-title{
+  overflow: hidden;
+  margin: 0;
+  border-bottom: none;
+  border-right: none;
+}
+.prev-next-title-wrap .next-title{
+    border-top: none;
+}
+.prev-next-title-wrap dl{
+    border: 1px solid #efefef;
+}
+.prev-next-title-wrap dt{
+  float: left;
+  background: #002d4c;
+  width: 13%;
+  color: #ffffff;
+  padding: 5px 0;
+  min-width: 89px;
+}
+.prev-next-title-wrap dd{
+  float: left;
+  margin: 0;
+  padding: 5px 0 5px 10px;
+}
+html a:hover{
+  text-decoration: none;
+}
+.go-list-btn{
+  width: 12%;
+  float: right;
+  margin-top: 30px;
+}
+.bottom-btn-wrap>a{
+	width : 10%; 
+	margin-left : 5px;
+}
+.my-id{
+    width: 15%;
+    float: left;
+    font-weight: bold;
+    transform: translateY(15px);
+}
+.board-image-wrap{
+    overflow: hidden;
+}
+.uploaded-img{
+    float: left;
+    width: 130px;
+    margin-right : 10px;
+    cursor : pointer;
+}
+.board-image-title{
+    float: left;
+    background-color: #002d4c;
+    color: #ffffff;
+    min-width: 130px;
+    font-weight: bold;
+    width: 14%;
+    height: 150px;
+    margin-bottom: 0;
+    line-height: 150px;
+}
+.board-image-con{
+    border-top: 1px solid #efefef;
+    overflow: hidden;
+    height: 150px;
+    padding: 13px;
+}
+.bottom-btn-wrap a{
+  margin-left : 5px;
+}
+
+

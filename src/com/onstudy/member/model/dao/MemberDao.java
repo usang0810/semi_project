@@ -910,6 +910,163 @@ public class MemberDao {
 		return result;
 	}
 
-	
+	/** 회원 팔로잉, 팔로워 목록 수 조회용 Dao
+	 * @param conn
+	 * @param subQuery
+	 * @return result
+	 * @throws Exception
+	 */
+	public int selectFollowCount(Connection conn, String subQuery) throws Exception{
+		Statement stmt = null;
+		ResultSet rset = null;
+		
+		int result = 0;
+		String query = prop.getProperty("selectFollowCount");
+		
+		try {
+			stmt = conn.createStatement();
+			rset = stmt.executeQuery(query + subQuery);
+			
+			if(rset.next()) {
+				result = rset.getInt(1);
+			}
+		}finally {
+			close(rset);
+			close(stmt);
+		}
+		
+		return result;
+	}
 
+	/** 회원이 팔로우 하고있는 목록 조회용 Dao
+	 * @param conn
+	 * @param memberNo
+	 * @return fList
+	 * @throws Exception
+	 */
+	public List<Member> selectFollowingList(Connection conn, int memberNo) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		List<Member> fList = null;
+		String query = prop.getProperty("selectFollowingList");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, memberNo);
+			rset = pstmt.executeQuery();
+			
+			fList = new ArrayList<Member>();
+			Member member = null;
+			while(rset.next()) {
+				member = new Member();
+				member.setMemberNo(rset.getInt("FOLLOWER"));
+				member.setMemberId(rset.getString("MEMBER_ID"));
+				
+				fList.add(member);
+			}
+			
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return fList;
+	}
+
+	/** 회원을 팔로우 하고있는 목록 조회용 Dao
+	 * @param conn
+	 * @param memberNo
+	 * @return fList
+	 * @throws Exception
+	 */
+	public List<Member> selectFollowerList(Connection conn, int memberNo) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		List<Member> fList = null;
+		String query = prop.getProperty("selectFollowerList");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, memberNo);
+			rset = pstmt.executeQuery();
+			
+			fList = new ArrayList<Member>();
+			Member member = null;
+			while(rset.next()) {
+				member = new Member();
+				member.setMemberNo(rset.getInt("FOLLOWING"));
+				member.setMemberId(rset.getString("MEMBER_ID"));
+				
+				fList.add(member);
+			}
+			
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return fList;
+	}
+
+	/** 회원 이미지 목록 조회용 Dao
+	 * @param conn
+	 * @return imageList
+	 * @throws Exception
+	 */
+	public List<Image> selectImageList(Connection conn) throws Exception{
+		Statement stmt = null;
+		ResultSet rset = null;
+		
+		List<Image> imageList = null;
+		String query = prop.getProperty("selectImageList");
+		
+		try {
+			stmt = conn.createStatement();
+			rset = stmt.executeQuery(query);
+			
+			imageList = new ArrayList<Image>();
+			Image image = null;
+			while(rset.next()) {
+				image = new Image();
+				image.setImagePath(rset.getString("IMAGE_PATH"));
+				image.setMemberNo(rset.getInt("MEMBER_NO"));
+				
+				imageList.add(image);
+			}
+		}finally {
+			close(rset);
+			close(stmt);
+		}
+		
+		return imageList;
+	}
+
+	/** 회원 언팔로우용 Dao
+	 * @param conn
+	 * @param memberNo
+	 * @param unFollowNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int unFollow(Connection conn, int memberNo, int unFollowNo) throws Exception{
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("unFollow");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, memberNo);
+			pstmt.setInt(2, unFollowNo);
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
 }

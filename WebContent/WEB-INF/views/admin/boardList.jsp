@@ -22,7 +22,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-  <link rel="stylesheet" href="../css/adminPage-board-list.css">
+  <link rel="stylesheet" href="../css/adminPage-list.css">
 <%@ include file="sideBar.jsp"%>
 <title>온 스터디</title>
 </head>
@@ -60,6 +60,9 @@
 					<option value="작성일">작성일</option>
 					<option value="삭제여부">삭제여부</option>
 					<option value="내용">내용</option>
+					<%if(boardType.equals("D")){ %>
+					<option value="신고처리상태">신고처리상태</option>
+					<%} %>
                 </select>
               </div>
               <!-- 카테고리, 검색input, 버튼 -->
@@ -75,6 +78,9 @@
                         <th scope="col">작성자</th>
                         <th scope="col">작성일</th>
                         <th scope="col">삭제여부</th>
+                        <%if(boardType.equals("D")){ %>
+						<th scope="col">신고처리상태</th>
+						<%} %>
                       </tr>
                     </thead>
                     <tbody>
@@ -90,6 +96,9 @@
 							<td><%= board.getBoardWriter() %></td>
 							<td><%= board.getBoardModifyDt() %></td>
 							<td><%= board.getBoardStatus() %></td>
+							<%if(boardType.equals("D")){ %>
+							<td><%= board.getDeclarStatus()%></td>
+							<%} %>
 						</tr>
 					  <% } } %>
                     </tbody>
@@ -164,7 +173,7 @@
 				} 
 			});
 			
-			$("input[name=searchValue]").val(content);
+			$("input[name=searchValue]").val(searchValue);
 		}
 		
 		$("#simulate_log td").click(function(){

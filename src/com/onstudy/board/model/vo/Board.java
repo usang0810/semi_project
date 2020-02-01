@@ -13,6 +13,7 @@ public class Board {
 	private char boardStatus;
 	private int boardCount;
 	private String boardWriter;
+	private String declarStatus;
 	
 	public Board() {
 		// TODO Auto-generated constructor stub
@@ -82,9 +83,36 @@ public class Board {
 		this.boardStatus = boardStatus;
 		this.boardWriter = boardWriter;
 	}
+	
+	public Board(int boardNumbering, int boardNo, String boardTitle, Date boardModifyDt, char boardStatus,
+			String boardWriter, String declarStatus) {
+		super();
+		this.boardNumbering = boardNumbering;
+		this.boardNo = boardNo;
+		this.boardTitle = boardTitle;
+		this.boardModifyDt = boardModifyDt;
+		this.boardStatus = boardStatus;
+		this.boardWriter = boardWriter;
+		this.declarStatus = declarStatus;
+	}
+	
+	public Board(int boardNo, String boardType, String boardTitle, String boardContent, Date boardModifyDt,
+			char boardStatus, int boardCount, String boardWriter, String declarStatus) {
+		super();
+		this.boardNo = boardNo;
+		this.boardType = boardType;
+		this.boardTitle = boardTitle;
+		this.boardContent = boardContent;
+		this.boardModifyDt = boardModifyDt;
+		this.boardStatus = boardStatus;
+		this.boardCount = boardCount;
+		this.boardWriter = boardWriter;
+		this.declarStatus = declarStatus;
+	}
 
 	public Board(int boardNumbering, int boardNo, String boardType, String boardTitle, String boardContent,
-			Date boardCreateDt, Date boardModifyDt, char boardStatus, int boardCount, String boardWriter) {
+			Date boardCreateDt, Date boardModifyDt, char boardStatus, int boardCount, String boardWriter,
+			String declarStatus) {
 		super();
 		this.boardNumbering = boardNumbering;
 		this.boardNo = boardNo;
@@ -96,6 +124,15 @@ public class Board {
 		this.boardStatus = boardStatus;
 		this.boardCount = boardCount;
 		this.boardWriter = boardWriter;
+		this.declarStatus = declarStatus;
+	}
+
+	public String getDeclarStatus() {
+		return declarStatus;
+	}
+
+	public void setDeclarStatus(String declarStatus) {
+		this.declarStatus = declarStatus;
 	}
 
 	public int getBoardNumbering() {
@@ -183,8 +220,7 @@ public class Board {
 		return "Board [boardNumbering=" + boardNumbering + ", boardNo=" + boardNo + ", boardType=" + boardType
 				+ ", boardTitle=" + boardTitle + ", boardContent=" + boardContent + ", boardCreateDt=" + boardCreateDt
 				+ ", boardModifyDt=" + boardModifyDt + ", boardStatus=" + boardStatus + ", boardCount=" + boardCount
-				+ ", boardWriter=" + boardWriter + "]";
+				+ ", boardWriter=" + boardWriter + ", declarStatus=" + declarStatus + "]";
 	}
-	
 
 }

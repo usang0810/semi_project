@@ -20,7 +20,7 @@
 <meta charset="UTF-8">
 	<%@ include file="sideBar.jsp"%>
 <link rel="stylesheet"
-	href="<%=request.getContextPath() %>/css/adminPage-member-List.css">
+	href="<%=request.getContextPath() %>/css/adminPage-list.css">
 <title>온스터디</title>
 </head>
 

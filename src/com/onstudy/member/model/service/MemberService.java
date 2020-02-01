@@ -7,7 +7,9 @@ import static com.onstudy.common.JDBCTemplate.rollback;
 
 import java.io.File;
 import java.sql.Connection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import com.onstudy.member.model.dao.MemberDao;
 import com.onstudy.member.model.vo.Image;
@@ -401,6 +403,75 @@ public class MemberService {
 		}else rollback(conn);
 		
 		close(conn);
+		return result;
+	}
+
+	/** 회원 팔로잉, 팔로워 목록 수 조회용 Service
+	 * @param memberNo
+	 * @return follow
+	 * @throws Exception
+	 */
+	public int[] selectFollowCount(int memberNo) throws Exception{
+		Connection conn = getConnection();
+		
+		int[] follow = new int[2];
+		MemberDao memberDao = new MemberDao();
+		
+		String subQuery1 = " WHERE FOLLOWING=" + memberNo;
+		String subQuery2 = " WHERE FOLLOWER=" + memberNo;
+		
+		follow[0] = memberDao.selectFollowCount(conn, subQuery1);
+		follow[1] = memberDao.selectFollowCount(conn, subQuery2);
+		
+		close(conn);
+		return follow;
+	}
+
+	/** 회원 팔로잉, 팔로워 목록 조회용 Service
+	 * @param memberNo
+	 * @return followList
+	 * @throws Exception
+	 */
+	public List<Member>[] selectFollowList(int memberNo) throws Exception{
+		Connection conn = getConnection();
+		
+		List<Member>[] followList = new List[2];
+		MemberDao memberDao = new MemberDao();
+		
+		followList[0] = memberDao.selectFollowingList(conn, memberNo);
+		followList[1] = memberDao.selectFollowerList(conn, memberNo);
+		
+		
+		return followList;
+	}
+
+	/** 회원 이미지 목록 조회용 Service
+	 * @return imageList;
+	 * @throws Exception
+	 */
+	public List<Image> selectImageList() throws Exception{
+		Connection conn = getConnection();
+		
+		List<Image> imageList = new MemberDao().selectImageList(conn);
+		
+		close(conn);
+		return imageList;
+	}
+
+	/** 언팔로우용 Service
+	 * @param memberNo
+	 * @param unFollowNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int unFollow(int memberNo, int unFollowNo) throws Exception{
+		Connection conn = getConnection();
+		
+		int result = new MemberDao().unFollow(conn, memberNo, unFollowNo);
+		
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		
 		return result;
 	}
 
