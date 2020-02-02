@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@page import="java.util.List, com.onstudy.member.model.vo.Point, com.onstudy.member.model.vo.PageInfo"%>
+<%@page import="java.util.List, com.semi.member.model.vo.Point, com.semi.member.model.vo.PageInfo"%>
 <!DOCTYPE html>
 <html lang="ko">
 

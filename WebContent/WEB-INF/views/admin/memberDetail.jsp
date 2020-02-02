@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@page import="java.util.List, com.onstudy.onstudy.model.vo.Onstudy"%>
-<%@page import="com.onstudy.studynote.model.vo.StudyNote"%>
+<%@page import="java.util.List, com.semi.onstudy.model.vo.Onstudy"%>
+<%@page import="com.semi.studynote.model.vo.StudyNote"%>
 <%
 	Member member = (Member)request.getAttribute("member");
 	List<StudyNote> noteList = (List<StudyNote>)request.getAttribute("noteList");
@@ -180,7 +180,7 @@
                       aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
-                		 이 회원을 삭제하시겠습니까?
+                	이 회원을 삭제하시겠습니까?
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn form-control orange-hover-btn modal-btn" data-dismiss="modal" value="N" id="deleteBtn">삭제</button>

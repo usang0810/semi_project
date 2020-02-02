@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%
+	int allOnstudyCount = (int)request.getAttribute("allOnstudyCount");
+	int partiOnstudyCount = (int)request.getAttribute("partiOnstudyCount");
+	int studynoteCount = (int)request.getAttribute("studynoteCount");
+%>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -173,7 +178,7 @@
 											<h6>진행중인 온스터디</h6>
 										</div>
 										<div class="col-md-6">
-											<h6 id="name">8/10</h6>
+											<h6 id="name"><%=partiOnstudyCount %>/<%=allOnstudyCount %></h6>
 										</div>
 									</div>
 									<div class="row mb-1 form-row">
@@ -181,7 +186,7 @@
 											<h6>작성한 학습노트</h6>
 										</div>
 										<div class="col-md-6">
-											<h6 id="name">8</h6>
+											<h6 id="name"><%=studynoteCount %>개</h6>
 										</div>
 									</div>
 								</div>

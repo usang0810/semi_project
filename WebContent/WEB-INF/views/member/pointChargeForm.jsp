@@ -38,8 +38,8 @@
 					<div class="jumbotron">
 						<p class="mypage-point-charge-title">포인트 충전</p>
 						<div class="point-charge">
-							<label for="amount-of-money" class="amount-of-money-label">충전할
-								금액</label> <input type="number" id="amount-of-money"
+							<label for="amount-of-money" class="amount-of-money-label">충전할	금액</label>
+							<input type="number" id="amount-of-money"
 								class="form-control input-comment" min="1000" step="1000"
 								placeholder="금액을 1000원 단위로 입력해주세요." name="pointCharge">
 							<button
@@ -114,13 +114,16 @@
 			console.log($(this).val());
 		});
 		
+		$("#amount-of-money").on("keyup", function(){
+			 $(this).val($(this).val().replace(/[^0-9]/g,""));
+		});
+		
 	});
 	
 	function charge(){
 		$chargeWay = $("input[name=chargeWay]:checked");
 		var amount = $("#amount-of-money").val();
 		
-		console.log($chargeWay);
 		if($chargeWay.val() == "C"){
 			var name = "온스터디 포인트 충전";
 			var buyer_name = "<%=loginMember.getMemberNm() %>";
@@ -248,7 +251,7 @@
 					}
 				});
 			 } else {
-				 alert("콜백 처리 중 에러 : 결제 실패");
+				 alert("결제 취소");
 			 }
 		});
 	}

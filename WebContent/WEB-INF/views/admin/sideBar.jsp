@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="com.onstudy.member.model.vo.Member"%>
+<%@page import="com.semi.member.model.vo.Member"%>
 <%
 	Member admin = (Member) session.getAttribute("loginMember");
 	if(admin == null){
@@ -70,6 +70,17 @@
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
 		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
 		crossorigin="anonymous"></script>
+		
+	<script>
+		$("#adminTitleImg").on("click", function(){
+			var check = confirm("메인페이지로 접속하시겠습니까?");
+			if(check){
+				location.href="<%=request.getContextPath()%>";
+			}
+		}).mouseenter(function(){
+			$(this).css({"cursor" : "pointer"});
+		});
+	</script>
 
 </body>
 </html>

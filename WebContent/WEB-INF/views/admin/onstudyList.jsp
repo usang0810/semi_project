@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@page import="com.onstudy.member.model.vo.PageInfo, java.util.List"%>
-<%@page import="com.onstudy.onstudy.model.vo.Onstudy"%>
+<%@page import="com.semi.member.model.vo.PageInfo, java.util.List"%>
+<%@page import="com.semi.onstudy.model.vo.Onstudy"%>
 <%
 	PageInfo pInf = (PageInfo)request.getAttribute("pInf");
 	List<Onstudy> oList = (List<Onstudy>)request.getAttribute("oList");

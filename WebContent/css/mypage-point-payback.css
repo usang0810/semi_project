@@ -1,57 +1,66 @@
 #container {
-    margin: 200px 0 100px 0;
-    text-align: center;
-  }
+  margin: 200px 0 100px 0;
+  text-align: center;
+}
 
-  .jumbotron {
-    height: 90%;
-  }
+.jumbotron {
+  height: 90%;
+}
 
-  .mypage-title {
-    text-align: initial;
-    margin: 50px 0;
-    font-size: 35px;
-    border-bottom: 4px solid #212529;
-    padding-bottom: 10px;
-  }
+.mypage-title {
+  text-align: initial;
+  margin: 50px 0;
+  font-size: 35px;
+  border-bottom: 4px solid #212529;
+  padding-bottom: 10px;
+}
 
-  .mypage-point-payback-title {
-    font-size: 1.5em;
-    text-align: initial;
-  }
- 
-  .amount-of-money-label {
-    display: block;
-    text-align: initial;
-    margin: 30px 0 0 0;
-  }
+.mypage-point-payback-title {
+  font-size: 1.5em;
+  text-align: initial;
+}
 
-  #amount-of-money {
-    margin: 10px 0 10px 0;
-  }
+.amount-of-money-label {
+  display: block;
+  text-align: initial;
+  margin: 30px 0 0 0;
+}
 
-  .select-account {
-    display: block;
-    float: left;
-    width:250px;
-  }
+#amount-of-money {
+  margin: 10px 0 10px 0;
+}
 
-  .exclamation-icon {
-    color: #f15a25;
-  }
+.select-account {
+  display: block;
+  float: left;
+  width:250px;
+}
 
-  .account-precautions {
-    float: left;
-    color: #777777;
-    font-size: 0.9em;
-    padding-left: 1em;
-  }
+.exclamation-icon {
+  color: #f15a25;
+}
 
-  .payback-confirm {
-    margin: 100px 0 0 0;
-  }
+.account-precautions {
+  float: left;
+  color: #777777;
+  font-size: 0.9em;
+  padding-left: 1em;
+}
 
-  .payback-confirm-btn{
-    width:40%;
-    height:45px;
-  }
+.payback-confirm {
+  margin: 100px 0 0 0;
+}
+
+.payback-confirm-btn{
+  width:40%;
+  height:45px;
+}
+
+.payback-account .row label{
+	line-height: 35px;
+	margin-botton: 0;
+}
+
+.payback-account .row input{
+	background-color: white;
+}

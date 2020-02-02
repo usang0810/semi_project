@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@page import="com.onstudy.onstudy.model.vo.Onstudy"%>
+<%@page import="com.semi.onstudy.model.vo.Onstudy"%>
 <%	Onstudy onstudy = (Onstudy)request.getAttribute("onstudy"); %>
 <!DOCTYPE html>
 <html lang="ko">

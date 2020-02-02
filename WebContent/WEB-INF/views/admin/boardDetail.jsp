@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@page import="java.util.ArrayList, com.onstudy.board.model.vo.Board, com.onstudy.board.model.vo.BoardImage"%>
+<%@page import="java.util.ArrayList, com.semi.board.model.vo.Board, com.semi.board.model.vo.BoardImage"%>
 <% 
 	Board board = (Board)request.getAttribute("board");
 	String declarId = (String)request.getAttribute("declarId");

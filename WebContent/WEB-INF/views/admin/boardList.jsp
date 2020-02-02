@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page
-	import="com.onstudy.board.model.vo.Board, java.util.List, com.onstudy.member.model.vo.PageInfo"%>
+	import="com.semi.board.model.vo.Board, java.util.List, com.semi.member.model.vo.PageInfo"%>
 <%
 	List<Board> bList = (List<Board>)request.getAttribute("bList");
 	PageInfo pInf = (PageInfo)request.getAttribute("pInf");
@@ -114,14 +114,14 @@
 					<li class="page-item">
 						<!-- 맨 처음으로(<<) -->
 						<a class="page-link page-first"
-							href="<%= request.getContextPath() %>/admin/boardList?boardType=<%=boardType %>&currentPage=1&condition=<%=searchKey%>&content=<%=searchValue%>">
+							href="<%= request.getContextPath() %>/admin/boardList?boardType=<%=boardType %>&currentPage=1&searchKey=<%=searchKey%>&searchValue=<%=searchValue%>">
 							&lt;&lt;</a>
 					</li>
 
 					<li class="page-item">
 						<!-- 이전으로(<) -->
 						<a class="page-link page-pre"
-							href="<%= request.getContextPath() %>/admin/boardList?boardType=<%=boardType %>&currentPage=<%= currentPage-1 %>&condition=<%=searchKey%>&content=<%=searchValue%>">
+							href="<%= request.getContextPath() %>/admin/boardList?boardType=<%=boardType %>&currentPage=<%= currentPage-1 %>&searchKey=<%=searchKey%>&searchValue=<%=searchValue%>">
 							&lt;</a>
 					</li>
 					<% } %>
@@ -134,7 +134,7 @@
 					<% } else{ %>
 					<li class="page-item">
 						<a class="page-link page-other"
-							href="<%= request.getContextPath() %>/admin/boardList?boardType=<%=boardType %>&currentPage=<%= p %>&condition=<%=searchKey%>&content=<%=searchValue%>">
+							href="<%= request.getContextPath() %>/admin/boardList?boardType=<%=boardType %>&currentPage=<%= p %>&searchKey=<%=searchKey%>&searchValue=<%=searchValue%>">
 							<%= p %></a>
 					</li>
 					<% } %>
@@ -143,12 +143,12 @@
 					<!-- 다음 페이지로(>) -->
 					<% if(currentPage < maxPage){ %>
 					<li class="page-item"><a class="page-link page-next"
-						href="<%= request.getContextPath() %>/admin/boardList?boardType=<%=boardType %>&currentPage=<%= currentPage+1 %>&condition=<%=searchKey%>&content=<%=searchValue%>">
+						href="<%= request.getContextPath() %>/admin/boardList?boardType=<%=boardType %>&currentPage=<%= currentPage+1 %>&searchKey=<%=searchKey%>&searchValue=<%=searchValue%>">
 							&gt;</a></li>
 
 					<!-- 맨 끝으로(>>) -->
 					<li class="page-item"><a class="page-link page-end"
-						href="<%= request.getContextPath() %>/admin/boardList?boardType=<%=boardType %>&currentPage=<%= maxPage %>&condition=<%=searchKey%>&content=<%=searchValue%>">
+						href="<%= request.getContextPath() %>/admin/boardList?boardType=<%=boardType %>&currentPage=<%= maxPage %>&searchKey=<%=searchKey%>&searchValue=<%=searchValue%>">
 							&gt;&gt;</a></li>
 					<% }%>
 				</ul>
