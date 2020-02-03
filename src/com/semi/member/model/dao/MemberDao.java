@@ -248,7 +248,7 @@ public class MemberDao {
 			rset = pstmt.executeQuery();
 			
 			if(rset.next()) {
-				result = 1;
+				result = rset.getInt(1);
 			}
 			
 		}finally {

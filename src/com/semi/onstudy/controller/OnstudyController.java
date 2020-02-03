@@ -927,7 +927,47 @@ public class OnstudyController extends HttpServlet {
 			}catch(Exception e) {
 				ExceptionForward.errorPage(request, response, "게시글 검색", e);
 			}
+			
+			
+		}else if (command.equals("/reward")) {
+            Member loginMember = (Member)request.getSession().getAttribute("loginMember");
+            int memberNo = loginMember.getMemberNo();
+            int onstudyNo = Integer.parseInt(request.getParameter("onstudyNo"));
+            int progress= Integer.parseInt(request.getParameter("progress"));
+            int fee= Integer.parseInt(request.getParameter("fee"));
+            int refund = 0;
+            System.out.println("컨트롤러 : " + onstudyNo + progress + fee);
+            
+            
+            try {   
+               if (progress >= 90) {
+                  refund = (int)Math.ceil(fee + (fee * 0.01));
+               } else if (progress < 90) {
+                  refund = fee;
+               } else if (progress < 75) {
+                  refund = fee / 2;
+               } else  {
+                  refund = 0;
+               }
+               
+               int result = OnstudyService.refund(onstudyNo, memberNo, refund);
+               
+               if(result > 0) {
+            	   msg="포인트 환급 성공";
+            	   loginMember.setMemberPoint(loginMember.getMemberPoint() + fee);
+               }
+               else msg="포인트 환급 실패";
+               
+               request.getSession().setAttribute("loginMember", loginMember);
+               request.getSession().setAttribute("msg", msg);
+               response.sendRedirect(request.getContextPath()+"/member/onstudyList");
+              // 원래 페이지로 돌아가는 방법
+               
+            }catch(Exception e) {
+               ExceptionForward.errorPage(request, response, "포인트 환급", e);
+            }
 		}
+            
 	}
 	
 

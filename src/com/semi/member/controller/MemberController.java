@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.json.simple.JSONObject;
 
+import com.oreilly.servlet.MultipartRequest;
 import com.semi.common.ExceptionForward;
 import com.semi.common.MyFileRenamePolicy;
 import com.semi.member.model.service.MemberService;
@@ -30,8 +31,9 @@ import com.semi.member.model.vo.PageInfo;
 import com.semi.member.model.vo.Point;
 import com.semi.onstudy.model.service.OnstudyService;
 import com.semi.onstudy.model.vo.Onstudy;
+import com.semi.studynote.model.service.StudyNoteService;
+import com.semi.studynote.model.vo.StudyNote;
 import com.semi.wrapper.EncryptWrapper;
-import com.oreilly.servlet.MultipartRequest;
 
 @WebServlet("/member/*")
 public class MemberController extends HttpServlet {
@@ -62,8 +64,8 @@ public class MemberController extends HttpServlet {
 			view = request.getRequestDispatcher(path);
 			view.forward(request, response);
 
-		// 로그인 화면
-		}else if (command.equals("/loginedIndex")) {
+			// 로그인 화면
+		} else if (command.equals("/loginedIndex")) {
 
 			String memberId = request.getParameter("inputId");
 			String memberPwd = request.getParameter("inputPassword");
@@ -78,29 +80,29 @@ public class MemberController extends HttpServlet {
 
 				if (loginMember != null) {
 					// 접속자가 관리자 일시 관리자 페이지로 이동
-					if(loginMember.getMemberGrade() == 'A') {
+					if (loginMember.getMemberGrade() == 'A') {
 						session.setMaxInactiveInterval(600);
 						session.setAttribute("loginMember", loginMember);
 						path = request.getContextPath() + "/admin/memberList";
-						
-					}else {
+
+					} else {
 						// 팔로우 수 가져옴
 						int[] follow = memberService.selectFollowCount(loginMember.getMemberNo());
-						
+
 						session.setAttribute("follow", follow);
-						
+
 						// 로그인 성공 시 회원의 프로필 이미지경로를 가져옴
 						String imagePath = memberService.selectImagePath(loginMember.getMemberNo());
-						if(imagePath != null) {
+						if (imagePath != null) {
 							String[] paths = imagePath.split("\\\\"); // "\"를 기준으로 구분
-							imagePath = "/" + paths[paths.length - 1]; // "/"경로에 뒤에 제일 마지막 요소 붙임						
+							imagePath = "/" + paths[paths.length - 1]; // "/"경로에 뒤에 제일 마지막 요소 붙임
 						}
-						
+
 						session.setAttribute("memberImagePath", imagePath);
-						
+
 						session.setMaxInactiveInterval(600);
 						session.setAttribute("loginMember", loginMember);
-						
+
 						// 아이디 저장
 						String save = request.getParameter("save");
 						Cookie cookie = new Cookie("saveId", memberId);
@@ -111,697 +113,815 @@ public class MemberController extends HttpServlet {
 						}
 						cookie.setPath("/");
 						response.addCookie(cookie);
-						
-						path = request.getContextPath()+"/member/main";
+
+						path = request.getContextPath() + "/member/main";
 					}
-					
+
 					response.sendRedirect(path);
-					
+
 				} else {
 					session.setAttribute("msg", "로그인 정보가 유효하지 않습니다.");
-					response.sendRedirect(request.getContextPath()+"/member/login");
+					response.sendRedirect(request.getContextPath() + "/member/login");
 				}
 
 			} catch (Exception e) {
 
 				ExceptionForward.errorPage(request, response, "로그인 과정", e);
 			}
-		
-			
-		}else if(command.equals("/logout")) {
+
+		} else if (command.equals("/logout")) {
 			request.getSession().invalidate();
-			
+
 			response.sendRedirect(request.getContextPath());
-			
-		}else if(command.equals("/main")) {
+
+		} else if (command.equals("/main")) {
 			try {
 				List<Onstudy> pList = new OnstudyService().selectOnstudyPList();
-                request.setAttribute("pList", pList);
-                
-                path = "/WEB-INF/views/member/loginedIndex.jsp";
-                view = request.getRequestDispatcher(path);
-                view.forward(request, response);
-			}catch(Exception e) {
+				request.setAttribute("pList", pList);
+
+				path = "/WEB-INF/views/member/loginedIndex.jsp";
+				view = request.getRequestDispatcher(path);
+				view.forward(request, response);
+			} catch (Exception e) {
 				ExceptionForward.errorPage(request, response, "메인페이지 이동", e);
 			}
-			
-		// 회원가입 양식으로 포워드
-		}else if(command.equals("/signupForm")) {
+
+			// 회원가입 양식으로 포워드
+		} else if (command.equals("/signupForm")) {
 			path = "/WEB-INF/views/member/signupForm.jsp";
 			view = request.getRequestDispatcher(path);
 			view.forward(request, response);
-			
-		// 회원가입
-		}else if(command.equals("/signup")) {
-			
+
+			// 회원가입
+		} else if (command.equals("/signup")) {
+
 			try {
 				// 요청(reqqust)가 multipart/form-data 가 포함이 되어 있는지
-				if(ServletFileUpload.isMultipartContent(request)) {
+				if (ServletFileUpload.isMultipartContent(request)) {
 
 					int maxSize = 10 * 1024 * 1024;
 					String root = request.getSession().getServletContext().getRealPath("/");
-					
+
 					String savePath = root + "resources/profileImages/";
-							
-					MultipartRequest multiRequest = new MultipartRequest(request, savePath, maxSize, "UTF-8", new MyFileRenamePolicy());
-					
+
+					MultipartRequest multiRequest = new MultipartRequest(request, savePath, maxSize, "UTF-8",
+							new MyFileRenamePolicy());
+
 					String memberId = multiRequest.getParameter("signupId");
 					String memberPwd = multiRequest.getParameter("signupPwd");
-					
+
 					memberPwd = EncryptWrapper.getSha512(memberPwd); // 비밀번호 수동 암호화
-					
+
 					String memberNm = multiRequest.getParameter("signupName");
-					String memberPhone = multiRequest.getParameter("phone1") + "-"
-										+ multiRequest.getParameter("phone2") + "-"
-										+ multiRequest.getParameter("phone3");
-					int bankCode =Integer.parseInt(multiRequest.getParameter("bankCode"));
+					String memberPhone = multiRequest.getParameter("phone1") + "-" + multiRequest.getParameter("phone2")
+							+ "-" + multiRequest.getParameter("phone3");
+					int bankCode = Integer.parseInt(multiRequest.getParameter("bankCode"));
 					String memberAccount = multiRequest.getParameter("bankAccount");
-					
-					Member signupMember = new Member(memberId, memberPwd, memberNm, memberPhone, memberAccount, bankCode);
-					
+
+					Member signupMember = new Member(memberId, memberPwd, memberNm, memberPhone, memberAccount,
+							bankCode);
+
 					int result = memberService.signupMember(signupMember);
 					int imgResult = 1; // 프로필 이미지를 안넣을 경우를 대비해서 초기값 1
-					
+
 					// 회원가입 성공 시 프로필 이미지 검사 후 DB에 저장
-					if(result > 0) {
-						
+					if (result > 0) {
+
 						// 변경된 파일명을 저장할 변수
 						String saveFileName = null;
-						
+
 						Enumeration<String> files = multiRequest.getFileNames();
-						
-						if(files.hasMoreElements()) {
-							
+
+						if (files.hasMoreElements()) {
+
 							// 업로드된 파일은 역순으로 전달됨.
 							String name = files.nextElement();
-							
+
 							// null이 아니면 프로필사진이 존재
-							if(multiRequest.getFilesystemName(name) != null) {
+							if (multiRequest.getFilesystemName(name) != null) {
 								saveFileName = multiRequest.getFilesystemName(name);
 							}
 						}
-						
+
 						// 프로필 사진이 있다면 사진경로를 저장하기 위해 회원 번호를 DB에서 가져와야 함
-						if(saveFileName != null) {
+						if (saveFileName != null) {
 							int memberNo = memberService.selectMemberNo(memberId);
-							
+
 							Image profileImage = new Image();
 							profileImage.setImagePath(savePath + saveFileName);
 							profileImage.setMemberNo(memberNo);
-							
+
 							// DB에 경로 저장
 							imgResult = memberService.insertProfileImage(profileImage);
 						}
 					}
-					
-					if(result > 0 && imgResult > 0) msg = "회원가입 성공";
-					else msg = "회원가입 실패";
-					
+
+					if (result > 0 && imgResult > 0)
+						msg = "회원가입 성공";
+					else
+						msg = "회원가입 실패";
+
 					request.getSession().setAttribute("msg", msg);
-					
+
 					// 성공 및 실패 시 index.jsp로 이동
 					response.sendRedirect(request.getContextPath());
 				}
-				
-			}catch(Exception e) {
+
+			} catch (Exception e) {
 				ExceptionForward.errorPage(request, response, "회원가입", e);
 			}
-			
-		
-		// 아이디 중복 검사
-		}else if(command.equals("/idDupCheck")) {
-			
+
+			// 아이디 중복 검사
+		} else if (command.equals("/idDupCheck")) {
+
 			String inputId = request.getParameter("id");
-			
+
 			try {
 				int result = memberService.idDupCheck(inputId);
-				
+
 				PrintWriter out = response.getWriter();
-				
-				if(result > 0) out.append("no");
-				else out.append("yes");
-				
-			}catch(Exception e) {
+
+				if (result > 0)
+					out.append("no");
+				else
+					out.append("yes");
+
+			} catch (Exception e) {
 				ExceptionForward.errorPage(request, response, "아이디 중복 검사", e);
 			}
-			
-		// 마이페이지 포워드
-		}else if(command.equals("/mypage")) {
-			
+
+			// 마이페이지 포워드
+		} else if (command.equals("/mypage")) {
+
 			HttpSession session = request.getSession();
-			int memberNo = ((Member)session.getAttribute("loginMember")).getMemberNo();
+			int memberNo = ((Member) session.getAttribute("loginMember")).getMemberNo();
 			try {
 				// 팔로우 수 가져옴
 				int[] follow = memberService.selectFollowCount(memberNo);
-				
+
 				session.setAttribute("follow", follow);
-				
+
 				path = "/WEB-INF/views/member/mypage.jsp";
 				view = request.getRequestDispatcher(path);
 				view.forward(request, response);
-			}catch(Exception e) {
+			} catch (Exception e) {
 				ExceptionForward.errorPage(request, response, "마이페이지", e);
 			}
-				
-			
-		// 회원탈퇴 페이지 포워드
-		}else if(command.equals("/secessionForm")) {
+
+			// 회원탈퇴 페이지 포워드
+		} else if (command.equals("/secessionForm")) {
 			path = "/WEB-INF/views/member/secession.jsp";
 			view = request.getRequestDispatcher(path);
 			view.forward(request, response);
-			
-		// 회원정보 수정 페이지 포워드	
-		}else if(command.equals("/updateForm")) {
-			int memberNo = ((Member)request.getSession().getAttribute("loginMember")).getMemberNo();
-			
+
+			// 회원정보 수정 페이지 포워드
+		} else if (command.equals("/updateForm")) {
+			int memberNo = ((Member) request.getSession().getAttribute("loginMember")).getMemberNo();
+
 			try {
 				// 총 참여한 온스터디 갯수 가져옴
 				int allOnstudyCount = memberService.allOnstudyCount(memberNo);
 				// 참여는 영어로 Participation
 				int partiOnstudyCount = 0;
-				if(allOnstudyCount != 0) {
+				if (allOnstudyCount != 0) {
 					partiOnstudyCount = memberService.partiOnstudyCount(memberNo);
 				}
-				
+
 				int studynoteCount = memberService.studynoteCount(memberNo);
-				
+
 				request.setAttribute("allOnstudyCount", allOnstudyCount);
 				request.setAttribute("partiOnstudyCount", partiOnstudyCount);
 				request.setAttribute("studynoteCount", studynoteCount);
-				
+
 				path = "/WEB-INF/views/member/updateForm.jsp";
 				view = request.getRequestDispatcher(path);
 				view.forward(request, response);
-				
-			}catch(Exception e) {
+
+			} catch (Exception e) {
 				ExceptionForward.errorPage(request, response, "회원정보 수정 페이지 이동", e);
 			}
-			
-		
-		// DB에 저장된 비밀번호와 입력한 비밀번호가 일치하는지 확인 후 경로 지정
-		}else if(command.equals("/pwdCheck")) {
+
+			// DB에 저장된 비밀번호와 입력한 비밀번호가 일치하는지 확인 후 경로 지정
+		} else if (command.equals("/pwdCheck")) {
 			HttpSession session = request.getSession();
-			int memberNo = ((Member)(session.getAttribute("loginMember"))).getMemberNo();
+			int memberNo = ((Member) (session.getAttribute("loginMember"))).getMemberNo();
 			String memberPwd = request.getParameter("inputPassword");
 			String setPath = request.getParameter("setPath");
-			
+
+			System.out.println("컨트롤러 단 : " + memberPwd);
+			System.out.println("컨트롤러 단 : " + setPath);
 			try {
 				int result = memberService.pwdCheck(memberNo, memberPwd);
-				
-				if(result > 0) {
-					
-					if(setPath.equals("secession")) path="secessionForm";
-					else path="updateForm";
-					
-				}else {
+
+				if (result > 0) {
+
+					if (setPath.equals("secession"))
+						path = "secessionForm";
+					else
+						path = "updateForm";
+
+				} else {
 					msg = "비밀번호가 일치하지 않습니다.";
 					path = "mypage";
 					session.setAttribute("msg", msg);
 				}
-				
+
 				response.sendRedirect(path);
-				
-				
-			}catch(Exception e) {
+
+			} catch (Exception e) {
 				ExceptionForward.errorPage(request, response, "비밀번호 일치 조회", e);
 			}
-			
-		// 회원탈퇴
-		}else if(command.equals("/secession")) {
+
+			// 회원탈퇴
+		} else if (command.equals("/secession")) {
 			HttpSession session = request.getSession();
-			int memberNo = ((Member)session.getAttribute("loginMember")).getMemberNo();
-			
+			int memberNo = ((Member) session.getAttribute("loginMember")).getMemberNo();
+
 			try {
 				int result = memberService.secession(memberNo);
-				
-				if(result > 0) {
+
+				if (result > 0) {
 					msg = "회원 탈퇴되었습니다.";
-				}else {
+				} else {
 					msg = "회원 탈퇴에 실패하였습니다.";
 				}
-				
+
 				session.setAttribute("msg", msg);
 				response.sendRedirect(request.getContextPath());
-				
-			}catch(Exception e) {
+
+			} catch (Exception e) {
 				ExceptionForward.errorPage(request, response, "회원 탈퇴", e);
 			}
-			
-		// 회원 아이디 찾기
-		}else if(command.equals("/findId")) {
-			String memberPhone = request.getParameter("phone1") + "-"
-								+ request.getParameter("phone2") + "-"
-								+ request.getParameter("phone3");
-			
-			
+
+			// 회원 아이디 찾기
+		} else if (command.equals("/findId")) {
+			String memberPhone = request.getParameter("phone1") + "-" + request.getParameter("phone2") + "-"
+					+ request.getParameter("phone3");
+
 			try {
 				Member findIdMember = memberService.findIdMember(memberPhone);
 				JSONObject jsonMember = new JSONObject();
-				
-				if(findIdMember != null) {
-					
-					String secretId = findIdMember.getMemberId().substring(0, findIdMember.getMemberId().length()-3);
+
+				if (findIdMember != null) {
+
+					String secretId = findIdMember.getMemberId().substring(0, findIdMember.getMemberId().length() - 3);
 					secretId += "***";
 					findIdMember.setMemberId(secretId);
-					
-					String secretNm = findIdMember.getMemberNm().substring(0, findIdMember.getMemberNm().length()-1);
+
+					String secretNm = findIdMember.getMemberNm().substring(0, findIdMember.getMemberNm().length() - 1);
 					secretNm += "*";
 					findIdMember.setMemberNm(secretNm);
-					
+
 					jsonMember.put("check", "yes");
 					jsonMember.put("id", findIdMember.getMemberId());
 					jsonMember.put("name", findIdMember.getMemberNm());
 					jsonMember.put("date", findIdMember.getMemberEnrollDt().toString()); // String으로 안바꿔주면 에러남
-					
-				}else {
+
+				} else {
 					jsonMember.put("check", "no");
 				}
-				
+
 				response.getWriter().print(jsonMember);
-				
-			}catch(Exception e) {
+
+			} catch (Exception e) {
 				ExceptionForward.errorPage(request, response, "아이디 찾기", e);
 			}
-			
-		// 회원 비밀번호 찾기 및 변경
-		}else if(command.equals("/findPwd")) {
+
+			// 회원 비밀번호 찾기 및 변경
+		} else if (command.equals("/findPwd")) {
 			String memberId = request.getParameter("id");
-			String memberPhone = request.getParameter("phone1") + "-"
-								+ request.getParameter("phone2") + "-"
-								+ request.getParameter("phone3");
-			
+			String memberPhone = request.getParameter("phone1") + "-" + request.getParameter("phone2") + "-"
+					+ request.getParameter("phone3");
+
 			try {
 				int result = memberService.findPwdMember(memberId, memberPhone);
-				
-				if(result > 0) response.getWriter().print("yes");
-				else response.getWriter().print("no");
-				
-			}catch(Exception e) {
+
+				if (result > 0)
+					response.getWriter().print("yes");
+				else
+					response.getWriter().print("no");
+
+			} catch (Exception e) {
 				ExceptionForward.errorPage(request, response, "아이디 찾기", e);
 			}
-			
-		// 회원 비밀번호 변경
-		}else if(command.equals("/changePwd")) {
+
+			// 회원 비밀번호 변경
+		} else if (command.equals("/changePwd")) {
 			String memberId = request.getParameter("id");
 			String memberPwd = request.getParameter("pwd1");
-			
+
 			memberPwd = EncryptWrapper.getSha512(memberPwd);
 			try {
 				int result = memberService.changePwdMember(memberId, memberPwd);
-				
-				if(result > 0) response.getWriter().print("yes");
-				else response.getWriter().print("no");
-				
-			}catch(Exception e) {
+
+				if (result > 0)
+					response.getWriter().print("yes");
+				else
+					response.getWriter().print("no");
+
+			} catch (Exception e) {
 				ExceptionForward.errorPage(request, response, "비밀번호 변경", e);
 			}
-			
-			
-		// 회원 정보 수정
-		}else if(command.equals("/update")) {
-			
+
+			// 회원 정보 수정
+		} else if (command.equals("/update")) {
+
 			HttpSession session = request.getSession();
-			int memberNo = ((Member)session.getAttribute("loginMember")).getMemberNo();
+			int memberNo = ((Member) session.getAttribute("loginMember")).getMemberNo();
 			String memberPwd = request.getParameter("newPwd1");
-			String memberPhone = request.getParameter("phone1") + "-"
-								+ request.getParameter("phone2") + "-"
-								+ request.getParameter("phone3");
-			int bankCode =Integer.parseInt(request.getParameter("bankCode"));
+			String memberPhone = request.getParameter("phone1") + "-" + request.getParameter("phone2") + "-"
+					+ request.getParameter("phone3");
+			int bankCode = Integer.parseInt(request.getParameter("bankCode"));
 			String memberAccount = request.getParameter("bankAccount");
-			
+
 			Member updateMember = new Member(memberNo, memberPwd, memberPhone, memberAccount, bankCode);
-			
+
 			try {
 				int result = memberService.updateMember(updateMember);
-				
-				if(result > 0) {
+
+				if (result > 0) {
 					msg = "회원 정보 수정 성공";
-					updateMember = (Member)session.getAttribute("loginMember");
+					updateMember = (Member) session.getAttribute("loginMember");
 					updateMember.setMemberPhone(memberPhone);
 					updateMember.setBankCode(bankCode);
 					updateMember.setMemberAccount(memberAccount);
-					
+
 					session.setAttribute("loginMember", updateMember);
-					
-				}else msg = "회원 정보 수정 실패";
-				
+
+				} else
+					msg = "회원 정보 수정 실패";
+
 				session.setAttribute("msg", msg);
 				response.sendRedirect(request.getContextPath() + "/member/updateForm");
-				
-			}catch(Exception e) {
+
+			} catch (Exception e) {
 				ExceptionForward.errorPage(request, response, "회원 정보 수정", e);
 			}
-			
-		// 회원 프로필 이미지 수정
-		}else if(command.equals("/updateProfile")) {
-			
+
+			// 회원 프로필 이미지 수정
+		} else if (command.equals("/updateProfile")) {
+
 			try {
 				// 요청(reqqust)가 multipart/form-data 가 포함이 되어 있는지
-				if(ServletFileUpload.isMultipartContent(request)) {
+				if (ServletFileUpload.isMultipartContent(request)) {
 
 					int maxSize = 10 * 1024 * 1024;
 					String root = request.getSession().getServletContext().getRealPath("/");
-					
+
 					String savePath = root + "resources/profileImages/";
-							
-					MultipartRequest multiRequest = new MultipartRequest(request, savePath, maxSize, "UTF-8", new MyFileRenamePolicy());
-					
+
+					MultipartRequest multiRequest = new MultipartRequest(request, savePath, maxSize, "UTF-8",
+							new MyFileRenamePolicy());
+
 					HttpSession session = request.getSession();
-					int memberNo = ((Member)session.getAttribute("loginMember")).getMemberNo();
-					
+					int memberNo = ((Member) session.getAttribute("loginMember")).getMemberNo();
+
 					// 회원이 가지고 있던 프로필 사진 삭제
 					int result = memberService.deleteProfileImg(memberNo);
 					int imgResult = 0;
 					String imagePath = null;
-					
+
 					// 기존 이미지가 없다면 result가 0이 나오므로 조건문을 걸지 않음
 					// 변경된 파일명을 저장할 변수
 					String saveFileName = null;
-					
+
 					Enumeration<String> files = multiRequest.getFileNames();
-					
-					if(files.hasMoreElements()) {
-						
+
+					if (files.hasMoreElements()) {
+
 						String name = files.nextElement();
-						
+
 						// null이 아니면 프로필사진이 존재
-						if(multiRequest.getFilesystemName(name) != null) {
+						if (multiRequest.getFilesystemName(name) != null) {
 							saveFileName = multiRequest.getFilesystemName(name);
 						}
 					}
 
-					if(saveFileName != null) {
+					if (saveFileName != null) {
 						Image profileImage = new Image();
 						imagePath = savePath + saveFileName;
 						profileImage.setImagePath(imagePath);
 						profileImage.setMemberNo(memberNo);
-						
+
 						// DB에 경로 저장
 						imgResult = memberService.insertProfileImage(profileImage);
 					}
-				
-					if(imgResult > 0) {
+
+					if (imgResult > 0) {
 						msg = "프로필 이미지 변경 성공";
 						// 로그인 성공 시 회원의 프로필 이미지경로를 가져옴
-						if(imagePath != null) {
+						if (imagePath != null) {
 							String[] paths = imagePath.split("\\\\"); // "\"를 기준으로 구분
-							imagePath = "/" + paths[paths.length - 1]; // "/"경로에 뒤에 제일 마지막 요소 붙임						
+							imagePath = "/" + paths[paths.length - 1]; // "/"경로에 뒤에 제일 마지막 요소 붙임
 						}
-						
+
 						session.setAttribute("memberImagePath", imagePath);
-						
-					}else msg = "프로필 이미지 변경 실패";
-					
+
+					} else
+						msg = "프로필 이미지 변경 실패";
+
 					session.setAttribute("msg", msg);
-					
+
 					// 성공 및 실패 시 index.jsp로 이동
 					response.sendRedirect(request.getContextPath() + "/member/updateForm");
 				}
-				
-			}catch(Exception e) {
+
+			} catch (Exception e) {
 				ExceptionForward.errorPage(request, response, "회원가입", e);
 			}
-			
-		// 포인트 관리 페이지로 포워드
-		}else if(command.equals("/pointDetail")) {
+
+			// 포인트 관리 페이지로 포워드
+		} else if (command.equals("/pointDetail")) {
 			// 회원의 포인트 내역 DB에서 가져옴
 			HttpSession session = request.getSession();
-			int memberNo = ((Member)session.getAttribute("loginMember")).getMemberNo();
-			
+			int memberNo = ((Member) session.getAttribute("loginMember")).getMemberNo();
+
 			char pointInOut = request.getParameter("pointInOut").charAt(0); // 입출금 내역 코드
 			// 'W' : 전체, 'A' : 입금, 'M' : 출금
-			
+
 			int pointMonth = Integer.parseInt(request.getParameter("pointMonth")); // 입출금 기간 코드
 			pointMonth = pointMonth * (-1); // ADD_MONTH 함수를 이용해서 날짜계산을 하기 위해 전달받은 파라미터를 음수로 변환
 			// 0 : 전체, 그외 월 수
-			
+
 			try {
 				// 페이징 처리(pagination)
 				// 눈에 보이는 게시판에 일정 개수의 게시글만 노출되고
 				// 나머지는 페이지로 구분하여 숫자 형태로 보여주게하는 방법
-			
+
 				// 현재 회원의 포인트 내역 전체 수
 				int pListCount = memberService.getPointListCount(memberNo, pointInOut, pointMonth);
-				
+
 				int limit = 5; // 한 페이지에 보여질 게시글의 수
 				int pagingBarSize = 10; // 보여질 페이징바의 페이지 개수
 				int currentPage = 0; // 현재 페이지 번호를 표시할 변수
 				int maxPage = 0; // 전체 페이지의 수 (== 마지막 페이지)
 				int startPage = 0; // 페이징바 시작 페이지 번호
 				int endPage = 0; // 페이징바 끝 페이지 번호
-				
+
 				// currentPage - 현재 페이지 번호를 표시할 변수
 				// 처음 게시판 목록으로 화면이 전환이되면 1페이지가 보여야 함
-				if(request.getParameter("currentPage") == null) {
+				if (request.getParameter("currentPage") == null) {
 					currentPage = 1;
-				}else {
+				} else {
 					// 전달받은 값이 있을 경우 해당 번호를 저장
 					currentPage = Integer.parseInt(request.getParameter("currentPage"));
 				}
-				
+
 				// maxPage - 총 페이지 수(== 마지막 페이지)
-				maxPage = (int)Math.ceil( ( (double)pListCount / limit ) );
-				
+				maxPage = (int) Math.ceil(((double) pListCount / limit));
+
 				startPage = (currentPage - 1) / pagingBarSize * pagingBarSize + 1;
-				
+
 				// endPage - 페이징바의 끝 페이지 번호
 				endPage = startPage + pagingBarSize - 1;
-				if(maxPage <= endPage) {
+				if (maxPage <= endPage) {
 					endPage = maxPage;
 				}
-				
-				PageInfo pInf = new PageInfo(pListCount, limit, pagingBarSize, currentPage, maxPage, startPage, endPage);
-				
+
+				PageInfo pInf = new PageInfo(pListCount, limit, pagingBarSize, currentPage, maxPage, startPage,
+						endPage);
+
 				List<Point> pList = memberService.selectPointList(memberNo, pointInOut, pointMonth, currentPage, limit);
-				
+
 				request.setAttribute("pInf", pInf);
 				request.setAttribute("pList", pList);
-				
+
 				path = "/WEB-INF/views/member/pointDetail.jsp";
 				view = request.getRequestDispatcher(path);
 				view.forward(request, response);
-				
-			}catch(Exception e) {
+
+			} catch (Exception e) {
 				ExceptionForward.errorPage(request, response, "포인트 관리 페이지 이동", e);
 			}
-			
-			
-			
-		// 포인트 환급 페이지로 포워드
-		}else if(command.equals("/pointPayBackForm")) {
+
+			// 포인트 환급 페이지로 포워드
+		} else if (command.equals("/pointPayBackForm")) {
 			path = "/WEB-INF/views/member/pointPayBackForm.jsp";
 			view = request.getRequestDispatcher(path);
 			view.forward(request, response);
-			
-		// 포인트 충전 페이지로 포워드
-		}else if(command.equals("/pointChargeForm")) {
+
+			// 포인트 충전 페이지로 포워드
+		} else if (command.equals("/pointChargeForm")) {
 			path = "/WEB-INF/views/member/pointChargeForm.jsp";
 			view = request.getRequestDispatcher(path);
 			view.forward(request, response);
-			
-		// 회원 포인트 충전(무통장 입금)
-		}else if(command.equals("/pointCharge")) {
+
+			// 회원 포인트 충전(무통장 입금)
+		} else if (command.equals("/pointCharge")) {
 			HttpSession session = request.getSession();
-			int memberNo = ((Member)session.getAttribute("loginMember")).getMemberNo();
+			int memberNo = ((Member) session.getAttribute("loginMember")).getMemberNo();
 			int pointCharge = Integer.parseInt(request.getParameter("pointCharge"));
-			
+
 			// 1은 계정에 포인트 입금
 			Point point = new Point(pointCharge, 'A', memberNo, 1);
 			int memberPoint = 0;
 			try {
 				int result = memberService.updatePoint(point);
-				
+
 				// 포인트가 성공적으로 삽입되었으면 업데이트 된 회원의 포인트를 가져옴
-				if(result > 0) {
+				if (result > 0) {
 					memberPoint = memberService.getMemberPoint(memberNo);
-					
-					if(memberPoint != -1) {
-						Member loginMember = (Member)session.getAttribute("loginMember");
+
+					if (memberPoint != -1) {
+						Member loginMember = (Member) session.getAttribute("loginMember");
 						loginMember.setMemberPoint(memberPoint);
-						
+
 						session.setAttribute("loginMember", loginMember);
 					}
 				}
-				
-				if(result <= 0 || memberPoint == -1) msg = "포인트 충전 실패";
-				else msg = "포인트 충전 성공";
-				
+
+				if (result <= 0 || memberPoint == -1)
+					msg = "포인트 충전 실패";
+				else
+					msg = "포인트 충전 성공";
+
 				session.setAttribute("msg", msg);
-				
+
 				response.sendRedirect(request.getContextPath() + "/member/mypage");
-				
-			}catch(Exception e) {
+
+			} catch (Exception e) {
 				ExceptionForward.errorPage(request, response, "포인트 충전", e);
 			}
-			
-		// 회원 포인트 충전(카드)
-		}else if(command.equals("/pointCardCharge")) {
-			Order order = new Order(request.getParameter("name"),
-									Integer.parseInt(request.getParameter("amount")),
-									request.getParameter("buyer_name"),
-									request.getParameter("buyer_tel"));
-			
+
+			// 회원 포인트 충전(카드)
+		} else if (command.equals("/pointCardCharge")) {
+			Order order = new Order(request.getParameter("name"), Integer.parseInt(request.getParameter("amount")),
+					request.getParameter("buyer_name"), request.getParameter("buyer_tel"));
+
 			try {
 				String merchantUid = memberService.insertOrder(order);
 				response.getWriter().print(merchantUid);
-				
-			}catch(Exception e) {
+
+			} catch (Exception e) {
 				ExceptionForward.errorPage(request, response, "카드 결제", e);
 			}
-			
-		// 카드 결제 성공 시
-		}else if(command.equals("/insertImpUid")) {
-			
-			int memberNo = ((Member)request.getSession().getAttribute("loginMember")).getMemberNo();
+
+			// 카드 결제 성공 시
+		} else if (command.equals("/insertImpUid")) {
+
+			int memberNo = ((Member) request.getSession().getAttribute("loginMember")).getMemberNo();
 			int pointCharge = Integer.parseInt(request.getParameter("amount"));
 			Point point = new Point(pointCharge, 'A', memberNo, 1);
-			
+
 			String impUid = request.getParameter("imp_uid");
 			String merchantUid = request.getParameter("merchant_uid");
 			Order order = new Order(merchantUid, impUid, '2');
-			
+
 			System.out.println(impUid);
 			System.out.println(merchantUid);
-			
+
 			int memberPoint = 0;
 			try {
 				int result = memberService.updateOrder(order, point);
-				
-				if(result > 0) {
+
+				if (result > 0) {
 					memberPoint = memberService.getMemberPoint(memberNo);
-					
-					if(memberPoint != -1) {
+
+					if (memberPoint != -1) {
 						HttpSession session = request.getSession();
-						Member loginMember = (Member)session.getAttribute("loginMember");
+						Member loginMember = (Member) session.getAttribute("loginMember");
 						loginMember.setMemberPoint(memberPoint);
-						
+
 						session.setAttribute("loginMember", loginMember);
 					}
 				}
-				
+
 				response.getWriter().print(result);
-				
-			}catch(Exception e) {
+
+			} catch (Exception e) {
 				ExceptionForward.errorPage(request, response, "카드 결제", e);
 			}
-			
-			
-			
-		// 회원 포인트 환급
-		}else if(command.equals("/pointPayBack")) {
+
+			// 회원 포인트 환급
+		} else if (command.equals("/pointPayBack")) {
 			HttpSession session = request.getSession();
-			int memberNo = ((Member)session.getAttribute("loginMember")).getMemberNo();
+			int memberNo = ((Member) session.getAttribute("loginMember")).getMemberNo();
 			int pointPayBack = Integer.parseInt(request.getParameter("pointPayBack"));
-			
+
 			Point point = new Point(pointPayBack, 'M', memberNo, 2);
 			int memberPoint = 0;
-			
+
 			try {
 				int result = memberService.updatePoint(point);
-				
+
 				// 포인트가 성공적으로 삽입되었으면 업데이트 된 회원의 포인트를 가져옴
-				if(result > 0) {
+				if (result > 0) {
 					memberPoint = memberService.getMemberPoint(memberNo);
-					
-					if(memberPoint != -1) {
-						Member loginMember = (Member)session.getAttribute("loginMember");
+
+					if (memberPoint != -1) {
+						Member loginMember = (Member) session.getAttribute("loginMember");
 						loginMember.setMemberPoint(memberPoint);
-						
+
 						session.setAttribute("loginMember", loginMember);
 					}
 				}
-				
-				if(result <= 0 || memberPoint == -1) msg = "포인트 환급 실패";
-				else msg = "포인트 환급 성공";
-				
+
+				if (result <= 0 || memberPoint == -1)
+					msg = "포인트 환급 실패";
+				else
+					msg = "포인트 환급 성공";
+
 				session.setAttribute("msg", msg);
-				
+
 				response.sendRedirect(request.getContextPath() + "/member/mypage");
-				
-			}catch(Exception e) {
+
+			} catch (Exception e) {
 				ExceptionForward.errorPage(request, response, "포인트 환급", e);
 			}
-			
-		// 회원 팔로우 관리 페이지 포워드
-		}else if(command.equals("/followDetail")) {
-			
+
+			// 회원 팔로우 관리 페이지 포워드
+		} else if (command.equals("/followDetail")) {
+
 			HttpSession session = request.getSession();
-			int memberNo = ((Member)session.getAttribute("loginMember")).getMemberNo();
-			
+			int memberNo = ((Member) session.getAttribute("loginMember")).getMemberNo();
+
 			// 팔로잉, 팔로워의 회원번호, 아이디를 가져온 뒤
 			// Map에 회원번호를 담고 Service로 보냄
 			try {
 				// 팔로잉, 팔로워 갱신
-				int[] follow = memberService.selectFollowCount(memberNo);				
+				int[] follow = memberService.selectFollowCount(memberNo);
 				session.setAttribute("follow", follow);
-				
+
 				List<Member>[] followList = memberService.selectFollowList(memberNo);
-				
-				if(!followList[0].isEmpty() || !followList[1].isEmpty() ) {
+
+				if (!followList[0].isEmpty() || !followList[1].isEmpty()) {
 					// 회원번호, 이미지 경로
 					List<Image> imageList = memberService.selectImageList();
-					
+
 					HashMap<Integer, String> followImageMap = new HashMap<Integer, String>();
-					
-					for(Member member : followList[0]) followImageMap.put(member.getMemberNo(), null);
-					for(Member member : followList[1]) followImageMap.put(member.getMemberNo(), null);
-					
+
+					for (Member member : followList[0])
+						followImageMap.put(member.getMemberNo(), null);
+					for (Member member : followList[1])
+						followImageMap.put(member.getMemberNo(), null);
+
 					Set<Integer> memberNoSet = followImageMap.keySet();
-					for(int followNo : memberNoSet) {
-						for(Image image : imageList) {
-							if(image.getMemberNo() == followNo && image.getImagePath() != null) {
+					for (int followNo : memberNoSet) {
+						for (Image image : imageList) {
+							if (image.getMemberNo() == followNo && image.getImagePath() != null) {
 								String[] paths = image.getImagePath().split("\\\\"); // "\"를 기준으로 구분
 								followImageMap.put(followNo, "/" + paths[paths.length - 1]);
 							}
 						}
 					}
-					
+
 					request.setAttribute("followImageMap", followImageMap);
 				}
 				request.setAttribute("followList", followList);
-				
+
 				path = "/WEB-INF/views/member/followDetail.jsp";
 				view = request.getRequestDispatcher(path);
 				view.forward(request, response);
-				
-			}catch(Exception e) {
+
+			} catch (Exception e) {
 				ExceptionForward.errorPage(request, response, "팔로우 페이지 이동", e);
 			}
-			
-		// 언팔로우 ajax 처리
-		}else if(command.equals("/unFollow")) {
-			int memberNo = ((Member)request.getSession().getAttribute("loginMember")).getMemberNo();
+
+			// 언팔로우 ajax 처리
+		} else if (command.equals("/unFollow")) {
+			int memberNo = ((Member) request.getSession().getAttribute("loginMember")).getMemberNo();
 			int unFollowNo = Integer.parseInt(request.getParameter("memberNo"));
-			
+
 			try {
 				int result = memberService.unFollow(memberNo, unFollowNo);
 				response.getWriter().print(result);
-				
-			}catch(Exception e) {
+
+			} catch (Exception e) {
 				ExceptionForward.errorPage(request, response, "언팔로우", e);
 			}
-			
-		}else if(command.equals("/onstudyList")) {
-			
-			Member loginMember = (Member)request.getSession().getAttribute("loginMember");
+
+		} else if (command.equals("/onstudyList")) {
+
+			Member loginMember = (Member) request.getSession().getAttribute("loginMember");
 			// 로그인한 멤버 no
 			int memberNo = loginMember.getMemberNo();
-			
+
 			try {
-				
+
 				// 내가 참여했던 온스터디 리스트
 				List<MyOnstudy> myList = new OnstudyService().myOnstudyList(memberNo);
-				
+
 				request.setAttribute("myList", myList);
-				//request.setAttribute("pInf", pInf);
-				
+				// request.setAttribute("pInf", pInf);
+
 				path = "/WEB-INF/views/member/mypageOnstudyList.jsp";
 				view = request.getRequestDispatcher(path);
 				view.forward(request, response);
-			}catch (Exception e) {
+			} catch (Exception e) {
 				ExceptionForward.errorPage(request, response, "온스터디 내역 조회", e);
 			}
+
+			
+		// 프로필 상세페이지
+		} else if (command.equals("/profileDetail")) {
+
+			HttpSession session = request.getSession();
+
+			StudyNoteService SNservice = new StudyNoteService();
+
+			Member loginMember = (Member) session.getAttribute("loginMember");
+
+			// 로그인된 아이디
+			int loginMemberNo = loginMember.getMemberNo();
+
+			// 대상 아이디 (임시로 1로 지정함)
+			int memberNo = Integer.parseInt(request.getParameter("memberNo"));
+
+			// (int)request.getAttribute("memberNo");
+
+			int[] studyNoteNo = null;
+			try {
+				// 카테고리명 가져올 친구
+
+				List categorynm = SNservice.selectCategoryNM(memberNo);
+
+				// ui에 표현할 값들을 가지고 오는 list
+
+				List<StudyNote> notelist = SNservice.selectStudyNoteList(memberNo);
+				// noteNo / title / modify_dt / status / memberId / category //
+				
+				if(notelist.isEmpty()) {
+					msg = "학습노트가 없는 회원의 프로필은 들어갈 수 없습니다.";
+					session.setAttribute("msg", msg);
+					response.sendRedirect("../member/followDetail");
+				}else {
+					
+					String imagePath = memberService.selectImagePath(memberNo);
+					if(imagePath != null) {
+						String[] paths = imagePath.split("\\\\"); // "\"를 기준으로 구분
+						imagePath = "/" + paths[paths.length - 1];
+						
+					}
+					
+					studyNoteNo = new int[notelist.size()];
+					
+					for (int i = 0; i < notelist.size(); i++) {
+						studyNoteNo[i] = notelist.get(i).getStudyNoteNo();
+					}
+					notelist.get(0).getmemberId();
+					// 좋아요 숫자를 가져올 친구
+					List selectlike = SNservice.selectLike(studyNoteNo);
+					
+					// 단어장의 단어 숫자를 가져올 친구
+					List selectStudyNoteSetNM = SNservice.selectStudyNoteSetNM(studyNoteNo);
+					
+					// 팔로우 하는 사람들 가져오기 (먹는다)
+					List followings = SNservice.followingSelect(memberNo);
+					
+					// 팔로우 중인 사람 가져오기 (먹힌다)
+					
+					List followers = SNservice.followerSelect(memberNo);
+					
+					int follower = 0;
+					int following = 0;
+					
+					if (!followers.isEmpty()) {
+						follower = followers.size();
+						
+					}
+					if (!followings.isEmpty()) {
+						following = followings.size();
+						
+					}
+					
+					int followFlag = 0;
+					
+					String memberId = loginMember.getMemberId();
+					
+					if (!followers.isEmpty() && followers != null) {
+						for (int i = 0; i < followers.size(); i++) {
+							if (memberId.equals(followers.get(i))) {
+								followFlag = 1;
+							}
+						}
+					} else {
+						followFlag = 0;
+					}
+					
+					request.setAttribute("imagePath", imagePath);
+					request.setAttribute("follower", follower);
+					request.setAttribute("following", following);
+					request.setAttribute("categorynm", categorynm);
+					request.setAttribute("notelist", notelist);
+					request.setAttribute("selectlike", selectlike);
+					request.setAttribute("selectStudyNoteSetNM", selectStudyNoteSetNM);
+					request.setAttribute("followFlag", followFlag);
+					
+					request.setAttribute("targetNo", memberNo);
+					path = "/WEB-INF/views/member/profileDetail.jsp";
+					view = request.getRequestDispatcher(path);
+					view.forward(request, response);
+				}
+
+			}
+
+			catch (Exception e) {
+
+				ExceptionForward.errorPage(request, response, "팔로우 자세히 보기", e);
+			}
+
 		}
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

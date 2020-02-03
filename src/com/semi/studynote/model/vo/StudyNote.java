@@ -27,6 +27,56 @@ public class StudyNote {
 		this.categoryNM = categoryNM;
 	}
 
+
+
+	public StudyNote(int studyNoteNo,String studyNoteTitle, Date studyNoteModifyDate, String memberId, String categoryNM) {
+		super();
+		this.studyNoteNo = studyNoteNo;
+		this.studyNoteTitle = studyNoteTitle;
+		this.studyNoteModifyDate = studyNoteModifyDate;
+		this.memberId = memberId;
+		this.categoryNM = categoryNM;
+	}
+
+
+
+	public StudyNote(int studyNoteNo, String studyNoteTitle, Date studyNoteModifyDate, char studyNoteStatus,
+			String memberId, String categoryNM) {
+		super();
+		this.studyNoteNo = studyNoteNo;
+		this.studyNoteTitle = studyNoteTitle;
+		this.studyNoteModifyDate = studyNoteModifyDate;
+		this.studyNoteStatus = studyNoteStatus;
+		this.memberId = memberId;
+		this.categoryNM = categoryNM;
+	}
+
+
+
+	public StudyNote(int studyNoteNo, String studyNoteTitle, Date studyNoteCreateDate, Date studyNoteModifyDate,
+			String memberId, String categoryNM) {
+		super();
+		this.studyNoteNo = studyNoteNo;
+		this.studyNoteTitle = studyNoteTitle;
+		this.studyNoteCreateDate = studyNoteCreateDate;
+		this.studyNoteModifyDate = studyNoteModifyDate;
+		this.memberId = memberId;
+		this.categoryNM = categoryNM;
+	}
+
+	public String getmemberId() {
+		return memberId;
+	}
+	public void setmemberId(String memberId) {
+		this.memberId = memberId;
+	}
+	public String getcategoryNM() {
+		return categoryNM;
+	}
+	public void setcategoryNM(String categoryNM) {
+		this.categoryNM = categoryNM;
+	}
+
 	public int getStudyNoteNo() {
 		return studyNoteNo;
 	}
@@ -89,6 +139,5 @@ public class StudyNote {
 				+ studyNoteCreateDate + ", studyNoteModifyDate=" + studyNoteModifyDate + ", studyNoteStatus="
 				+ studyNoteStatus + ", memberId=" + memberId + ", categoryNM=" + categoryNM + "]";
 	}
-	
-	
+
 }

@@ -37,14 +37,7 @@ public class AdminService {
 			case "정지여부":	subQuery = " AND MEMBER_STATUS='" + content + "'"; break;
 			case "아이디":	subQuery = " AND MEMBER_ID LIKE '%' || '" + content + "' || '%'"; break;
 			case "이름":		subQuery = " AND MEMBER_NM LIKE '%' || '" + content + "' || '%'"; break;
-			case "회원번호":	for(int i=0; i<content.length(); i++) {
-								check = content.charAt(i);
-								if(check < 48 || check > 59) {
-									content = "";
-									break;
-								}
-							}
-							subQuery = " AND MEMBER_NO='" + content + "'"; break;
+			case "회원번호":	subQuery = " AND MEMBER_NO='" + content + "'"; break;
 			case "포인트":	subQuery = " AND MEMBER_POINT='" + content + "'"; break;
 			case "신고회수":	subQuery = " AND MEMBER_DECLAR_COUNT='" + content + "'"; break;
 			}

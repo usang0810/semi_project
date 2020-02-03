@@ -6,15 +6,10 @@
 <%@page import="java.util.Date"%>
 <% 
 	List<MyOnstudy> myList = (List<MyOnstudy>)request.getAttribute("myList");
-	//PageInfo pInf = (PageInfo)request.getAttribute("pInf");
+	int onstudyNo = 0;
+	int memberNo = 0;
+	int progress = 0;
 
-	//System.out.println(myList);
-	
-	//int listCount = pInf.getListCount();
-	//int currentPage = pInf.getCurrentPage();
-	//int maxPage = pInf.getMaxPage();
-	//int startPage = pInf.getStartPage();
-	//int endPage = pInf.getEndPage();
 %>
 <!DOCTYPE html>
 <html>
@@ -92,11 +87,13 @@
          					//overlay = "overlay";
          					overlay = "<div class='overlay mb-3'>완 료</div>";
          					close = "close-onstudy";
+	
          				}
          				%>
-  			<%int progress = (int)Math.floor(((double)onstudy.getMyCertifyCount()/(double)(onstudy.getOnstudyCertifyCount() * onstudy.getOnstudyWeeks()))*100); %>
+  			<%progress = (int)Math.floor(((double)onstudy.getMyCertifyCount()/(double)(onstudy.getOnstudyCertifyCount() * onstudy.getOnstudyWeeks()))*100); %>
            	<div class="col-md-4">
            		<div class="card <%=close%>">
+           			
 					<img class="mb-3" alt="랜덤 이미지" style="height: 200px" src="<%=request.getContextPath()%>/resources/onstudyThumbnails/<%=onstudy.getImageName()%>">
 					<%-- <div class="<%=overlay %> mb-3">완 료</div> --%>
 					<%=overlay %> 
@@ -131,7 +128,19 @@
 							</div><br>
 							<div>
 							<a class="btn form-control orange-hover-btn" href="../onstudy/detail?oNo=<%=onstudy.getOnstudyNo() %>" style="width:30%; float: left;">상세보기</a>&nbsp;&nbsp;
-							<a class="btn form-control orange-hover-btn" href="../onstudy/boardList?oNo=<%=onstudy.getOnstudyNo() %>" style="width:30%; float: left;">인증하기</a>&nbsp;&nbsp;
+							<a class="btn form-control orange-hover-btn" href="../onstudy/boardList?oNo=<%=onstudy.getOnstudyNo() %>" id="certify" style="width:30%; float: left;">인증하기</a>&nbsp;&nbsp;
+							
+							<%if ( onstudy.getRefundD() == -1 && onstudy.getCloseCheck() == 1) {%> <!-- 미환급 + 온스터디 종료 -->
+							
+							<input type="hidden" value="<%=onstudy.getOnstudyNo() %>" class="onstudyNo">
+							<input type="hidden" value="<%=progress %>" class="progress">
+							<input type="hidden" value="<%=onstudy.getOnstudyFee() %>" class="fee">
+							<a href="javascript:" class="btn form-control orange-hover-btn reward-btn" style="width:30%; float: left; visibility:visibility">환급신청</a>&nbsp;&nbsp;
+							<%} else  if ( onstudy.getRefundD() >= 0 && onstudy.getCloseCheck() == 1){%><!-- 환급  + 온스터디 종료 -->
+							<button class="btn form-control orange-btn" style="width:30%; float: left; disabled">환급완료</a>&nbsp;&nbsp;	
+							<%} %>
+							
+							</form>
 							</div>
 						</div>
 					</div>
@@ -168,6 +177,26 @@
 	            $(".close-onstudy").parent().show();
 	        }
 	    });
+	   	
+	   	$(".reward-btn").on("click",function(){
+	   		var check = $(this);
+	   		var onstudyNo = check.parent().children(".onstudyNo").val();
+	   		var fee = check.parent().children(".fee").val();
+	   		var progress = check.parent().children(".progress").val();
+	   		
+	   		console.log(check);
+	   		console.log(onstudyNo);
+	   		console.log(fee);
+	   		console.log(progress);
+	   		
+	   		
+		   	if( confirm("환급 신청하시겠습니까?") ) {
+ 		   		location.href ="<%= request.getContextPath()%>/onstudy/reward?onstudyNo=" + onstudyNo + "&progress=" + progress + "&fee=" + fee;
+ 	   	
+		    // 값 보내는 방법
+		   	
+		   	}
+	   	}); 	
 	</script>  
 
 </body>

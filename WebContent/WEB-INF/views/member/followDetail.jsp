@@ -40,8 +40,7 @@
 		                  	<img src="<%=request.getContextPath() %>/images/navi-icon-default.png">	                  	
 	                  	<%} %>
                   		<span><%=following.getMemberId() %></span>
-	                    <div class="fa fa-window-close follow-cancle-btn">
-	                    </div>
+	                    <div class="fa fa-window-close follow-cancle-btn" display="inline-block"></div>
 	                  </li>
                 	<%} %>
                 </ul>
@@ -70,6 +69,14 @@
     </div>
   </div>
 
+
+
+
+
+
+
+
+
   <script>
     $(function () {
       $(".follow-cancle-btn").on({
@@ -96,10 +103,15 @@
 						console.log("언팔로우 ajax 실패");	
 						console.log(e);
 					},
-				});
+			});
           }
         }
       });
+      
+      $(".following-list-content li").on("click", function(){
+    	 location.href="../member/profileDetail?memberNo=" + $(this).val();
+      });
+      
     });
   </script>
 

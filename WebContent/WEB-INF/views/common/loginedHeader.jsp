@@ -69,10 +69,10 @@
 					<nav class="my-2 my-md-0">
 						<div>
 							<ul class="menu">
-								<li><a href="#" class="menu-list">학습노트</a>
+								<li><a href="<%= request.getContextPath()%>/StudyNoteController/list" class="menu-list" class="menu-list">학습노트</a>
 									<ul>
-										<li><a href="#" class="sub-menu-list">학습노트 검색</a></li>
-										<li><a href="#" class="sub-menu-list">학습노트 만들기</a></li>
+										<li><a href="<%= request.getContextPath()%>/StudyNoteController/list" class="sub-menu-list">학습노트 검색</a></li>
+										<li><a href="<%=request.getContextPath() %>/StudyNoteController/make" class="sub-menu-list">학습노트 만들기</a></li>
 									</ul></li>
 								<li><a href="<%=request.getContextPath() %>/onstudy/main" class="menu-list">온스터디</a>
 									<ul>
@@ -120,7 +120,7 @@
 				<img src="<%=request.getContextPath()%>/images/setting-off.png" alt="세팅버튼"></a>
 		</div>
 		<div class="mypage-btn-list">
-			<a href="#">학습노트 관리</a>
+			<a href="<%=request.getContextPath()%>/StudyNoteController/selectStudyNoteSet">학습노트 관리</a>
 			<a href="<%=request.getContextPath() %>/member/onstudyList">온스터디 내역</a>
 			<a href="<%=request.getContextPath() %>/member/logout">로그아웃</a>
 		</div>
