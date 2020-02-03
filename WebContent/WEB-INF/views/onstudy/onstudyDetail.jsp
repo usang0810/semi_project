@@ -64,11 +64,25 @@
                   <br>
                   <h5>온스터디 진행방식</h5><hr>
                   <p>
-                    <textarea class="form-control" rows="5" style="resize:none; background-color:white;" readonly></textarea>
+                    <textarea class="form-control" rows="5" style="resize:none; background-color:white;" readonly>
+온스터디의 기간은 최소 2주이상 최대 8주이하로 진행됩니다.
+온스터디는 일주일에 최소 3회이상 인증하는 방식으로 진행됩니다.
+온스터디 인증은 해당 온스터디의 게시판에 파일을 올리는 형식으로 인증해야 합니다.
+참가할때 포인트를 지불하고 온스터디의 기간이 끝나면 회원님의 참여율에 따라 포인트가 환급됩니다.
+참가한 온스터디의 게시판에서 다른 회원의 인증 게시판을 확인하고 부당하다고 생각되면 신고게시판에 해당 회원을 신고해주세요.
+신고횟수가 누적된 회원은 정지처리됩니다.
+                    </textarea>
                   </p>
                   <h5>인증시 주의사항</h5><hr>
                   <p>
-                    <textarea class="form-control" rows="5" style="resize:none; background-color:white;" readonly></textarea>
+                    <textarea class="form-control" rows="5" style="resize:none; background-color:white;" readonly>
+온스터디는 개설시 삭제할 수 없습니다. 수정밖에 안되니 주의하여 개설해주세요.
+온스터디는 참여율로 포인트를 환급해드립니다.
+참여율 50%미만이면 포인트를 환급받지 못하니 주의해주세요.
+참여율 50%이상 75%이하이면 포인트의 절반만 환급받을 수 있습니다.
+참여율이 75%이상 90%이하이면 포인트의 100%를 환급받을 수 있습니다.
+참여율이 90%이상이면 해당 온스터디의 남은 포인트를 추가로 지급해드립니다.
+                    </textarea>
                   </p>
                   <h5>추가 주의사항</h5><hr>
                   <p>
@@ -154,9 +168,5 @@
           });
        </script>
 
-
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     </body>
 </html>

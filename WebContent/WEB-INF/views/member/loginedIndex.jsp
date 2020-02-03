@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="java.util.List, com.semi.onstudy.model.vo.Onstudy"%>
+<%
+	List<Onstudy> pList = (List<Onstudy>)request.getAttribute("pList");
+%>
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -67,63 +71,27 @@
 							<p>이번주에 참가비가 제일 많이 모인 온 스터디를 확인하세요!</p>
 						</div>
 						<div class="row">
-							<div class="col-md-4">
-								<div class="card mb-4 shadow-sm">
-									<div class="Thumbnail" id="img-test"
-										style="background-image: url(../images/river1.PNG);"></div>
-									<div class="card-body">
-										<p class="card-title">토익 목표점수 달성반</p>
-										<p class="card-text">
-											- 마감날짜 : 2020-01-01(D-10)<br> - 인증빈도 : 주 3회<br> -
-											참여자 수 : 20명<br> - 모인금액 : 1,000,000원
-										</p>
-										<div
-											class="d-flex justify-content-between align-items-center ">
-											<div class="btn-group">
-												<a class="btn btn-sm form-control orange-hover-btn">자세히</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="card mb-4 shadow-sm">
-									<div class="Thumbnail"
-										style="background-image: url(../images/tower1.PNG);"></div>
-									<div class="card-body">
-										<p class="card-title">토익 목표점수 달성반</p>
-										<p class="card-text">
-											- 마감날짜 : 2020-01-01(D-10)<br> - 인증빈도 : 주 3회<br> -
-											참여자 수 : 20명<br> - 모인금액 : 1,000,000원
-										</p>
-										<div
-											class="d-flex justify-content-between align-items-center ">
-											<div class="btn-group">
-												<a class="btn btn-sm form-control orange-hover-btn">자세히</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="card mb-4 shadow-sm">
-									<div class="Thumbnail"
-										style="background-image: url(../images/flower1.PNG);"></div>
-									<div class="card-body">
-										<p class="card-title">토익 목표점수 달성반</p>
-										<p class="card-text">
-											- 마감날짜 : 2020-01-01(D-10)<br> - 인증빈도 : 주 3회<br> -
-											참여자 수 : 20명<br> - 모인금액 : 1,000,000원
-										</p>
-										<div
-											class="d-flex justify-content-between align-items-center ">
-											<div class="btn-group">
-												<a class="btn btn-sm form-control orange-hover-btn">자세히</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
+							<%for(Onstudy onstudy : pList) { %>
+				              <div class="col-md-4">
+				                <div class="card mb-4 shadow-sm">
+				         			<img class="mb-3" alt="온스타일 이미지" src="<%if(onstudy.getThumbnail() != null) { %><%=request.getContextPath()%>/resources/onstudyThumbnails/<%=onstudy.getThumbnail()%> <%} else { %><%=request.getContextPath()%>/resources/onstudyThumbnails/noimage.png"<%}%>>
+			                		<div class="card-body">
+			                    		<p class="card-title"><%=onstudy.getOnstudyTitle() %></p>
+			                    		<p class="card-text">
+					                      - 마감날짜 : <%=onstudy.getOnstudyDeadlineDt() %>(D-<%=onstudy.getOnstudyDday() %>)<br>
+					                      - 인증빈도 : 주 <%=onstudy.getOnstudyCertifyCount() %>회<br>
+					                      - 참여자 수 : <%=onstudy.getMemberCount() %>명<br>
+					                      - 모인금액 : <%=onstudy.getSumFee() %>원
+			                    		</p>
+			                    		<div class="d-flex justify-content-between align-items-center ">
+			                      			<div class="btn-group">
+			                        			<a class="btn btn-sm form-control orange-hover-btn" href="../onstudy/detail?no=<%=onstudy.getOnstudyNo() %>">자세히</a>
+			                      			</div>
+			                    		</div>
+			                  		</div>
+				                </div>
+			              	  </div>
+					        <%} %>
 						</div>
 					</div>
 				</div>

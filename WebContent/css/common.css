@@ -4,7 +4,7 @@ img,fieldset{border:none;}
 body,input{color : #333333 !important;}
 input,select,img{vertical-align:middle;}
 table	{border-collapse:collapse;}
-
+html{overflow-x:hidden;}
 html body .background-navy{
   background: #002d4c;
   color: #ffffff;

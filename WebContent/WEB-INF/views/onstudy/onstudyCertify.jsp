@@ -89,7 +89,7 @@
                         참여 중인 온스터디가 없습니다.
                         </h2>
                         <br><br>
-                        <a class="btn btn-outline-secondary" href="onstudy_main.html">온스터디 보러가기</a>
+                        <a class="btn btn-outline-secondary" href="main">온스터디 보러가기</a>
                         <br><br>
                         </div>
                      </div>

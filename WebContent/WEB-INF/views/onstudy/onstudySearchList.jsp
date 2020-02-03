@@ -158,7 +158,8 @@ int endPage = pInf.getEndPage();
                 <%for(Onstudy onstudy : sList) { %>
                       <div class="col-md-4">
                         <div class="card">
-                          <img class="mb-3" alt="온스타일 이미지" src="<%=request.getContextPath() %>/resources/onstudyThumbnails/<%=onstudy.getThumbnail() %>" />
+                          <img class="mb-3" alt="온스타일 이미지" style="height:200px"
+                          	src="<%= onstudy.getThumbnail() != null ? request.getContextPath() + "/resources/onstudyThumbnails/" + onstudy.getThumbnail() : request.getContextPath() + "/resources/onstudyThumbnails/noimage.png" %>" />
                           <div class="card-block">
                             <h5 class="card-title">
                         <%=onstudy.getOnstudyTitle() %>
@@ -205,12 +206,7 @@ int endPage = pInf.getEndPage();
 		                </li>
 	                	<% } else{ %>
                 		<li>
-	                    	<a class="page-link" href="<%= request.getContextPath() %>/onstudy/searchList?currentPage=<%= p %>"><%= p %></a>
-	                
-	                http://localhost:8080/SemiProject/onstudy/searchList?search-keyword=&search-category=%EC%98%81%EC%96%B4&search-start=&search-end=
-	                http://localhost:8080/SemiProject/onstudy/searchList?currentPage=2
-	                
-	                
+	                    	<a class="page-link" href="<%= request.getContextPath() %>/onstudy/searchList?currentPage=<%= p %>"><%= p %></a>              
 	                	</li>
 	                	<% } %>
 					<%} %>

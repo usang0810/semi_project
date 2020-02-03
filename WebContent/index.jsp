@@ -3,6 +3,7 @@
 <%@page import="java.util.List, com.semi.onstudy.model.vo.Onstudy"%>
 <%
 	List<Onstudy> mainList = (List<Onstudy>)request.getAttribute("mainList");
+	List<String> cList = (List<String>)request.getAttribute("cList");
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -171,8 +172,8 @@
 					<div class="col-md-4">
 						<div class="card mb-4 shadow-sm">
 							<div class="Thumbnail">
-								<img
-									src="<%=request.getContextPath()%>/resources/onstudyThumbnails/<%=onstudy.getThumbnail()%>">
+								<img style="height:200px"
+									src="<%= onstudy.getThumbnail() != null ? request.getContextPath() + "/resources/onstudyThumbnails/" + onstudy.getThumbnail() : request.getContextPath() + "/resources/onstudyThumbnails/noimage.png" %>">
 							</div>
 							<div class="card-body">
 								<p class="card-title"><%=onstudy.getOnstudyTitle()%></p>
@@ -208,25 +209,26 @@
                     <h2 class="recommend-title">온스터디 카테고리</h2>
                     <p class="recommend-sub-title">나에게 맞는 카테고리를 찾아보세요.</p>
                     <ul class="category-list list-1">
-                        <li><a>토익</a></li>
-                        <li><a>중국어</a></li>
-                        <li><a>일본어</a></li>
-                        <li><a>독일어</a></li>
-                        <li><a>코딩</a></li>
-                        <li><a>HTML</a></li>
-                        <li><a>CSS</a></li>
-                        <li><a>Javascript</a></li>
-                    </ul>
-                    <ul class="category-list">
-                        <li><a>토익</a></li>
-                        <li><a>중국어</a></li>
-                        <li><a>일본어</a></li>
-                        <li><a>독일어</a></li>
-                        <li><a>코딩</a></li>
-                        <li><a>HTML</a></li>
-                        <li><a>CSS</a></li>
-                        <li><a>Javascript</a></li>
-                    </ul>
+    		 	         <% if(cList == null) { %>
+	                   		 <%for (int i=0; i < 6; i++) { %>
+	                        <li><a>카테고리 불러오기 실패</a></li>
+	                        <%}%>
+	                        </ul>
+	                        <ul class="category-list">
+	                        <%for(int i=0; i < 6; i++) {%>
+	                        <li><a>카테고리 불러오기 실패</a></li>
+	                        <%} %>
+                        <% } else { %>
+	                        <%for(int i=0; i < 6; i++) { %>
+	                        <li><a><%=cList.get(i) %></a></li>
+	                        <%} %>
+	                        </ul>
+	                        <ul class="category-list">
+	                        <%for(int i=6; i<16; i++) { %>
+	                        <li><a><%=cList.get(i) %></a></li>
+	                        <%} %>
+                       <%} %>
+                     </ul>
                 </div>
             </div>
         </div>

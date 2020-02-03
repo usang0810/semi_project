@@ -201,6 +201,7 @@
 
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 	<script>
+	
     var formatCheck = {
       "newPwd1": false,
       "newPwd2": false,
@@ -261,6 +262,7 @@
     }
 	
 	// 이미지 첨부 시 이미지 출력
+	var flag = true;
 	function LoadImg(value) {
 		// 파일 확장자 검사
     	var dot = $(value).val().lastIndexOf(".");
@@ -269,7 +271,6 @@
     	ext = ext.toLowerCase();
     	
     	// 이미지 파일이면 false, 그 외면 true
-    	flag = true;
     	switch(ext){ 
     	case "jpg" : case "png" : case "gif" : case "jpeg" : case "bmp" : case "tiff" : case "raw" :
    			flag = false; break;
@@ -292,26 +293,22 @@
 	// 프로필 사진 변경여부 유효성 검사
 	// 프로필 사진 변경 안한 뒤 submit하면 사진 에러남
 	function proValidate(){
-		var src = $("#profileImg").prop("src");
+ 		var src = $("#profileImg").prop("src");
 		var origin = "<%=profileImagePath%>";
 		
 		var srcSplit = src.split("/");
 		var originSplit = origin.split("/");
-		console.log(flag);
-		
-		console.log(srcSplit[srcSplit.length-1]);
-		console.log(originSplit[originSplit.length-1]);
 		
  	    if(srcSplit[srcSplit.length-1] == originSplit[originSplit.length-1]){
 	    	alert("사진을 변경한 뒤 확인을 눌러주세요!");
 	    	return false;
 	    }else if(flag){
-	    	alert("프로필 사진에 맞는 확장자인지 확인해주세요.\n.jpg, .png, .gif, .jpeg, .bmp, .tiff, .raw만 가능합니다.");
-	    	return false;
- 	    
+ 	    	alert("프로필에 사용할 수 없는 확장자입니다.\n다음과 같은 확장자 파일을 사용해 주세요.\n.jpg .png .gif .jpeg .bmp .tiff .raw");
 	    }else{
 	    	return true;
 	    }
+	    console.log("validate()");
+	    return false;
 	    
 	}
   </script>

@@ -177,7 +177,19 @@ $(document).ready(function() {
 
 });
 // 이미지 첨부 시 이미지 출력
+var flag=true;
 function LoadImg(value) {
+	// 파일 확장자 검사
+	var dot = $(value).val().lastIndexOf(".");
+	var ext = $(value).val().substring(dot+1, $(value).val().length);
+	
+	ext = ext.toLowerCase();
+	
+	// 이미지 파일이면 false, 그 외면 true
+	switch(ext){ 
+	case "jpg" : case "png" : case "gif" : case "jpeg" : case "bmp" : case "tiff" : case "raw" :
+			flag = false; break;
+	}
 
 	if (value.files && value.files[0]) {
 		// -> 파일이 선택이 된 경우
@@ -207,4 +219,9 @@ function validate() {
 			return false;
 		}
 	}
+	if(flag){
+    	alert("프로필에 사용할 수 없는 확장자입니다.\n다음과 같은 확장자 파일을 사용해 주세요.\n.jpg .png .gif .jpeg .bmp .tiff .raw");
+    	return false;
+	}
+	return true;
 }

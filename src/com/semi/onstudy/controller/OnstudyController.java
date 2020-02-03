@@ -209,6 +209,8 @@ public class OnstudyController extends HttpServlet {
 							int result = onstudyService.createOnstudy(onstudy, thumbImg);
 							
 							if(result > 0) {
+								loginMember.setMemberPoint(loginMember.getMemberPoint() - onstudyFee);
+								request.getSession().setAttribute("loginMember", loginMember);
 								msg = "온스터디 개설 성공";
 							}else {
 								msg = "온스터디 개설 실패";
@@ -291,11 +293,13 @@ public class OnstudyController extends HttpServlet {
 						int result = onstudyService.joinOnstudy(memberNo, onstudy);
 						
 						if(result > 0) {
+							loginMember.setMemberPoint(loginMember.getMemberPoint() - onstudy.getOnstudyFee());
+							request.getSession().setAttribute("loginMember", loginMember);
 							path = "certify";
 							msg = "온스터디 참가 성공 : " + onstudy.getOnstudyFee() + "포인트가 차감됩니다.";
 						} else {
 							path="main";
-							msg = "온스터디 참가 성공";
+							msg = "온스터디 참가 실패";
 						}
 						
 					} else {
@@ -318,7 +322,7 @@ public class OnstudyController extends HttpServlet {
 			} 
 		}
 		
-		// 온스터디 참가
+		// 온스터디 참가 취소
 		else if (command.equals("/cancel")) {
 			
 			Member loginMember = (Member)request.getSession().getAttribute("loginMember");
@@ -338,6 +342,8 @@ public class OnstudyController extends HttpServlet {
 					int result = onstudyService.cancelOnstudy(memberNo, onstudy);
 					
 					if(result > 0) {
+						loginMember.setMemberPoint(loginMember.getMemberPoint() + onstudy.getOnstudyFee());
+						request.getSession().setAttribute("loginMember", loginMember);
 						path = "certify";
 						msg = "온스터디 참가 취소 성공 : " + onstudy.getOnstudyFee() + "포인트가 취소 환불됩니다.";
 					} else {

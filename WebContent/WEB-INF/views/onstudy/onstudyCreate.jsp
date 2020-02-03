@@ -46,7 +46,7 @@
 						<form method="POST" action="../onstudy/createOnstudy" enctype="multipart/form-data" onsubmit="sendEnd();">
 							<p id="title" class="form-row">
                       <label for="onstudy-title" class="col-sm-2" style="font-weight: bolder;" >제목</label>
-                      <input type="text" id="onstudy-title" class="col-sm-10 form-control input-comment" placeholder="제목을 입력해주세요" required>
+                      <input type="text" id="onstudy-title" name="onstudy-title" class="col-sm-10 form-control input-comment" placeholder="제목을 입력해주세요" required>
                     </p>
                     <p id="thumbnail"  class="form-row">
                       <label for="onstudy-thumbnail"  class="col-sm-2" style="font-weight: bolder;" >썸네일</label>

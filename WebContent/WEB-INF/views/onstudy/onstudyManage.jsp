@@ -81,6 +81,8 @@
 		</div>
 	</div>
         
+        <!-- footer -->
+	<%@ include file="../common/footer.jsp"%>
 	<script>
 
     $(function () {
@@ -100,8 +102,6 @@
 	</script>
         
         
-        <!-- footer -->
-	<%@ include file="../common/footer.jsp"%>
 
 </body>
 </html>

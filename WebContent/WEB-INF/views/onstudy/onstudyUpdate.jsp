@@ -67,7 +67,6 @@
                     <p id="onstudy-button"  class="form-row" style="float: right;">
                       <a class="btn btn-sm form-control background-gray" id="cancel" href="../onstudy/manage">취 소</a>&nbsp;
                       <button class="btn btn-sm form-control orange-hover-btn" type="submit">저 장</button>&nbsp;
-                      <a class="btn btn-sm form-control orange-hover-btn" id="del">삭 제</a>
                     </p>
 					</form>
 					</div>
@@ -77,15 +76,9 @@
 		</div>
 	</div>
 	
+        <!-- footer -->
+	<%@ include file="../common/footer.jsp"%>
 	<script>
-	
-		$(function(){
-			
-			$("#del").on("click",function(){
-				if(confirm("정말 삭제 하시겠습니까?")) location.href ="../onstudy/delete?no=<%=onstudy.getOnstudyNo() %>";
-			});
-			
-		});
 		
 	    function LoadImg(value) {
 	    	
@@ -102,8 +95,5 @@
 		
 	</script>	
         
-        <!-- footer -->
-	<%@ include file="../common/footer.jsp"%>
-
 </body>
 </html>

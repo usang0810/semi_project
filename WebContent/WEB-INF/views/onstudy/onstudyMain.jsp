@@ -154,7 +154,8 @@
              	 <%for(Onstudy onstudy : mList) { %>
                       <div class="col-md-4">
                         <div class="card">
-                          <img class="mb-3" alt="온스타일 이미지" src="<%=request.getContextPath() %>/resources/onstudyThumbnails/<%=onstudy.getThumbnail() %>" />
+                       	  <img class="mb-3" alt="온스타일 이미지" style="height:200px"
+                       	  	src="<%= onstudy.getThumbnail() != null ? request.getContextPath() + "/resources/onstudyThumbnails/" + onstudy.getThumbnail() : request.getContextPath() + "/resources/onstudyThumbnails/noimage.png" %>"/>
                           <div class="card-block">
                             <h5 class="card-title"><%=onstudy.getOnstudyTitle() %></h5>
                             <p class="card-text">
@@ -193,7 +194,8 @@
                  	 <%for(Onstudy onstudy : dList) { %>
                       <div class="col-md-4">
                         <div class="card">
-                          <img class="mb-3" alt="온스타일 이미지" src="<%=request.getContextPath() %>/resources/onstudyThumbnails/<%=onstudy.getThumbnail() %>" />
+                          <img class="mb-3" alt="온스타일 이미지" style="height:200px"
+                          	src="<%= onstudy.getThumbnail() != null ? request.getContextPath() + "/resources/onstudyThumbnails/" + onstudy.getThumbnail() : request.getContextPath() + "/resources/onstudyThumbnails/noimage.png" %>" />
                           <div class="card-block">
                             <h5 class="card-title"><%=onstudy.getOnstudyTitle() %></h5>
                             <p class="card-text">
@@ -202,7 +204,7 @@
                               <b>참여  기간</b>&nbsp;&nbsp;<%=onstudy.getOnstudyStartDt() %> ~ <%=onstudy.getOnstudyEndDt() %> (<%=onstudy.getOnstudyWeeks() %>주)<br>
                               <b>인증  횟수</b>&nbsp;&nbsp;주 <%=onstudy.getOnstudyCertifyCount() %>회<br>
                               <b>참 가 비</b>&nbsp;&nbsp; <%=onstudy.getOnstudyFee() %> 원 <br>
-                              <a class="btn btn-outline-secondary more-btn" href="../onstudy/detail?no=<%=onstudy.getOnstudyNo() %>" style="float: right;">자세히보기</a>
+                              <a class="btn btn-outline-secondary more-btn" href="../onstudy/detail?oNo=<%=onstudy.getOnstudyNo() %>" style="float: right;">자세히보기</a>
                             </p>
                           </div>
                         </div>

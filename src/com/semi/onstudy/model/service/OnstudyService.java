@@ -199,7 +199,7 @@ public class OnstudyService {
 			
 			if(result > 0) { // 개설되면 참가해야 함
 				
-				int check = onstudyDao.joinOnstudy(conn, onstudy.getOnstudyNo(), onstudy.getMemberNo());
+				int check = onstudyDao.joinOnstudy(conn, onstudy.getMemberNo(), onstudy.getOnstudyNo());
 				
 				if(check > 0) { // 참가 성공하면 포인트 차감
 					check = onstudyDao.joinPoint(conn, onstudy.getOnstudyFee(), onstudy.getMemberNo());

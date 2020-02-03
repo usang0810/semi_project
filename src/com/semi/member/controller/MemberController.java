@@ -29,6 +29,7 @@ import com.semi.member.model.vo.Order;
 import com.semi.member.model.vo.PageInfo;
 import com.semi.member.model.vo.Point;
 import com.semi.onstudy.model.service.OnstudyService;
+import com.semi.onstudy.model.vo.Onstudy;
 import com.semi.wrapper.EncryptWrapper;
 import com.oreilly.servlet.MultipartRequest;
 
@@ -133,10 +134,16 @@ public class MemberController extends HttpServlet {
 			response.sendRedirect(request.getContextPath());
 			
 		}else if(command.equals("/main")) {
-			path = "/WEB-INF/views/member/loginedIndex.jsp";
-			view = request.getRequestDispatcher(path);
-			view.forward(request, response);
-			
+			try {
+				List<Onstudy> pList = new OnstudyService().selectOnstudyPList();
+                request.setAttribute("pList", pList);
+                
+                path = "/WEB-INF/views/member/loginedIndex.jsp";
+                view = request.getRequestDispatcher(path);
+                view.forward(request, response);
+			}catch(Exception e) {
+				ExceptionForward.errorPage(request, response, "메인페이지 이동", e);
+			}
 			
 		// 회원가입 양식으로 포워드
 		}else if(command.equals("/signupForm")) {

@@ -3,7 +3,6 @@ package com.semi.common.controller;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.semi.common.ExceptionForward;
+import com.semi.mainPage.model.service.MainPageService;
 import com.semi.onstudy.model.service.OnstudyService;
 import com.semi.onstudy.model.vo.Onstudy;
 
@@ -28,16 +28,14 @@ public class Controller extends HttpServlet {
 		String uri = request.getRequestURI();
 		String contextPath = request.getContextPath();
 		String command = uri.substring((contextPath + "/").length());
-		String path = null;
-		RequestDispatcher view = null;
-		String msg = null;
 		
-		OnstudyService onstudyService = new OnstudyService();
-
 		try {
 			
-			List<Onstudy> mainList = onstudyService.selectMainList();
+			List<Onstudy> mainList = new OnstudyService().selectMainList();
+			List<String> cList = new MainPageService().selectCategory();	
+			
 			request.setAttribute("mainList", mainList);
+			request.setAttribute("cList", cList);
 			request.getRequestDispatcher("index.jsp").forward(request, response);
 		
 		} catch (Exception e) {
