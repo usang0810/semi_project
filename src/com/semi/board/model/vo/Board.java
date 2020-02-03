@@ -14,11 +14,35 @@ public class Board {
 	private int boardCount;
 	private String boardWriter;
 	private String declarStatus;
+	private char secretStatus;
 	
 	public Board() {
 		// TODO Auto-generated constructor stub
 	}
-	
+
+	public Board(int boardNo, String boardTitle, String boardContent) {
+		super();
+		this.boardNo = boardNo;
+		this.boardTitle = boardTitle;
+		this.boardContent = boardContent;
+	}
+
+	public Board(int boardNo, String boardTitle, String boardContent, String boardType, char secretStatus) {
+		super();
+		this.boardNo = boardNo;
+		this.boardType = boardType;
+		this.boardTitle = boardTitle;
+		this.boardContent = boardContent;
+		this.secretStatus = secretStatus;
+	}
+
+	public Board(String boardTitle, String boardContent, String boardType) {
+		super();
+		this.boardTitle = boardTitle;
+		this.boardContent = boardContent;
+		this.boardType = boardType;
+	}
+
 	public Board(int boardNumbering, String boardType, String boardTitle, String boardContent, Date boardModifyDt,
 			int boardCount, String boardWriter) {
 		super();
@@ -44,7 +68,21 @@ public class Board {
 		this.boardTitle = boardTitle;
 		this.boardContent = boardContent;
 	}
-	
+
+	public Board(int boardNumbering, int boardNo, String boardType, String boardTitle, String boardContent,
+			Date boardCreateDt, Date boardModifyDt, char boardStatus, int boardCount, String boardWriter) {
+		super();
+		this.boardNumbering = boardNumbering;
+		this.boardNo = boardNo;
+		this.boardType = boardType;
+		this.boardTitle = boardTitle;
+		this.boardContent = boardContent;
+		this.boardCreateDt = boardCreateDt;
+		this.boardModifyDt = boardModifyDt;
+		this.boardStatus = boardStatus;
+		this.boardCount = boardCount;
+		this.boardWriter = boardWriter;
+	}
 	
 
 	public Board(int boardNo, String boardType, String boardTitle, String boardContent, Date boardModifyDt,
@@ -125,6 +163,32 @@ public class Board {
 		this.boardCount = boardCount;
 		this.boardWriter = boardWriter;
 		this.declarStatus = declarStatus;
+	}
+	
+	public Board(int boardNumbering, int boardNo, String boardType, String boardTitle, String boardContent,
+			Date boardCreateDt, Date boardModifyDt, char boardStatus, int boardCount, String boardWriter,
+			String declarStatus, char secretStatus) {
+		super();
+		this.boardNumbering = boardNumbering;
+		this.boardNo = boardNo;
+		this.boardType = boardType;
+		this.boardTitle = boardTitle;
+		this.boardContent = boardContent;
+		this.boardCreateDt = boardCreateDt;
+		this.boardModifyDt = boardModifyDt;
+		this.boardStatus = boardStatus;
+		this.boardCount = boardCount;
+		this.boardWriter = boardWriter;
+		this.declarStatus = declarStatus;
+		this.secretStatus = secretStatus;
+	}
+
+	public char getSecretStatus() {
+		return secretStatus;
+	}
+
+	public void setSecretStatus(char secretStatus) {
+		this.secretStatus = secretStatus;
 	}
 
 	public String getDeclarStatus() {
@@ -220,7 +284,11 @@ public class Board {
 		return "Board [boardNumbering=" + boardNumbering + ", boardNo=" + boardNo + ", boardType=" + boardType
 				+ ", boardTitle=" + boardTitle + ", boardContent=" + boardContent + ", boardCreateDt=" + boardCreateDt
 				+ ", boardModifyDt=" + boardModifyDt + ", boardStatus=" + boardStatus + ", boardCount=" + boardCount
-				+ ", boardWriter=" + boardWriter + ", declarStatus=" + declarStatus + "]";
+				+ ", boardWriter=" + boardWriter + ", declarStatus=" + declarStatus + ", secretStatus=" + secretStatus
+				+ "]";
 	}
+	
+	
+
 
 }

@@ -81,10 +81,10 @@
 										<li><a href="#" class="sub-menu-list">온스터디 인증하기</a></li>
 										<li><a href="#" class="sub-menu-list">온스터디 관리</a></li>
 									</ul></li>
-								<li><a href="#" class="menu-list">게시판</a>
+								<li><a href="<%= request.getContextPath()%>/board/freeBoardList?boardType=F" class="menu-list">게시판</a>
 									<ul>
-										<li><a href="#" class="sub-menu-list">자유 게시판</a></li>
-										<li><a href="#" class="sub-menu-list">건의/신고 게시판</a></li>
+										<li><a href="<%= request.getContextPath()%>/board/freeBoardList?boardType=F" class="sub-menu-list">자유 게시판</a></li>
+										<li><a href="<%= request.getContextPath()%>/board/declareBoardList?boardType=SD" class="sub-menu-list">건의/신고 게시판</a></li>
 									</ul></li>
 							</ul>
 						</div>

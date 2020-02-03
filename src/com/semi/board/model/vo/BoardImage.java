@@ -14,6 +14,13 @@ public class BoardImage {
 	public BoardImage() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	public BoardImage(String imagePath, String imageOriginName, String imageChangeName) {
+		super();
+		this.imagePath = imagePath;
+		this.imageOriginName = imageOriginName;
+		this.imageChangeName = imageChangeName;
+	}
 
 	public BoardImage(int imageNo, String imagePath, Date uploadDt, char imageStatus, int boardNo,
 			String imageOriginName, String imageChangeName) {

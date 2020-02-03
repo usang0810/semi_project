@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@page import="java.util.List, java.util.HashMap"%>
+<%@page import="java.util.List, java.util.HashMap, com.semi.member.model.vo.Member"%>
 <%
 	List<Member>[] followList = (List<Member>[])request.getAttribute("followList");
 	HashMap<Integer, String> followImageMap = (HashMap<Integer, String>)request.getAttribute("followImageMap");

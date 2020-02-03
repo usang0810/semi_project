@@ -152,7 +152,7 @@ public class MemberController extends HttpServlet {
 					int maxSize = 10 * 1024 * 1024;
 					String root = request.getSession().getServletContext().getRealPath("/");
 					
-					String savePath = root + "resource/profileImages/";
+					String savePath = root + "resources/profileImages/";
 							
 					MultipartRequest multiRequest = new MultipartRequest(request, savePath, maxSize, "UTF-8", new MyFileRenamePolicy());
 					
@@ -453,7 +453,7 @@ public class MemberController extends HttpServlet {
 					int maxSize = 10 * 1024 * 1024;
 					String root = request.getSession().getServletContext().getRealPath("/");
 					
-					String savePath = root + "resource/profileImages/";
+					String savePath = root + "resources/profileImages/";
 							
 					MultipartRequest multiRequest = new MultipartRequest(request, savePath, maxSize, "UTF-8", new MyFileRenamePolicy());
 					

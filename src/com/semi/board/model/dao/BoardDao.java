@@ -29,20 +29,16 @@ public class BoardDao {
 	/** 게시판 게시글 수 조회용 Dao
 	 * @param conn 
 	 * @param boardType 
-	 * @param searchValue 
-	 * @param searchKey 
-	 * @param condition 
 	 * @return listCount
 	 * @throws Exception
 	 */
-	public int getListCount(Connection conn, String boardType, String searchKey, String searchValue, String condition) throws Exception{
+	public int getListCount(Connection conn, String boardType) throws Exception{
 		Statement stmt = null;
 		ResultSet rset = null;
 		
 		int listCount = 0;
 		String query1 = prop.getProperty("getListCount1");
 		String query2 = prop.getProperty("getListCount2");
-		String query3 = prop.getProperty("getListCount3");
 		
 		try {
 			stmt = conn.createStatement();
@@ -50,10 +46,7 @@ public class BoardDao {
 				rset = stmt.executeQuery(query1);
 			}else if(boardType.equals("SD")) {
 				rset = stmt.executeQuery(query2);
-			}else if(boardType.equals("FSEARCH") || boardType.equals("SDSEARCH")) {
-				rset = stmt.executeQuery(query3+condition);
 			}
-			
 			
 			if(rset.next()) {
 				listCount = rset.getInt(1);
@@ -65,7 +58,42 @@ public class BoardDao {
 		return listCount;
 	}
 	
-
+	
+	/** 게시판 게시글 수 조회용 Dao
+	 * @param conn
+	 * @param boardType
+	 * @param searchKey
+	 * @param searchValue
+	 * @param condition
+	 * @return listCount
+	 * @throws Exception
+	 */
+	public int getListCountSearch(Connection conn, String boardType, String searchKey, String searchValue,String condition) throws Exception{
+		Statement stmt = null;
+		ResultSet rset = null;
+		
+		int listCount = 0;
+		
+		
+		String query1 = prop.getProperty("getListCount1");
+		String query2 = prop.getProperty("getListCount2");
+		try {
+			stmt = conn.createStatement();
+			if(boardType.equals("FSEARCH")) {
+				rset = stmt.executeQuery(query1+condition);
+			}else if(boardType.equals("SDSEARCH")) {
+				rset = stmt.executeQuery(query2+condition);
+			}
+			
+			if(rset.next()) {
+				listCount = rset.getInt(1);
+			}
+		}finally {
+			close(rset);
+			close(stmt);
+		}
+		return listCount;
+	}
 	/** 게시판 목록 조회용 Dao
 	 * @param conn
 	 * @param currentPage
@@ -203,43 +231,55 @@ public class BoardDao {
 	/** 게시글 검색용 Dao
 	 * @param conn
 	 * @param condition
+	 * @param limit 
+	 * @param currentPage 
 	 * @param boardType2 
 	 * @return bList
 	 * @throws Exception
 	 */
-	public List<Board> searchBoard(Connection conn, String condition, String boardType) throws Exception{
-		Statement stmt = null; 	
+	public List<Board> searchBoard(Connection conn, String condition, String boardType, int currentPage, int limit) throws Exception{
+		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		List<Board> bList = null;
 		
 		String query1 = prop.getProperty("searchBoard1");
 		String query2 = prop.getProperty("searchBoard2");
+		String query3 = prop.getProperty("searchBoard3");
 		
 		try {
-			stmt = conn.createStatement();
 			if(boardType.equals("FSEARCH")) {
-				rset = stmt.executeQuery(query1+condition+query2);
-			}else {
-				rset = stmt.executeQuery(query1+condition);
+				pstmt = conn.prepareStatement(query1+condition+query3);
+			}else if(boardType.equals("SDSEARCH")) {
+				pstmt = conn.prepareStatement(query2+condition+query3);
 			}
+			
+			int startRow = (currentPage -1) * limit + 1;
+			int endRow = startRow + limit -1;
+			
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+			
+			rset = pstmt.executeQuery();
+			
 			bList = new ArrayList<Board>();
 			
 			Board board = null;
 			
 			while(rset.next()) {
 				board = new Board(
-						  rset.getInt("ROWNUM"),
+						  rset.getInt("RNUM"),
 						  rset.getInt("BOARD_NO"),
 					      rset.getString("TYPE_TRANS"),
 						  rset.getString("BOARD_TITLE"),
 						  rset.getString("BOARD_CONTENT"),
 				          rset.getDate("BOARD_MODIFY_DT"),
 				          rset.getString("MEMBER_ID"));
+				         
 				bList.add(board);
 			}
 		}finally {
 			close(rset);
-			close(stmt);
+			close(pstmt);
 		}
 		return bList;
 	}
@@ -370,10 +410,11 @@ public class BoardDao {
 	 * @param conn
 	 * @param board
 	 * @param boardWriter
+	 * @param secretStatus 
 	 * @return result
 	 * @throws Exception
 	 */
-	public int insertBoard(Connection conn, Board board, int boardWriter) throws Exception{
+	public int insertBoard(Connection conn, Board board, int boardWriter, String secretStatus) throws Exception{
 		PreparedStatement pstmt = null;
 		int result = 0;
 		
@@ -383,10 +424,12 @@ public class BoardDao {
 			pstmt = conn.prepareStatement(query);
 			
 			pstmt.setInt(1, board.getBoardNo());
-			pstmt.setString(2, board.getBoardTitle());
-			pstmt.setString(3, board.getBoardContent());
-			pstmt.setInt(4, boardWriter);
-					
+			pstmt.setString(2, board.getBoardType());
+			pstmt.setString(3, board.getBoardTitle());
+			pstmt.setString(4, board.getBoardContent());
+			pstmt.setInt(5,boardWriter);
+			pstmt.setString(6,secretStatus);
+			
 			result = pstmt.executeUpdate();
 		}finally {
 			close(pstmt);
@@ -463,5 +506,237 @@ public class BoardDao {
 		return files;
 	}
 
+	/** 게시글 이미지 다운로드용 Dao
+	 * @param conn
+	 * @param fNo
+	 * @return file
+	 * @throws Exception
+	 */
+	public BoardImage selectFile(Connection conn, int fNo) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		BoardImage file = null;
+		String query = prop.getProperty("selectFile");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setInt(1, fNo);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				file = new BoardImage(rset.getString("IMAGE_PATH"),
+									rset.getString("IMAGE_ORIGIN_NAME"), 
+									rset.getString("IMAGE_CHANGE_NAME"));
+			}
+			
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return file;
+	}
+
+	/** 회원 신고한 횟수 조회용 Dao
+	 * @param conn
+	 * @param id
+	 * @param loginId
+	 * @return result
+	 * @throws Exception
+	 */
+	public int isPossibleDelcare(Connection conn, String id, String loginId) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = 0;
+		
+		String query = prop.getProperty("isPossibleDelcare");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1,loginId);
+			pstmt.setString(2, id);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				result = rset.getInt(1);
+			}
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		return result;
+	}
+
+	/** 신고정보테이블 작성용 Dao
+	 * @param conn
+	 * @param board
+	 * @param boardWriter
+	 * @param declareBno
+	 * @return result
+	 * @throws Exception
+	 */
+	public int insertDeclareInfo(Connection conn, Board board, int boardWriter, int declarIdNo) throws Exception{
+		PreparedStatement pstmt = null;
+		int result = 0 ;
+		
+		String query = prop.getProperty("insertDeclareInfo");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setInt(1,board.getBoardNo());
+			pstmt.setInt(2,declarIdNo);
+			
+			result = pstmt.executeUpdate();
+		}finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	/** 신고자의 아이디 조회용 Dao
+	 * @param conn
+	 * @param declareId
+	 * @return declareBno
+	 * @throws Exception
+	 */
+	public int findDelcareId(Connection conn, String declareId) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int declareBno = 0;
+		String query= prop.getProperty("findDelcareId");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1,declareId);
+			
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				declareBno = rset.getInt(1);
+			}
+			
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		return declareBno;
+	}
+
+	/** 신고당한 아이디조회용 Dao
+	 * @param conn
+	 * @param boardNo
+	 * @return declaredId
+	 * @throws Exception
+	 */
+	public String findDeclaredId(Connection conn, int boardNo) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String declaredId = null;
+		
+		String query = prop.getProperty("findDeclaredId");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setInt(1, boardNo);
+			
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				declaredId = rset.getString(1);
+			}
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+				
+		return declaredId;
+				
+	}
+
+	/** 게시글 수정용 DB 가져오기 Dao
+	 * @param conn
+	 * @param no
+	 * @return
+	 * @throws Exception
+	 */
+	public Board updateBoardGo(Connection conn, int no) throws Exception{
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		Board board = null;
+		
+		String query = prop.getProperty("updateBoardGo");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setInt(1,no);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				board = new Board(rset.getInt("BOARD_NO"),
+							      rset.getString("BOARD_TITLE"),
+								  rset.getString("BOARD_CONTENT"),
+						          rset.getString("TYPE_TRANS"),
+						          rset.getString("SECRET_STATUS").charAt(0)
+						          );
+			}
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return board;
+	}
+
+	public int updateBoard(Connection conn, Board board, int boardWriter, String secret) throws Exception{
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("updateBoard");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1,board.getBoardTitle());
+			pstmt.setString(2,board.getBoardContent());
+			pstmt.setString(3,secret);
+			pstmt.setInt(4,boardWriter);
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close(pstmt);
+		}
+		return result;
+				
+	}
+
+	public int updateAttachment(Connection conn, String beforePath, String imageChangeName) throws Exception{
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("updateAttachment");
+		
+		try {
+			
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, imageChangeName);
+			pstmt.setString(2, beforePath);
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	
 
 }

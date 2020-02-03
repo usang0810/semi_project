@@ -48,9 +48,9 @@
                       <% if(files != null){ %>
                       <div class="board-image-wrap">
                       	<% for(int i=0; i<files.size() ; i++) {
-                      		String src = request.getContextPath()+"/resources/uploadImages/"+files.get(i).getImageChangeName();
+                      		String src = request.getContextPath()+"/resources/boardImages/"+files.get(i).getImageChangeName();
                       	%>
-                      	<img class="uploaded-img" src="<%= src %>" />
+                      	<img class="uploaded-img" src="<%= src %>" onerror="this.src='../images/document.png'"/>
                       	<input type="hidden" value=<%=files.get(i).getImageNo() %>>
                       	<% } %>
                       </div>
@@ -104,9 +104,15 @@
 				location.href="declar?boardNo=<%=board.getBoardNo()%>&declarId=<%=declarId %>&status=" + status;
 			});
 		});
+		
+		// 이미지 클릭 시 다운로드
+		$(".uploaded-img").on("click",function(){
+			var fNo = $(this).next().val();
+			location.href="<%= request.getContextPath() %>/board/imageDownload?fNo="+fNo;
+		});
 
 		
-		<%-- // 댓글 출력 함수
+		// 댓글 출력 함수
 		function selectRlist(){
 			var boardNo = <%= board.getBoardNo() %>;
 			
@@ -153,7 +159,6 @@
 						if(result>0){
 							$("#commentContent").val("");
 							selectRlist();
-							alert("댓글이 등록되었습니다.");
 						}else{
 							alert("댓글 등록 실패!");
 						}
@@ -178,7 +183,7 @@
 			setInterval(function(){
 				selectRlist();
 			}, 3000);
-		}); --%>
+		});
 		
 	</script>
 </body>
