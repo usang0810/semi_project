@@ -55,7 +55,7 @@
 												</div>
 												<form method="POST" action="pwdCheck" role=form id="pwdCheckForm">
 													<div class="modal-body">
-														<input type="password" id="inputPassword" class="form-control"
+														<input type="password" id="inputPassword" class="form-control input-comment"
 																placeholder="비밀번호를 입력해주세요." name="inputPassword" required
 																autofocus>
 														<input type="text" style="display: none" id="setPath" name="setPath">

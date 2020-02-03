@@ -175,6 +175,13 @@
 			
 			});
 			
+			$("#searchBox").on("keyup", function(){
+				if($("#selectOption option:selected").val() == "회원번호" ||
+					$("#selectOption option:selected").val() == "포인트" ||
+					$("#selectOption option:selected").val() == "신고회수"){
+					 $("#searchBox").val($(this).val().replace(/[^0-9]/g,""));				
+				}
+			});
 			
 		});
 	</script>

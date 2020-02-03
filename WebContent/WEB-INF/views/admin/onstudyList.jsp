@@ -16,7 +16,6 @@
 %>
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
   <meta charset="UTF-8">
   <title>온스터디</title>
@@ -175,6 +174,13 @@
 		
 		});
 		
+		$("#searchBox").on("keyup", function(){
+			if($("#selectOption option:selected").val() == "온스터디번호" ||
+				$("#selectOption option:selected").val() == "참여인원" ||
+				$("#selectOption option:selected").val() == "참가비"){
+				 $("#searchBox").val($(this).val().replace(/[^0-9]/g,""));				
+			}
+		});
 		
 	});
   </script>

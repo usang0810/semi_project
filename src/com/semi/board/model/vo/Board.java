@@ -99,7 +99,7 @@ public class Board {
 	}
 
 	public Board(int boardNumbering, int boardNo,  String boardType, String boardTitle, String boardContent,
-			Date boardModifyDt, String boardWriter) {
+			Date boardModifyDt, String boardWriter, char secretStatus) {
 		super();
 		this.boardNumbering = boardNumbering;
 		this.boardNo = boardNo;
@@ -108,6 +108,7 @@ public class Board {
 		this.boardContent = boardContent;
 		this.boardModifyDt = boardModifyDt;
 		this.boardWriter = boardWriter;
+		this.secretStatus = secretStatus;
 	}
 	
 	public Board(int boardNumbering, int boardNo, String boardTitle, String boardContent, Date boardModifyDt,

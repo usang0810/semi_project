@@ -44,7 +44,6 @@
 						<div class="mb-3" id="profile-wrap" style="display: inline-block;">
 							<img class="member-profile rounded-circle"
 								src="<%=request.getContextPath() %>/images/mypage-icon.png" alt="프로필아이콘">
-								<%-- <%=request.getContextPath() %>/images/mypage-icon.png --%>
 							<p class="m-0">아이디</p>
 						</div>
 						<div
@@ -74,7 +73,8 @@
 							<%for(Onstudy onstudy : pList) { %>
 				              <div class="col-md-4">
 				                <div class="card mb-4 shadow-sm">
-				         			<img class="mb-3" alt="온스타일 이미지" src="<%if(onstudy.getThumbnail() != null) { %><%=request.getContextPath()%>/resources/onstudyThumbnails/<%=onstudy.getThumbnail()%> <%} else { %><%=request.getContextPath()%>/resources/onstudyThumbnails/noimage.png"<%}%>>
+				         			<img class="mb-3" alt="온스타일 이미지" style="height: 200px;"
+				         				src="<%if(onstudy.getThumbnail() != null) { %><%=request.getContextPath()%>/resources/onstudyThumbnails/<%=onstudy.getThumbnail()%> <%} else { %><%=request.getContextPath()%>/resources/onstudyThumbnails/noimage.png"<%}%>>
 			                		<div class="card-body">
 			                    		<p class="card-title"><%=onstudy.getOnstudyTitle() %></p>
 			                    		<p class="card-text">

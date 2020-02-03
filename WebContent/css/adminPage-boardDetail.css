@@ -169,9 +169,10 @@ html a:hover{
   float: right;
   margin-top: 30px;
 }
-.bottom-btn-wrap>a{
+.bottom-btn-wrap>a,
+.bottom-btn-wrap>button{
 	width : 10%; 
-	margin-left : 5px;
+	margin-left : 8px;
 }
 .my-id{
     width: 15%;
@@ -204,9 +205,6 @@ html a:hover{
     overflow: hidden;
     height: 150px;
     padding: 13px;
-}
-.bottom-btn-wrap a{
-  margin-left : 5px;
 }
 
 

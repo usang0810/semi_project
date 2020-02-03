@@ -116,8 +116,6 @@
 				<li>팔로워 수 : <span id="mypage-follower"><%=follow[1] %></span>명</li>
 				<li>팔로잉 수 : <span id="mypage-following"><%=follow[0] %></span>명</li>
 			</ul>
-			<a href="#" class="bell-setting-btn">
-				<img src="<%=request.getContextPath()%>/images/bell-off.png" alt="알람벨버튼"></a>
 			<a href="<%=request.getContextPath() %>/member/mypage"	class="bell-setting-btn">
 				<img src="<%=request.getContextPath()%>/images/setting-off.png" alt="세팅버튼"></a>
 		</div>

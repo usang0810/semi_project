@@ -45,6 +45,7 @@ public class AdminDao {
 		try {
 			stmt = conn.createStatement();
 			
+			System.out.println(query + subQuery);
 			rset = stmt.executeQuery(query + subQuery);
 			
 			if(rset.next()) {

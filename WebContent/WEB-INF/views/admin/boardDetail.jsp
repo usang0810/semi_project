@@ -43,21 +43,27 @@
                         <span class="date">작성일 : <%= board.getBoardModifyDt() %></span>
                       </p>
                       <p class="content">
+                      	<%if(board.getBoardType().equals("D")){ %>
+	                    	<span class="writer"><strong>신고 대상자 : <%= declarId %></strong></span><br>
+	                    	사유 : 
+	                    <%} %>
                       	<%= board.getBoardContent() %>
                       </p>
-                      <% if(files != null){ %>
+                     <% if(files != null){ %>
                       <div class="board-image-wrap">
-                      	<% for(int i=0; i<files.size() ; i++) {
-                      		String src = request.getContextPath()+"/resources/boardImages/"+files.get(i).getImageChangeName();
-                      	%>
-                      	<img class="uploaded-img" src="<%= src %>" onerror="this.src='../images/document.png'"/>
-                      	<input type="hidden" value=<%=files.get(i).getImageNo() %>>
-                      	<% } %>
+                      	<p class="board-image-title">첨부파일</p>
+                      	<div class="board-image-con">
+	                      	<% for(int i=0; i<files.size() ; i++) {
+	                      		String src = request.getContextPath()+"/resources/boardImages/"+files.get(i).getImageChangeName();
+	                      	%>
+	                      	<img class="uploaded-img" src="<%= src %>" title="클릭시 다운로드 됩니다."
+	                      	 onerror="this.src='../images/document.png'"/>
+	                      	<input type="hidden" value=<%=files.get(i).getImageNo() %>>
+	                      	<% } %>
+	                    </div>
                       </div>
                       <% } %>
-                      <%if(board.getBoardType().equals("D")){ %>
-                      <span class="writer"><strong>신고 대상자 : <%= declarId %></strong></span>
-                      <%} %>
+                      
                     </div>
                     <div class="comment-wrap">
                       <p class="comment-title">댓글</p>	

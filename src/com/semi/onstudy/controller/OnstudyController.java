@@ -912,7 +912,7 @@ public class OnstudyController extends HttpServlet {
 				// 이번주(해당주) 인증횟수 저장하는 CertifyCount 객체 생성
 				CertifyCount checkCertify = onstudyService.checkCertifyCount(onstudyNo, memberNo, nWeek);
 				
-				List<CBoard> bList = onstudyService.selectList(currentPage, limit, onstudyNo);
+				List<CBoard> bList = onstudyService.searchList(currentPage, limit, onstudyNo, searchKey, searchValue);
 				
 				//request.setAttribute("todayCount", todayCertifyCount);
 				request.setAttribute("checkCertify", checkCertify);

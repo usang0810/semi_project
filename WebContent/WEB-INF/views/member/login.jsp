@@ -56,15 +56,17 @@
 						alt="...">
 					<h3 class="text-center">로그인 정보를 입력하세요</h3>
 					<br> <label for="inputId">아이디</label> <input type="text"
-						id="inputId" name="inputId" class="form-control"
+						id="inputId" name="inputId" class="form-control input-comment"
 						value="<%=saveId%>" placeholder="아이디를 입력해주세요." required autofocus>
 					<br> <label for="inputPassword">비밀번호</label> <input
 						type="password" id="inputPassword" name="inputPassword"
-						placeholder="비밀번호를 입력해주세요." class="form-control" required>
-					<label><input type="checkbox" id="save" name="save"
-						<%=save ? "checked" : ""%>> 아이디 저장 </label> <br>
+						placeholder="비밀번호를 입력해주세요." class="form-control input-comment" required>
+					<div class="custom-control custom-checkbox remember-id">
+						<input type="checkbox" id="save" name="save" class="custom-control-input"
+							<%=save ? "checked" : ""%>> <label class="custom-control-label" for="save">아이디 저장 </label>
+					</div>
 					<button class="btn btn-lg btn-block main-btn-color" type="submit">로그인</button>
-					<div class="d-flex justify-content-between mt-1">
+					<div class="d-flex justify-content-between mt-1 find-id-pw-signUp">
 						<div class="m-1">
 							<a href="#findIdModal" id="open-findid-modal">아이디 찾기</a>
 						</div>

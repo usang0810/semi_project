@@ -112,8 +112,9 @@
                                <b>인증 횟수</b>&nbsp;&nbsp;주 <%=cbt.getOnstudyCertifyCount() %>회<br>
                                <b>참 가 비</b>&nbsp;&nbsp;<%= cbt.getOnstudyFee() %>원<br>
                              	 <b>참 여 율</b>(<%= cbt.getTotalCertifyCount() %>회 / <%= cbt.getOnstudyCertifyCount() * cbt.getOnstudyWeeks() %>회)<br>
+                              <% int progress = (int)Math.floor(((double)cbt.getTotalCertifyCount()/(double)(cbt.getOnstudyCertifyCount()*cbt.getOnstudyWeeks()))*100); %>
                               <div class="progress">
-                              <div class="progress-bar" style="width:<%= cbt.getTotalCertifyCount() %>%; background-color: #002d4c;"><%= cbt.getTotalCertifyCount() %>%</div>
+                              <div class="progress-bar" style="width:<%=progress%>%; background-color: #002d4c;"><%=progress%>%</div>
                               </div>
                               <br>
                               <p style="font-weight: bolder;">

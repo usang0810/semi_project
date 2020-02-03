@@ -171,10 +171,8 @@
 
 					<div class="col-md-4">
 						<div class="card mb-4 shadow-sm">
-							<div class="Thumbnail">
-								<img style="height:200px"
-									src="<%= onstudy.getThumbnail() != null ? request.getContextPath() + "/resources/onstudyThumbnails/" + onstudy.getThumbnail() : request.getContextPath() + "/resources/onstudyThumbnails/noimage.png" %>">
-							</div>
+							<img style="height:200px"
+								src="<%= onstudy.getThumbnail() != null ? request.getContextPath() + "/resources/onstudyThumbnails/" + onstudy.getThumbnail() : request.getContextPath() + "/resources/onstudyThumbnails/noimage.png" %>">
 							<div class="card-body">
 								<p class="card-title"><%=onstudy.getOnstudyTitle()%></p>
 								<p class="card-text">

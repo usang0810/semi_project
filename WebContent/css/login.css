@@ -7,7 +7,7 @@
 
 .main-btn-color:hover{
     border: 1px solid #002d4c;
-    background-color :#ffffff;
+    background-color :transparent;
     color: #002d4c;
 }
 
@@ -44,4 +44,15 @@ body{
     body{
       font-size: 12px;
     }
+}
+.remember-id{
+	margin : 15px 0;
+}
+.find-id-pw-signUp a{
+	text-decoration : none;
+	color : #333333;
+	transition : all 0.3s;
+}
+.find-id-pw-signUp a:hover{
+	color : #f15a25;
 }

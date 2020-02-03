@@ -47,7 +47,7 @@
 <body>
 	<!-- 관리자 페이지 사이드바 메뉴 -->
 	<div class="sidenav">
-		<img src="<%=request.getContextPath() %>/images/logo1-white.png" id="adminTitleImg">
+		<img src="<%=request.getContextPath() %>/images/logo2-white.png" id="adminTitleImg">
 		<p id="adminSidebarTitle">Admin</p>
 		<hr>
 		<a href="<%=request.getContextPath() %>/admin/memberList">회원 목록 조회</a>

@@ -99,9 +99,29 @@ html body .content-title{
   transform: translateX(-50%);
   bottom: -80px;
 }
+html body #container{
+	min-height : 537px;
+}
+.nolist-warning{
+    cursor: auto;
+}
+.nolist-warning:hover{
+	background-color:#ffffff;
+}
 /* 반응형 세부 수정사항 */
 @media (max-width: 767px){ /*767px : 구조가 바뀌는 기준*/
   .form-control{
     min-width : 90px;
   }
+}
+	
+.page-now{	
+    background-color: #f15a25;
+    border-color: #f15a25;
+    cursor : auto;
+    color : #ffffff !important;
+}
+.page-now:hover{
+	 background-color: #f15a25;
+	 border-color: #f15a25;
 }

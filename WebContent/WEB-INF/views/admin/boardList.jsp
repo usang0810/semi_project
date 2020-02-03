@@ -53,7 +53,7 @@
                 <button type="submit" class="btn form-control orange-hover-btn" id="searchBtn">검색</button>
                 <input type="hidden" name="boardType" value="<%=boardType %>">
                 <input type="text" class="form-control input-comment" placeholder="검색어를 입력해 주세요" id="searchBox" name="searchValue">
-                <select class="form-control" id="selectOption" name="searchKey">
+                <select class="form-control input-comment" id="selectOption" name="searchKey">
 					<option value="게시글번호">게시글번호</option>
 					<option value="제목">제목</option>
 					<option value="작성자">작성자</option>
@@ -70,7 +70,7 @@
               <!-- 테이블 -->
               <div class="row">
                 <div class="col-md-12">
-                  <table class="table  container table-striped" id="simulate_log" cellspacing="0" style="padding : 0px 0px" width="100%">
+                  <table class="table container table-striped" id="simulate_log" cellspacing="0" style="padding : 0px 0px" width="100%">
                     <thead>
                       <tr>
                         <th scope="col">게시글 번호</th>
@@ -86,7 +86,7 @@
                     <tbody>
                       <% if(bList.isEmpty()){ %>
 						<tr>
-							<td colspan="5">존재하는 게시글이 없습니다.</td>
+							<td colspan="6" style="cursor:default;" class="no-list">존재하는 게시글이 없습니다.</td>
 						</tr>
 					  <% }else{ %>
 					  <% for(Board board : bList){ %>
@@ -179,11 +179,21 @@
 		$("#simulate_log td").click(function(){
 			var boardNo = $(this).parent().children().eq(0).text();
 			// 쿼리스트링을 이용하여 get 방식으로 글 번호를 server로 전달
-			location.href="<%= request.getContextPath() %>/admin/boardDetail?boardNo=" + boardNo;
+			if($(this).hasClass("no-list")){
+				return false;
+			}else{
+				location.href="<%= request.getContextPath() %>/admin/boardDetail?boardNo=" + boardNo;
+			}
 		
 		}).mouseenter(function(){
 			$(this).parent().css("cursor", "pointer");
 		
+		});
+		
+		$("#searchBox").on("keyup", function(){
+			if($("#selectOption option:selected").val() == "게시글번호"){
+				 $("#searchBox").val($(this).val().replace(/[^0-9]/g,""));				
+			}
 		});
   	});
   </script>

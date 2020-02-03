@@ -1,4 +1,5 @@
-/* 자유게시판 */
+
+/* 게시판 작성용 css */
 #container{
   margin: 200px 0 100px 0;
   text-align: center;
@@ -10,6 +11,7 @@
 .warning{
   text-align: end;
   color: #ee4135;
+  margin : 5px 0;
 }
 .board-write table{
   margin: 0 auto;
@@ -28,7 +30,7 @@
   padding: 10px;
   height: 50px;
 }
-.board-write .submit-btn{
+.submit-btn{
   background-color: #f15a25;
   color: #ffffff;
   border: none;
@@ -49,7 +51,70 @@
   line-height: 38px;
   margin-right: 5px;
 }
-#board-write-wrap .form-control:focus:focus{
+#board-write-wrap .form-control:focus{
   border-color: #f15a25;
   box-shadow: 0 0 0 0.2rem rgba(241,90,37,.25);
+}
+.form-td img{
+	cursor : pointer;
+}
+.form-td{
+    display: block;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+#declare-id{
+    width: 50%;
+    min-width: 355px;
+    float: left;
+}
+#confirm-declare-id{
+    float: left;
+    margin-left: 10px;
+    width: 10%;
+    min-width: 70px;		
+}
+.form-inline>.boardImg{
+    position: relative;
+    width: 130px;
+    height: 130px;
+}
+.plese-upload{
+	position : absolute;
+	top : 50%;
+	left : 50%; 
+	transform : translate(-50%,-50%);
+	color : #6c757d;
+}
+.mini-thumbnail-img{
+	position : absolute;
+	top : 0;
+	left : 0;
+}
+#confirm-result{
+    color: green;
+    transform: translateY(9px);
+    float: left;
+    display: inline-block;
+    font-size: 13px;
+    text-align: initial;
+    margin-left: 1.5%;
+}
+.secret-wrap{
+	text-align:end;
+	margin-bottom:10px;
+}
+.secret-wrap>*{
+	cursor : pointer;
+	font-size : 17px;
+}
+#container .custom-control-label::before,
+#container .custom-control-label::after{
+	top: 5px;
+}
+.cantChange{
+    margin: 0;
+    text-align: left;
+    background-color: #efefef !important;
 }

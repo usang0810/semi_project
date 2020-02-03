@@ -135,7 +135,8 @@ public class BoardDao {
 								  rset.getString("BOARD_TITLE"),
 								  rset.getString("BOARD_CONTENT"),
 						          rset.getDate("BOARD_MODIFY_DT"),
-						          rset.getString("MEMBER_ID"));
+						          rset.getString("MEMBER_ID"),
+						          rset.getString("SECRET_STATUS").charAt(0));
 				bList.add(board);
 			}
 		}finally {
@@ -273,7 +274,8 @@ public class BoardDao {
 						  rset.getString("BOARD_TITLE"),
 						  rset.getString("BOARD_CONTENT"),
 				          rset.getDate("BOARD_MODIFY_DT"),
-				          rset.getString("MEMBER_ID"));
+				          rset.getString("MEMBER_ID"),
+				          rset.getString("SECRET_STATUS").charAt(0));
 				         
 				bList.add(board);
 			}

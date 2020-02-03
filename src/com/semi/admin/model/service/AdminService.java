@@ -27,18 +27,26 @@ public class AdminService {
 		
 		// condition이 null일 경우 쿼리에 null이 들어가는 것을 방지
 		String subQuery = "";
+		char check;
 		int mListCount = 0;
 		
 		// 회원번호, 아이디, 이름, 전화번호, 포인트, 신고회수, 정지여부
 		if(condition != null) {
 			switch(condition) {
-			case "회원번호":	subQuery = " AND MEMBER_NO='" + content + "'"; break;
 			case "전화번호":	subQuery = " AND MEMBER_PHONE='" + content + "'"; break;
-			case "포인트":	subQuery = " AND MEMBER_POINT='" + content + "'"; break;
-			case "신고회수":	subQuery = " AND MEMBER_DECLAR_COUNT='" + content + "'"; break;
 			case "정지여부":	subQuery = " AND MEMBER_STATUS='" + content + "'"; break;
 			case "아이디":	subQuery = " AND MEMBER_ID LIKE '%' || '" + content + "' || '%'"; break;
 			case "이름":		subQuery = " AND MEMBER_NM LIKE '%' || '" + content + "' || '%'"; break;
+			case "회원번호":	for(int i=0; i<content.length(); i++) {
+								check = content.charAt(i);
+								if(check < 48 || check > 59) {
+									content = "";
+									break;
+								}
+							}
+							subQuery = " AND MEMBER_NO='" + content + "'"; break;
+			case "포인트":	subQuery = " AND MEMBER_POINT='" + content + "'"; break;
+			case "신고회수":	subQuery = " AND MEMBER_DECLAR_COUNT='" + content + "'"; break;
 			}
 		}
 
