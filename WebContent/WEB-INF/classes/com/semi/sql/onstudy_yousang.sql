@@ -697,6 +697,15 @@ COMMIT;
 
 ------------------ Å×½ºÆ® -----------------------------
 
+
+
+DELETE FROM MEMBER_IMAGE;
+
+DELETE FROM BOARD_IMAGE;
+
+SELECT * FROM BOARD_IMAGE;
+SELECT * FROM MEMBER_IMAGE;
+
 --SELECT * FROM MEMBER;
 --
 --SELECT * FROM STUDYNOTE;
