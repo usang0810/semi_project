@@ -29,9 +29,9 @@
 	integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
 	crossorigin="anonymous"></script>
 	
-<link rel="shortcut icon" href="img/favicon.png">
-<link rel="apple-touch-icon-precomposed" href="img/icon57.png">
-<link rel="apple-touch-icon-precomposed" href="img/icon114.png">
+<link rel="shortcut icon" href="<%=request.getContextPath() %>/images/favicon.png">
+<link rel="apple-touch-icon-precomposed" href="<%=request.getContextPath() %>/images/icon57.png">
+<link rel="apple-touch-icon-precomposed" href="<%=request.getContextPath() %>/images/icon114.png">
 <link rel="stylesheet" href="<%=request.getContextPath() %>/css/common.css">
 <link rel="stylesheet" href="<%=request.getContextPath() %>/css/adminPage-sideBar.css">
 

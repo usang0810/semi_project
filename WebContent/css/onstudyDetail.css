@@ -1,0 +1,39 @@
+ #container{
+        margin: 200px 0 100px 0;
+      }
+      .page-header{
+        text-align: initial;
+        margin: 50px 0;
+        font-size: 35px;
+        border-bottom: 4px solid #212529;
+        padding-bottom: 10px;
+      }
+      .dDay{
+        background-color: #f15a25;
+        color: #ffffff;
+      }
+      .more-btn{
+        border: 1px solid #f15a25;
+        color: #f15a25;
+      }
+      .more-btn2{
+        border: 1px solid #f15a25;
+        background-color: #f15a25;
+        color: #ffffff;
+      }
+      .more-btn:hover{
+        border: 1px solid #f15a25;
+        background-color : #f15a25;
+        color: #ffffff;
+      }
+      .more-btn2:hover{
+        border: 1px solid #f15a25;
+        background-color : #ffffff;
+        color: #f15a25;
+      }
+      /* number 태그 화살표 제거 */
+	    input[type="number"]::-webkit-outer-spin-button,
+	    input[type="number"]::-webkit-inner-spin-button {
+	        -webkit-appearance: none;
+	        margin: 0;
+	    }

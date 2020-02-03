@@ -32,9 +32,9 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"
 	integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
 	crossorigin="anonymous"></script>
-<link rel="shortcut icon" href="../images/favicon.png">
-<link rel="apple-touch-icon-precomposed" href="../images/icon57.png">
-<link rel="apple-touch-icon-precomposed" href="../images/icon114.png">
+<link rel="shortcut icon" href="<%=request.getContextPath() %>/images/favicon.png">
+<link rel="apple-touch-icon-precomposed" href="<%=request.getContextPath() %>/images/icon57.png">
+<link rel="apple-touch-icon-precomposed" href="<%=request.getContextPath() %>/images/icon114.png">
 <script>
 	<% if(msg != null) {%>
 		alert("<%= msg %>");
@@ -74,12 +74,12 @@
 										<li><a href="#" class="sub-menu-list">학습노트 검색</a></li>
 										<li><a href="#" class="sub-menu-list">학습노트 만들기</a></li>
 									</ul></li>
-								<li><a href="#" class="menu-list">온스터디</a>
+								<li><a href="<%=request.getContextPath() %>/onstudy/main" class="menu-list">온스터디</a>
 									<ul>
-										<li><a href="#" class="sub-menu-list">온스터디 검색</a></li>
-										<li><a href="#" class="sub-menu-list">온스터디 만들기</a></li>
-										<li><a href="#" class="sub-menu-list">온스터디 인증하기</a></li>
-										<li><a href="#" class="sub-menu-list">온스터디 관리</a></li>
+										<li><a href="<%=request.getContextPath() %>/onstudy/main" class="sub-menu-list">온스터디 검색</a></li>
+										<li><a href="<%=request.getContextPath() %>/onstudy/createView" class="sub-menu-list">온스터디 만들기</a></li>
+										<li><a href="<%=request.getContextPath() %>/onstudy/certify" class="sub-menu-list">온스터디 인증하기</a></li>
+										<li><a href="<%=request.getContextPath() %>/onstudy/manage" class="sub-menu-list">온스터디 관리</a></li>
 									</ul></li>
 								<li><a href="<%= request.getContextPath()%>/board/freeBoardList?boardType=F" class="menu-list">게시판</a>
 									<ul>
@@ -117,13 +117,13 @@
 				<li>팔로잉 수 : <span id="mypage-following"><%=follow[0] %></span>명</li>
 			</ul>
 			<a href="#" class="bell-setting-btn">
-				<img src="../images/bell-off.png" alt="알람벨버튼"></a>
+				<img src="<%=request.getContextPath()%>/images/bell-off.png" alt="알람벨버튼"></a>
 			<a href="<%=request.getContextPath() %>/member/mypage"	class="bell-setting-btn">
-				<img src="../images/setting-off.png" alt="세팅버튼"></a>
+				<img src="<%=request.getContextPath()%>/images/setting-off.png" alt="세팅버튼"></a>
 		</div>
 		<div class="mypage-btn-list">
 			<a href="#">학습노트 관리</a>
-			<a href="#">온스터디 내역</a>
+			<a href="<%=request.getContextPath() %>/member/onstudyList">온스터디 내역</a>
 			<a href="<%=request.getContextPath() %>/member/logout">로그아웃</a>
 		</div>
 	</div>

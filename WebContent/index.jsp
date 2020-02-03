@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="java.util.List, com.semi.onstudy.model.vo.Onstudy"%>
+<%
+	List<Onstudy> mainList = (List<Onstudy>)request.getAttribute("mainList");
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -157,119 +161,45 @@
         </div>
         <!-- on study list -->
         <div class="album pb-5 ">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="card mb-4 shadow-sm">
-                            <div class="Thumbnail">Thumbnail</div>
-                            <div class="card-body">
-                                <p class="card-title">토익 목표점수 달성반</p>
-                                <p class="card-text">
-                                    - 마감날짜 : 2020-01-01(D-10)<br>
-                                    - 인증빈도 : 주 3회<br>
-                                    - 참여자 수 : 20명
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center ">
-                                    <div class="btn-group">
-                                        <a class="btn btn-sm form-control orange-hover-btn">자세히</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card mb-4 shadow-sm">
-                            <div class="Thumbnail">Thumbnail</div>
-                            <div class="card-body">
-                                <p class="card-title">토익 목표점수 달성반</p>
-                                <p class="card-text">
-                                    - 마감날짜 : 2020-01-01(D-10)<br>
-                                    - 인증빈도 : 주 3회<br>
-                                    - 참여자 수 : 20명
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center ">
-                                    <div class="btn-group">
-                                        <a class="btn btn-sm form-control orange-hover-btn">자세히</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card mb-4 shadow-sm">
-                            <div class="Thumbnail">Thumbnail</div>
-                            <div class="card-body">
-                                <p class="card-title">토익 목표점수 달성반</p>
-                                <p class="card-text">
-                                    - 마감날짜 : 2020-01-01(D-10)<br>
-                                    - 인증빈도 : 주 3회<br>
-                                    - 참여자 수 : 20명
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center ">
-                                    <div class="btn-group">
-                                        <a class="btn btn-sm form-control orange-hover-btn">자세히</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card mb-4 shadow-sm">
-                            <div class="Thumbnail">Thumbnail</div>
-                            <div class="card-body">
-                                <p class="card-title">토익 목표점수 달성반</p>
-                                <p class="card-text">
-                                    - 마감날짜 : 2020-01-01(D-10)<br>
-                                    - 인증빈도 : 주 3회<br>
-                                    - 참여자 수 : 20명
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center ">
-                                    <div class="btn-group">
-                                        <a class="btn btn-sm form-control orange-hover-btn">자세히</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card mb-4 shadow-sm">
-                            <div class="Thumbnail">Thumbnail</div>
-                            <div class="card-body">
-                                <p class="card-title">토익 목표점수 달성반</p>
-                                <p class="card-text">
-                                    - 마감날짜 : 2020-01-01(D-10)<br>
-                                    - 인증빈도 : 주 3회<br>
-                                    - 참여자 수 : 20명
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center ">
-                                    <div class="btn-group">
-                                        <a class="btn btn-sm form-control orange-hover-btn">자세히</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card mb-4 shadow-sm">
-                            <div class="Thumbnail">Thumbnail</div>
-                            <div class="card-body">
-                                <p class="card-title">토익 목표점수 달성반</p>
-                                <p class="card-text">
-                                    - 마감날짜 : 2020-01-01(D-10)<br>
-                                    - 인증빈도 : 주 3회<br>
-                                    - 참여자 수 : 20명
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center ">
-                                    <div class="btn-group">
-                                        <a class="btn btn-sm form-control orange-hover-btn">자세히</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+			<div class="container">
+				<div class="row">
+					<%
+						for (Onstudy onstudy : mainList) {
+					%>
+
+
+					<div class="col-md-4">
+						<div class="card mb-4 shadow-sm">
+							<div class="Thumbnail">
+								<img
+									src="<%=request.getContextPath()%>/resources/onstudyThumbnails/<%=onstudy.getThumbnail()%>">
+							</div>
+							<div class="card-body">
+								<p class="card-title"><%=onstudy.getOnstudyTitle()%></p>
+								<p class="card-text">
+									- 마감날짜 :
+									<%=onstudy.getOnstudyDeadlineDt()%>(D-<%=onstudy.getOnstudyDday()%>)<br>
+
+									- 인증빈도 : 주
+									<%=onstudy.getOnstudyCertifyCount()%>회<br> - 참여자 수 :
+									<%=onstudy.getMemberCount()%>명
+								</p>
+								<div class="d-flex justify-content-between align-items-center ">
+									<div class="btn-group">
+										<a class="btn btn-sm form-control orange-hover-btn"
+											id="detail-btn">자세히</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<%
+						}
+					%>
+
+				</div>
+			</div>
+		</div>
 
         <!-- 온스터디 카테고리 목록 -->
         <div class="category-list-wrap container mb-5">

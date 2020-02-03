@@ -17,9 +17,9 @@
 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
 	crossorigin="anonymous">
 
-<link rel="shortcut icon" href="images/favicon.png">
-<link rel="apple-touch-icon-precomposed" href="images/icon57.png">
-<link rel="apple-touch-icon-precomposed" href="images/icon114.png">
+<link rel="shortcut icon" href="<%=request.getContextPath() %>/images/favicon.png">
+<link rel="apple-touch-icon-precomposed" href="<%=request.getContextPath() %>/images/icon57.png">
+<link rel="apple-touch-icon-precomposed" href="<%=request.getContextPath() %>/images/icon114.png">
 
 <!-- 폰트 link -->
 <link

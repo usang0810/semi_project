@@ -24,9 +24,11 @@ import com.semi.common.MyFileRenamePolicy;
 import com.semi.member.model.service.MemberService;
 import com.semi.member.model.vo.Image;
 import com.semi.member.model.vo.Member;
+import com.semi.member.model.vo.MyOnstudy;
 import com.semi.member.model.vo.Order;
 import com.semi.member.model.vo.PageInfo;
 import com.semi.member.model.vo.Point;
+import com.semi.onstudy.model.service.OnstudyService;
 import com.semi.wrapper.EncryptWrapper;
 import com.oreilly.servlet.MultipartRequest;
 
@@ -770,6 +772,27 @@ public class MemberController extends HttpServlet {
 				
 			}catch(Exception e) {
 				ExceptionForward.errorPage(request, response, "언팔로우", e);
+			}
+			
+		}else if(command.equals("/onstudyList")) {
+			
+			Member loginMember = (Member)request.getSession().getAttribute("loginMember");
+			// 로그인한 멤버 no
+			int memberNo = loginMember.getMemberNo();
+			
+			try {
+				
+				// 내가 참여했던 온스터디 리스트
+				List<MyOnstudy> myList = new OnstudyService().myOnstudyList(memberNo);
+				
+				request.setAttribute("myList", myList);
+				//request.setAttribute("pInf", pInf);
+				
+				path = "/WEB-INF/views/member/mypageOnstudyList.jsp";
+				view = request.getRequestDispatcher(path);
+				view.forward(request, response);
+			}catch (Exception e) {
+				ExceptionForward.errorPage(request, response, "온스터디 내역 조회", e);
 			}
 		}
 	}

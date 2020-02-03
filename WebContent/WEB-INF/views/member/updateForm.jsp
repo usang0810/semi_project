@@ -141,7 +141,8 @@
 						<div class="col-md-5">
 							<div class="jumbotron">
 								<div id="profile-wrap">
-									<form method="POST" action="updateProfile" enctype="multipart/form-data" role="form">
+									<form method="POST" action="updateProfile" enctype="multipart/form-data" role="form"
+											onsubmit="return proValidate();">
 										<img class="member-profile"	src="<%=request.getContextPath() + profileImagePath%>"
 										alt="프로필아이콘" style="width: 40%" id="profileImg">
 										<br>
@@ -206,35 +207,19 @@
       "phone3": false,
     };
     
-    $(function () {
+    $(function () {  	
 		var $newPwd1 = $("#newPwd1");
 		var $newPwd2 = $("#newPwd2");
 		var $phone2 = $("#phone2");
 		var $phone3 = $("#phone3");
     	
-      $("#upload").css("display", "none");
-      $("#upBtn").mouseenter(function () {
-        $(this).css("cursor", "pointer");
-      });
+	    $("#upload").css("display", "none");
+	    $("#upBtn").mouseenter(function () {
+	        $(this).css("cursor", "pointer");
+	    });
       
     });
     
-	// 이미지 첨부 시 이미지 출력
-	function LoadImg(value) {
-
-		if (value.files && value.files[0]) {
-			// -> 파일이 선택이 된 경우
-			var reader = new FileReader();
-
-			reader.onload = function(e) {
-				$("#profileImg").prop("src", e.target.result);
-			}
-
-			// file에서 내용(Content)을 읽어옴
-			// + base64 인코딩된 경로를 반환
-			reader.readAsDataURL(value.files[0]);
-		}
-	}
 
 	// submit 동작
 	function validate() {
@@ -274,6 +259,61 @@
 		  }
 		}
     }
+	
+	// 이미지 첨부 시 이미지 출력
+	function LoadImg(value) {
+		// 파일 확장자 검사
+    	var dot = $(value).val().lastIndexOf(".");
+    	var ext = $(value).val().substring(dot+1, $(value).val().length);
+    	
+    	ext = ext.toLowerCase();
+    	
+    	// 이미지 파일이면 false, 그 외면 true
+    	flag = true;
+    	switch(ext){ 
+    	case "jpg" : case "png" : case "gif" : case "jpeg" : case "bmp" : case "tiff" : case "raw" :
+   			flag = false; break;
+		}
+
+		if (value.files && value.files[0]) {
+			// -> 파일이 선택이 된 경우
+			var reader = new FileReader();
+
+			reader.onload = function(e) {
+				$("#profileImg").prop("src", e.target.result);
+			}
+
+			// file에서 내용(Content)을 읽어옴
+			// + base64 인코딩된 경로를 반환
+			reader.readAsDataURL(value.files[0]);
+		}
+	}
+	
+	// 프로필 사진 변경여부 유효성 검사
+	// 프로필 사진 변경 안한 뒤 submit하면 사진 에러남
+	function proValidate(){
+		var src = $("#profileImg").prop("src");
+		var origin = "<%=profileImagePath%>";
+		
+		var srcSplit = src.split("/");
+		var originSplit = origin.split("/");
+		console.log(flag);
+		
+		console.log(srcSplit[srcSplit.length-1]);
+		console.log(originSplit[originSplit.length-1]);
+		
+ 	    if(srcSplit[srcSplit.length-1] == originSplit[originSplit.length-1]){
+	    	alert("사진을 변경한 뒤 확인을 눌러주세요!");
+	    	return false;
+	    }else if(flag){
+	    	alert("프로필 사진에 맞는 확장자인지 확인해주세요.\n.jpg, .png, .gif, .jpeg, .bmp, .tiff, .raw만 가능합니다.");
+	    	return false;
+ 	    
+	    }else{
+	    	return true;
+	    }
+	    
+	}
   </script>
 
 

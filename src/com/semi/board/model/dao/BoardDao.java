@@ -706,7 +706,7 @@ public class BoardDao {
 			pstmt.setString(1,board.getBoardTitle());
 			pstmt.setString(2,board.getBoardContent());
 			pstmt.setString(3,secret);
-			pstmt.setInt(4,boardWriter);
+			pstmt.setInt(4,board.getBoardNo());
 			
 			result = pstmt.executeUpdate();
 			
