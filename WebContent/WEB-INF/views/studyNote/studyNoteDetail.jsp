@@ -8,7 +8,6 @@
 <% 
 List<StudyNote> snlist = (List<StudyNote>)request.getAttribute("snlist");
 List<StudyNoteSet> snslist = (List<StudyNoteSet>)request.getAttribute("snslist");
-System.out.println("snslist : " + snslist);
 int SNnum = snslist.get(0).getStudyNoteNo(); 
 String writerId = (String)request.getAttribute("writerId");
 int writer = (int)request.getAttribute("writer");

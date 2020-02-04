@@ -35,12 +35,18 @@ int endPage = pInf.getEndPage();
 	    <link rel="apple-touch-icon-precomposed" href="img/icon114.png">
 	    <link rel="stylesheet" href="../css/common.css">
 	    <link rel="stylesheet" href="../css/header.css">
-		<link rel="stylesheet" href="../css/onstudyMain.css">
+		<link rel="stylesheet" href="../css/onstudy.css">
 		   
 	    <title>온스터디</title>
 	    <style>
-	      #container{
-	        margin: 200px 0 100px 0;
+	      html .pagination{
+	           position: relative;
+			    left: -50%;
+			    transform: translateX(100%);
+			    bottom: 0;
+	      }	
+	      html #footer{
+	      bottom : -232px;
 	      }
 	    </style>
 	
@@ -56,7 +62,7 @@ int endPage = pInf.getEndPage();
             <!-- 타이틀 -->
             <div class="row"> 
               <div class="col-md-12">
-                <div class="page-header">
+                <div class="page-header content-title">
                   검색 결과
                 </div>
               </div>
@@ -66,9 +72,9 @@ int endPage = pInf.getEndPage();
             <div class="row">
               <div class="col-md-12 onstudy-main-search">
                 <form method="get" action="../onstudy/searchList">
-                  <input type="text" id="search-keyword" name="search-keyword" class="col-sm-10" value="<%=searchKeyword %>" placeholder="검색할 단어를 입력하세요">
-                  <button class="btn btn-outline-secondary more-btn" id="search-btn" type="submit">검색</button><br>
-                  <a class="option-detail-btn" href="#option-detail"><b>세부 옵션 설정 <span id="option-detail-icon">▼</span></b></a><br>
+                  <input type="text" id="search-keyword" name="search-keyword" class="col-sm-8 form-control input-content input-comment" value="<%=searchKeyword %>" placeholder="검색할 단어를 입력하세요">
+                  <button class="more-btn form-control orange-btn-style orange-hover-btn" id="search-btn" type="submit">검색</button><br>
+                  <a class="option-detail-btn option-detail" href="javascript:"><b>세부 옵션 설정 <span id="option-detail-icon">▼</span></b></a><br>
                   <div id="option-detail">
                     <b>- 카테고리</b><br>
 						<div class="btn-category btn-group-toggle" id="onstudy-category" name="onstudy-category" data-toggle="buttons">
@@ -135,9 +141,9 @@ int endPage = pInf.getEndPage();
 								</div>
                     <br>
                     <b>- 기간설정</b><br>
-                    <input type="date" name="search-start" value="<%=searchStart %>">
+                    <input type="date" name="search-start" class="form-control input-content input-comment" id="search-start" value="<%=searchStart %>">
                     ~
-                    <input type="date" name="search-end" value="<%=searchEnd%>">
+                    <input type="date" name="search-end" class="form-control input-content input-comment" id="search-end" value="<%=searchEnd%>">
                   </div>
                 </form>
               </div>
@@ -170,7 +176,7 @@ int endPage = pInf.getEndPage();
                               <b>참여 기간</b>&nbsp;&nbsp;<%=onstudy.getOnstudyStartDt() %> ~ <%=onstudy.getOnstudyEndDt() %> (<%=onstudy.getOnstudyWeeks() %>주)<br>
                               <b>인증 횟수</b>&nbsp;&nbsp;주 <%=onstudy.getOnstudyCertifyCount() %>회<br>
                               <b>참 가 비</b>&nbsp;&nbsp;<%=onstudy.getOnstudyFee() %><br>
-                              <a class="btn btn-outline-secondary more-btn" href="../onstudy/detail?oNo=<%=onstudy.getOnstudyNo() %>" style="float: right;">자세히보기</a>
+                              <a class="btn form-control orange-btn-style orange-hover-btn" href="../onstudy/detail?oNo=<%=onstudy.getOnstudyNo() %>" style="float: right;">자세히보기</a>
                             </p>
                           </div>
                         </div>
@@ -189,12 +195,12 @@ int endPage = pInf.getEndPage();
 	            	<% if(currentPage > 1) { %>
 	                <li>
 	                	<!-- 맨 처음으로(<<) -->
-	                    <a class="page-link" href="<%= request.getContextPath() %>/onstudy/searchList?currentPage=1">&lt;&lt;</a>
+	                    <a class="page-link" href="<%= request.getContextPath() %>/onstudy/searchList?currentPage=1&search-keyword=<%=searchKeyword %>&search-category=<%=searchCategory %>&search-start=<%=searchStart %>&search-end=<%=searchEnd %>">&lt;&lt;</a>
 	                </li>
 	                
 	                <li>
 	                	<!-- 이전으로(<) -->
-                   		<a class="page-link" href="<%= request.getContextPath() %>/onstudy/searchList?currentPage=<%= currentPage-1 %>">&lt;</a>
+                   		<a class="page-link" href="<%= request.getContextPath() %>/onstudy/searchList?currentPage=<%= currentPage-1 %>&search-keyword=<%=searchKeyword %>&search-category=<%=searchCategory %>&search-start=<%=searchStart %>&search-end=<%=searchEnd %>">&lt;</a>
 	                </li>
 	                <% } %>
 	                
@@ -206,7 +212,8 @@ int endPage = pInf.getEndPage();
 		                </li>
 	                	<% } else{ %>
                 		<li>
-	                    	<a class="page-link" href="<%= request.getContextPath() %>/onstudy/searchList?currentPage=<%= p %>"><%= p %></a>              
+<a class="page-link" href="<%= request.getContextPath() %>/onstudy/searchList?currentPage=<%= p %>&search-keyword=<%=searchKeyword %>&search-category=<%=searchCategory %>&search-start=<%=searchStart %>&search-end=<%=searchEnd %>"><%= p %></a>
+
 	                	</li>
 	                	<% } %>
 					<%} %>
@@ -214,14 +221,14 @@ int endPage = pInf.getEndPage();
 	                <!-- 다음 페이지로(>) -->
 	                <% if(currentPage < maxPage){ %>
 	                <li>
-	                    <a class="page-link" href="<%= request.getContextPath() %>/onstudy/searchList?currentPage=<%= currentPage+1 %>">&gt;</a>
+	                    <a class="page-link" href="<%= request.getContextPath() %>/onstudy/searchList?currentPage=<%= currentPage+1 %>&search-keyword=<%=searchKeyword %>&search-category=<%=searchCategory %>&search-start=<%=searchStart %>&search-end=<%=searchEnd %>">&gt;</a>
 	                </li>
 	                
 	                
 	                
 	                <!-- 맨 끝으로(>>) -->
 	                <li>
-	                    <a class="page-link" href="<%= request.getContextPath() %>/onstudy/searchList?currentPage=<%= maxPage %>">&gt;&gt;</a>
+	                    <a class="page-link" href="<%= request.getContextPath() %>/onstudy/searchList?currentPage=<%= maxPage %>&search-keyword=<%=searchKeyword %>&search-category=<%=searchCategory %>&search-start=<%=searchStart %>&search-end=<%=searchEnd %>">&gt;&gt;</a>
 	                </li>
 	                <% }%>
 	                
@@ -254,16 +261,21 @@ int endPage = pInf.getEndPage();
           
           
             // 세부 옵션 클릭시 이벤트
+            $("#option-detail").hide(0);
+            var optionToggle2 = 0;
             $(".option-detail-btn").on({
               click : function(){
-                if(optionToggle == 0){
+                if(optionToggle2 == 0){
                   var count = $("#option-detail-icon").html("▲");
                   $(this).css("color", "#f15a25");
-                  optionToggle = 1;
+                  $("#option-detail").stop().slideDown(300);
+                  optionToggle2 = 1;
                 }else{
                   var count = $("#option-detail-icon").html("▼");
                   $(this).css("color", "#333333");
-                  optionToggle = 0;
+                  $("#option-detail").stop().slideUp(300);
+                  
+                  optionToggle2 = 0;
                 }
               }
             });
@@ -297,29 +309,12 @@ int endPage = pInf.getEndPage();
             });
           
           
-            // 세부 옵션 클릭시 이벤트
-            $(".option-detail-btn").on({
-              click : function(){
-                if(optionToggle == 0){
-                  var count = $("#option-detail-icon").html("▲");
-                  $(this).css("color", "#f15a25");
-                  optionToggle = 1;
-                }else{
-                  var count = $("#option-detail-icon").html("▼");
-                  $(this).css("color", "#333333");
-                  optionToggle = 0;
-                }
-              }
-            });
-          
           $("#search-category").on({
           	click : function(){
         		$('input[name="search-category"]').prop("chekced");
           	}
           
             });
-         
-   
       	});
         
         

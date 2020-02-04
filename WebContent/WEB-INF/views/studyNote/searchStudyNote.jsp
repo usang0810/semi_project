@@ -203,9 +203,6 @@ color: #ffffff;
 					})
 				</script>
 
-<%System.out.println("snlist"+snlist); %>
-
-
     <div class="container">
       <div class="row">
         <div class="col-md-12">

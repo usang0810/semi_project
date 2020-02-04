@@ -54,6 +54,10 @@
   background-color : #f15a25;
   color: #ffffff;
 } */
+.card{
+
+padding  :15px;
+}
     </style>
 
 <title>온스터디</title>
@@ -86,7 +90,7 @@
                         <br><br>
                         <i class="fa fa-exclamation-circle fa-5x"></i><br><br>
                         <h2 style="text-align: center;">
-                        참여 중인 온스터디가 없습니다.
+                        현재 진행 중인 온스터디가 없습니다.
                         </h2>
                         <br><br>
                         <a class="btn btn-outline-secondary" href="main">온스터디 보러가기</a>
@@ -122,13 +126,13 @@
                              	
                              		<%if(cbt.getOnstudyCertifyCount() <= cbt.getWeekCertifyCount()){ %>
                               	<%= cbt.getTodayNWeek() %>주차 인증완료
-		                                 <a class="btn form-control gray-btn" href="../onstudy/boardList?oNo=<%=cbt.getOnstudyNo() %>" style="float: right; width:30%;">인증완료</a> 
+		                                 <a class="btn form-control gray-btn" href="../onstudy/boardList?oNo=<%=cbt.getOnstudyNo() %>" style="float: right; width:30%; line-height:38px;">인증완료</a> 
                               	 <%} else if(cbt.getOnstudyCertifyCount() > cbt.getWeekCertifyCount() && cbt.getTodayCertifyCount() != 0){%>
 		                                 	오늘 인증 완료
-		                                 <a class="btn form-control gray-btn" href="../onstudy/boardList?oNo=<%=cbt.getOnstudyNo() %>" style="float: right; width:30%;">인증완료</a> 
+		                                 <a class="btn form-control gray-btn" href="../onstudy/boardList?oNo=<%=cbt.getOnstudyNo() %>" style="float: right; width:30%; line-height:38px;">인증완료</a> 
 		                         <%}else{ %>
 		                                 	인증해 주세요
-		                                 <a class="btn form-control orange-hover-btn" href="../onstudy/boardList?oNo=<%=cbt.getOnstudyNo() %>" style="float: right; width:30%;">인증하기</a> 
+		                                 <a class="form-control orange-btn-style orange-hover-btn" href="../onstudy/boardList?oNo=<%=cbt.getOnstudyNo() %>" style="float: right; width:30%;">인증하기</a> 
 		                                 
                               	 <%} %>
 		                          </p>

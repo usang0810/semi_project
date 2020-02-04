@@ -27,7 +27,20 @@
     <link rel="stylesheet" href="../css/onstudyDetail.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>온스터디</title>
-
+	<style>
+	body #footer{
+	    position: absolute;
+    bottom: -200px;
+    left: 0;
+    width: 100%;
+	}
+	#join,
+	#cancel{
+	       width: 120px;
+		    position: relative;
+		    right : 0;
+	}
+	</style>
 
     </head>
     <body>
@@ -93,12 +106,12 @@
 					<%if(sameList!=null) { %>
                   <div class="row">
                     <div class="col-md-12">
-                      <div class="row">
+                      <div class="row card-wrap">
                       <!-- for문 사용 -->
 						<%for(Onstudy sameOnstudy : sameList) { %>
                         <div class="col-md-4">
                           <div class="card">
-                            <img class="mb-3" alt="온스타일 이미지" src="<%if(sameOnstudy.getThumbnail() != null) { %><%=request.getContextPath()%>/resources/onstudyThumbnails/<%=sameOnstudy.getThumbnail()%> <%} else { %><%=request.getContextPath()%>/resources/onstudyThumbnails/noimage.png">
+                            <img class="mb-3 onstyle-thumbnail" alt="온스타일 이미지" style="height:200px" src="<%if(sameOnstudy.getThumbnail() != null) { %><%=request.getContextPath()%>/resources/onstudyThumbnails/<%=sameOnstudy.getThumbnail()%> <%} else { %><%=request.getContextPath()%>/resources/onstudyThumbnails/noimage.png">
                             <div class="card-block">
                               <h5 class="card-title">
                               <%=sameOnstudy.getOnstudyTitle() %>
@@ -106,7 +119,8 @@
                               <p class="card-text">
                                 <span class="badge badge-pill badge-secondary">#<%=sameOnstudy.getCategoryNm() %></span><br>
                                 <b>모집 마감</b>&nbsp;&nbsp;<%=sameOnstudy.getOnstudyDeadlineDt() %><br>
-                                <b>참여 기간</b>&nbsp;&nbsp;<%=sameOnstudy.getOnstudyStartDt() %> ~ <%=sameOnstudy.getOnstudyEndDt() %> (<%=sameOnstudy.getOnstudyWeeks() %>주)<br>
+                                <b>참여 기간</b>&nbsp;&nbsp;<%=sameOnstudy.getOnstudyStartDt() %> ~ <%=sameOnstudy.getOnstudyEndDt() %> <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<%=sameOnstudy.getOnstudyWeeks() %>주)<br>
                                 <b>인증 횟수</b>&nbsp;&nbsp;주 <%=sameOnstudy.getOnstudyCertifyCount() %>회<br>
                                 <b>참 가 비</b>&nbsp;&nbsp;<%=sameOnstudy.getOnstudyFee() %>원<br>
                                 <!-- <a class="btn btn-outline-secondary more-btn" href="#">수정하기</a> -->
@@ -126,7 +140,7 @@
                     <div class="col-md-12">
                       <p id="onstudy-button"  class="form-row" style="float: right;"><br>
                         <a class="btn form-control orange-hover-btn" id="join" href="../onstudy/enter?no=<%=onstudy.getOnstudyNo()%>">참가하기</a>
-                        <a class="btn form-control orange-btn" id="cancel" href="../onstudy/cancel?no=<%=onstudy.getOnstudyNo()%>">참가취소</a>
+                        <a class="btn form-control orange-btn cancel-join-onstudy" id="cancel" href="../onstudy/cancel?no=<%=onstudy.getOnstudyNo()%>">참가취소</a>
                       </p>
                     </div>
                   </div>

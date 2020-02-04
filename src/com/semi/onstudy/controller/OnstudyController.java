@@ -58,11 +58,9 @@ public class OnstudyController extends HttpServlet {
 			try {
 				// 참가인원 많은 순
 				List<Onstudy> mList = onstudyService.selectOnstudyMList();
-				System.out.println(mList);
 				request.setAttribute("mList", mList);
 				// 최신날짜 순
 				List<Onstudy> dList = onstudyService.selectOnstudyDList();
-				System.out.println(dList);
 				request.setAttribute("dList", dList);
 			} catch (Exception e) {
 				ExceptionForward.errorPage(request, response, "온스터디 목록 조회", e); 
@@ -80,20 +78,6 @@ public class OnstudyController extends HttpServlet {
 				String searchCategory = request.getParameter("search-category");
 				String searchStart = request.getParameter("search-start");
 				String searchEnd = request.getParameter("search-end");
-				
-				System.out.println(searchKeyword);
-				System.out.println(searchCategory);
-				System.out.println(searchStart);
-				System.out.println(searchEnd);
-	            
-//	            System.out.println("sList : " + sList);
-	            
-	            
-	               
-//	               path="/WEB-INF/views/onstudy/onstudySearchList.jsp";
-//	               view=request.getRequestDispatcher(path);
-//	               view.forward(request, response);
-//	               System.out.println(sList.size());
 	         
 	               // 현재 게시글 전체 수 -> 검색된 전체 글 수
 				int listCount = onstudyService.getListCount(searchKeyword, searchCategory, searchStart, searchEnd);
@@ -123,7 +107,6 @@ public class OnstudyController extends HttpServlet {
 				endPage = maxPage;
 				}
 				PageInfo pInf = new PageInfo(listCount, limit, pagingBarSize, currentPage, maxPage, startPage, endPage);
-				//	                  System.out.println(pInf);
 			   
 				List<Onstudy> sList = onstudyService.selectList(searchKeyword, searchCategory, searchStart, searchEnd, currentPage, limit);
 				   
@@ -172,7 +155,6 @@ public class OnstudyController extends HttpServlet {
 					if(files.hasMoreElements()) {
 						
 						String name = files.nextElement();
-						System.out.println(name);
 						
 						if(multiRequest.getFilesystemName(name) != null) {
 							
@@ -206,6 +188,7 @@ public class OnstudyController extends HttpServlet {
 					if(sameCheck == 0 && joinCheck < 3) { 
 						// 로그인 멤버의 현재 보유 포인트가 참가비보다 많아야 개설 가능
 						if(loginMember.getMemberPoint() >= onstudyFee) {
+							
 							int result = onstudyService.createOnstudy(onstudy, thumbImg);
 							
 							if(result > 0) {
@@ -222,8 +205,10 @@ public class OnstudyController extends HttpServlet {
 						if(sameCheck != 0) msg = "동일한 카테고리를 동시에 참여(개설)할 수 없습니다.";
 						else if(joinCheck >= 3) msg = "동시에 3개 이상의 온스터디를 참여(개설)할 수 없습니다.";
 					}
+					
 					request.getSession().setAttribute("msg", msg);
 					response.sendRedirect("manage");
+					
 				}
 			}
 			catch (Exception e) {
@@ -253,10 +238,6 @@ public class OnstudyController extends HttpServlet {
 				request.setAttribute("sameList", sameList);
 				path="/WEB-INF/views/onstudy/onstudyDetail.jsp";
 				
-				System.out.println(check);
-				System.out.println(onstudy);
-				System.out.println(sameList);
-				
 				view=request.getRequestDispatcher(path);
 				view.forward(request, response);
 				
@@ -277,9 +258,10 @@ public class OnstudyController extends HttpServlet {
 				
 				// 해당 온스터디 번호로 디비에서 정보 가져오기
 				Onstudy onstudy = onstudyService.selectOnstudy(onstudyNo); // 재활용
-				
+
 				// 이 온스터디 기간의 참여 중인 온스터디 중복 카테고리 체크
 				int sameCheck = onstudyService.checkCategory(onstudy);
+
 				// 이 온스터디 기간의 참여 중인 온스터디 개수 체크
 				int joinCheck = onstudyService.checkJoinCount(onstudy);
 				
@@ -295,7 +277,7 @@ public class OnstudyController extends HttpServlet {
 						if(result > 0) {
 							loginMember.setMemberPoint(loginMember.getMemberPoint() - onstudy.getOnstudyFee());
 							request.getSession().setAttribute("loginMember", loginMember);
-							path = "certify";
+							path = "../member/onstudyList";
 							msg = "온스터디 참가 성공 : " + onstudy.getOnstudyFee() + "포인트가 차감됩니다.";
 						} else {
 							path="main";
@@ -344,7 +326,7 @@ public class OnstudyController extends HttpServlet {
 					if(result > 0) {
 						loginMember.setMemberPoint(loginMember.getMemberPoint() + onstudy.getOnstudyFee());
 						request.getSession().setAttribute("loginMember", loginMember);
-						path = "certify";
+						path = "../member/onstudyList";
 						msg = "온스터디 참가 취소 성공 : " + onstudy.getOnstudyFee() + "포인트가 취소 환불됩니다.";
 					} else {
 						path="main";
@@ -431,7 +413,6 @@ public class OnstudyController extends HttpServlet {
 					if(files.hasMoreElements()) {
 						
 						String name = files.nextElement();
-						System.out.println(name);
 						
 						if(multiRequest.getFilesystemName(name) != null) {
 							
@@ -699,15 +680,10 @@ public class OnstudyController extends HttpServlet {
 			int boardNo = Integer.parseInt(request.getParameter("bNo"));
 			int currentPage = Integer.parseInt(request.getParameter("currentPage"));
 			
-			System.out.println("oNo : " + onstudyNo);
-			System.out.println("bNo : " + boardNo);
-			System.out.println("currentPage : " + currentPage);
-			
 			try {
 				
 				CBoard board = onstudyService.selectBoard(boardNo);
 				
-				System.out.println("1: " + board);
 				if(board != null) { 
 					
 					List<CAttachment> files = onstudyService.selectFiles(boardNo);
@@ -832,8 +808,6 @@ public class OnstudyController extends HttpServlet {
 					}
 				}// // 수정된 파일이 있을 경우 end
 				
-				System.out.println("fList : " + fList);
-				
 				int result = onstudyService.updateBoard(board, boardWriter, fList, beforeImg, savePath);
 				
 				if(result > 0) msg = "게시글 수정 성공";
@@ -936,8 +910,6 @@ public class OnstudyController extends HttpServlet {
             int progress= Integer.parseInt(request.getParameter("progress"));
             int fee= Integer.parseInt(request.getParameter("fee"));
             int refund = 0;
-            System.out.println("컨트롤러 : " + onstudyNo + progress + fee);
-            
             
             try {   
                if (progress >= 90) {
@@ -950,13 +922,20 @@ public class OnstudyController extends HttpServlet {
                   refund = 0;
                }
                
-               int result = OnstudyService.refund(onstudyNo, memberNo, refund);
                
-               if(result > 0) {
-            	   msg="포인트 환급 성공";
-            	   loginMember.setMemberPoint(loginMember.getMemberPoint() + fee);
+               if(progress >= 50) {
+               
+	               int result = OnstudyService.refund(onstudyNo, memberNo, refund);
+	               
+	               if(result > 0) {
+	            	   msg="포인트 환급이 완료되었습니다.";
+	            	   loginMember.setMemberPoint(loginMember.getMemberPoint() + fee);
+	               }
+	               else msg="포인트 환급 실패";
+	               
+               } else {
+            	   msg="목표달성에 실패하여 포인트를 환급받을 수 없습니다.";
                }
-               else msg="포인트 환급 실패";
                
                request.getSession().setAttribute("loginMember", loginMember);
                request.getSession().setAttribute("msg", msg);

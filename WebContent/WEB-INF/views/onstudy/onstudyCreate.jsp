@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
+<link rel="stylesheet" href="../css/createView.css">
 
 <title>온스터디</title>
 <style>
@@ -60,19 +60,19 @@
 								<span class="col-sm-4">
 								<input type="text" class="date-picker form-control input-comment" id="onstudy-start" name="onstudy-start" style="width:80%;">
 								</span>
-								<label for="onstudy-date" class="col-sm-2" style="font-weight: bolder;">종료일</label>
+								<label for="onstudy-date" class="col-sm-2" style="font-weight: bolder; text-align:center;">종료일</label>
 								<span class="col-sm-4">
 								<input type="text" class="date-picker form-control input-comment" id="onstudy-end" name="onstudy-end" disabled>
 								</span>
 							</p>
 							<p id="term"  class="form-row">
-								<label for="onstudy-term" class="col-sm-2" style="font-weight: bolder;">기간</label>
-								<span class="col-sm-10" style="font-weight: bold;"><input type="number" id="onstudy-weeks" name="onstudy-weeks" class="form-control input-comment" min="2" max="8" value="2" style="text-align: right;" required>주 (최소 2주 - 최대 8주)</span>
-							</p>
-							<p id="times"  class="form-row">
-								<label for="onstudy-times" class="col-sm-2" style="font-weight: bolder;">인증 횟수</label>
-								<span class="col-sm-10" style="font-weight: bold;">주 <input type="number" id="onstudy-times" name="onstudy-times" class="form-control input-comment" min="3" max="7" value="3" style="text-align: right;" required>회 (최소 3회)</span>
-							</p>
+		                        <label for="onstudy-term" class="col-sm-2" style="font-weight: bolder;">기간</label>
+		                        <span class="col-sm-10" style="font-weight: bold;"><input type="number" id="onstudy-weeks" name="onstudy-weeks" class="form-control input-comment" min="2" max="8" value="2" style="text-align: right; width:30%; margin-left:35px;" required>주 (최소 2주 - 최대 8주)</span>
+		                     </p>
+		                     <p id="times"  class="form-row">
+		                        <label for="onstudy-times" class="col-sm-2" style="font-weight: bolder;">인증 횟수</label>
+		                        <span class="col-sm-10" style="font-weight: bold;">주 <input type="number" id="onstudy-times" name="onstudy-times" class="form-control input-comment" min="3" max="7" value="3" style="text-align: right; width:30%;" required>회 (최소 3회)</span>
+		                     </p>
 							<p id="fee"  class="form-row">
 								<label for="onstudy-fee" class="col-sm-2" style="font-weight: bolder;">참가비</label>
 								<input type="range" class="custom-range col-sm-4 input-comment" id="onstudy-fee" name="onstudy-fee" min="10000" max="100000"
@@ -148,10 +148,10 @@
 								<label for="add-notice" style="font-weight: bolder;">추가 입력사항(<span id="add-notice-count"></span>/1000자)</label><br>
 								<textarea class="form-control input-comment" rows="5" id="add-notice" name="add-notice" style="resize:none" maxlength="1000"></textarea>
 							</p>
-							<div class="d-flex justify-content-between align-items-center ">
+							<div class="d-flex justify-content-between align-items-center " style="position: relative;">
                                 <div style="float: right;">
-                                    <a class="btn form-control background-gray" href="../onstudy/main" >취소</a>&nbsp;&nbsp;
-									<button class="btn form-control orange-hover-btn" type="submit">만들기</button>
+                                    <a class="btn form-control background-gray create-reset"  href="../onstudy/main" >취소</a>
+									<button class="btn form-control orange-hover-btn onstudy-create-btn" type="submit">만들기</button>
                                 </div>
                             </div>
 						</form>

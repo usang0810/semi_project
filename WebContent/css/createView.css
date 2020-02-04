@@ -1,0 +1,21 @@
+#container .onstudy-create-div label{
+    text-align: left;
+}
+#container #onstudy-weeks,
+#container #onstudy-times{
+    width: 70%;
+    display: inline-block;
+    margin : 0 15px;
+}
+#container .btn-group-toggle label{
+	margin-top : 10px;
+}
+#container .create-reset{
+    position: absolute;
+    width: 10%;
+    right: 85px;
+}
+#container .onstudy-create-btn{
+	    position: absolute;
+    right: 0;
+}

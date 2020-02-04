@@ -63,7 +63,6 @@ public class StudyNoteController extends HttpServlet {
 
 			try {
 				int likeDetail = SNservice.likeDetail(memberNo,noteNo);
-				System.out.println("좋아요의 값"+likeDetail);
 				// 숫자 1만 좋아요 활성화
 				response.getWriter().print(likeDetail);
 
@@ -73,8 +72,6 @@ public class StudyNoteController extends HttpServlet {
 		}
 		// follow 관련 controller
 		else if(command.equals("/followInsert")) {
-
-			System.out.println("follow 만들기 삽입버튼 들어옴");
 
 			int follower = Integer.parseInt(request.getParameter("follower"));
 
@@ -95,8 +92,6 @@ public class StudyNoteController extends HttpServlet {
 
 
 		}else if(command.equals("/followDelete")) {
-			System.out.println("follow 만들기 삭제 버튼 들어옴");	
-
 			int follower = Integer.parseInt(request.getParameter("follower"));
 
 			int following = Integer.parseInt(request.getParameter("following"));
@@ -144,12 +139,8 @@ public class StudyNoteController extends HttpServlet {
 
 			Member loginMember = (Member)session.getAttribute("loginMember");
 
-			System.out.println(loginMember);
 			String[] setWord = request.getParameterValues("setWord");
 			String[] setMean = request.getParameterValues("setMean");
-
-			System.out.println(setWord.toString());
-			System.out.println(setMean.toString());
 
 			int memberNo = loginMember.getMemberNo();
 
@@ -157,14 +148,11 @@ public class StudyNoteController extends HttpServlet {
 
 
 			int category =  Integer.parseInt(request.getParameter("category"));
-			System.out.println(category);
 			try {
 
 				StudyNote note = new StudyNote();
 
 				note.setStudyNoteTitle(title);
-
-				System.out.println(category);
 
 				StudyNote createStudyNote = SNservice.createStudyNote(note,category,memberNo);
 
@@ -213,7 +201,6 @@ public class StudyNoteController extends HttpServlet {
 					}
 				}
 
-				System.out.println(snlist.get(0).getcategoryNM());				
 				List<StudyNoteSet> snslist = SNservice.insertStudynoteSet(noteNumber);
 				// setNo - 식별자 / setWord -문 / setMean - 답 / studyNoteNo -노트번호 
 
@@ -236,22 +223,14 @@ public class StudyNoteController extends HttpServlet {
 		else if (command.equals("/selectStudyNoteSet")) {
 			HttpSession session = request.getSession();
 
-
-
-
 			Member loginMember = (Member)session.getAttribute("loginMember");
 			int memberNo = loginMember.getMemberNo();
-			System.out.println(memberNo);
 
 			int [] studyNoteNo = null;
 			try{
 				// 카테고리명 가져올 친구
 
 				List categorynm = SNservice.selectCategoryNM(memberNo);
-
-				
-				
-				
 				// ui에 표현할 값들을 가지고 오는 list
 
 				List<StudyNote> notelist = SNservice.selectStudyNoteList(memberNo);
@@ -260,11 +239,8 @@ public class StudyNoteController extends HttpServlet {
 				int[] addNoteNm = SNservice.addNoteNm(memberNo);
 				
 				// 추가한 친구 단어장 가져오기
-				System.out.println("추가한 친구 단어장 가져오기");
-				System.out.println(addNoteNm);
 				if(addNoteNm!=null ) {
 					for(int i =0; i<addNoteNm.length; i++) {
-						System.out.println(addNoteNm[i]);
 						StudyNote notes= SNservice.selectTakenStudyNote(addNoteNm[i]);
 						notelist.add(notes);
 						// addSnList - / noteNo/ title / modifyDT / memberId / CategoryNM / 
@@ -274,9 +250,7 @@ public class StudyNoteController extends HttpServlet {
 				
 				studyNoteNo = new int [notelist.size()];
 				for( int i = 0; i <notelist.size();i++) {
-					System.out.println("for문 문제");
 					studyNoteNo[i] =notelist.get(i).getStudyNoteNo();
-					System.out.println("i:"+studyNoteNo[i]);
 				}
 
 				// 좋아요 숫자를 가져올 친구
@@ -364,7 +338,6 @@ public class StudyNoteController extends HttpServlet {
 
 				List<StudyNoteSet> snlist  = SNservice.selectStudyNoteSet(SNnums);
 				// note-set 변경작업
-				System.out.println(snlist.size());
 				for(int i =0 ; i<snlist.size();i++) {
 
 					if(!snlist.get(i).getSetWord().equals(setWord[i])) {
@@ -385,9 +358,7 @@ public class StudyNoteController extends HttpServlet {
 				for(int i = snlist.size(); i<setWord.length;i++) {
 
 					SetWord2[j] = setWord[i];	
-					System.out.println("setword"+i+"번째의"+setWord[i]);
 					SetMean2[j] = setMean[i];
-					System.out.println("setword"+i+"번째의"+setMean[i]);
 					j++;
 				}
 
@@ -497,7 +468,7 @@ public class StudyNoteController extends HttpServlet {
 					followFlag = 0;
 				}
 				
-				String imagePath = new MemberService().selectImagePath(memberNo);
+				String imagePath = new MemberService().selectImagePath(writer);
 				if(imagePath != null) {
 					String[] paths = imagePath.split("\\\\"); // "\"를 기준으로 구분
 					imagePath = "/" + paths[paths.length - 1];
@@ -532,15 +503,11 @@ public class StudyNoteController extends HttpServlet {
 		}else if(command.equals("/search")) {
 
 
-			System.out.println("controller 들어옴");
 			String searchKey = (String) request.getParameter("searchKey");
 			String searchValue = (String)request.getParameter("searchValue");
 
 			int [] studyNoteNo = null;
 			try {
-
-				System.out.println("sv ="+searchValue);
-				System.out.println("sㅏ ="+searchKey);
 
 				List<StudyNote> snlist = SNservice.searchStudyNote(searchKey,searchValue);
 
@@ -565,8 +532,6 @@ public class StudyNoteController extends HttpServlet {
 
 				view = request.getRequestDispatcher(path);
 				view.forward(request, response);
-
-				System.out.println("controller 나감");
 
 			}catch(Exception e) {
 				ExceptionForward.errorPage(request, response, "학습노트검색", e);
@@ -613,28 +578,17 @@ public class StudyNoteController extends HttpServlet {
 			Member loginMember = (Member)session.getAttribute("loginMember");
 			int memberNo = loginMember.getMemberNo();
 
-			System.out.println("memNo"+memberNo);
-
 			int noteNo = Integer.parseInt(request.getParameter("SNnum"));
-
-			System.out.println("nonum"+noteNo);
 
 			try {
 				int addValue = SNservice.addValue(memberNo,noteNo);
-				System.out.println("가져오기의 값"+addValue);
 				// 숫자 1만 좋아요 활성화
 				response.getWriter().print(addValue);
 
 			}catch(Exception e) {
 				ExceptionForward.errorPage(request, response, "좋아요 버튼 클릭", e);
 			}
-
-
 		}
-
-
-
-
 
 	}
 

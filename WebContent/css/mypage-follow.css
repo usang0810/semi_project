@@ -37,6 +37,7 @@
 }
 
 .cancle-follow-btn {
+  display: inline-block;
   float: right;
   padding:3px;
 }
@@ -69,4 +70,10 @@
 .follower-list-content li:hover {
   background-color : rgba(0,123,255,.25);
   cursor: pointer;
+}
+
+.following-list-content li{
+	display: inline-block;
+	width: 100%;
+	float: left;
 }

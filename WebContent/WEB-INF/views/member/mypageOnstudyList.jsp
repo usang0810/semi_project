@@ -43,6 +43,15 @@
         padding: 20px;
         text-align: center;
         line-height: 150px;
+        top : 0;
+        left : 0;
+    }
+    .card{
+    	margin-top : 15px;
+    }
+    .btn{
+    	min-width : 90px;
+    	margin : 0 1px;
     }
   </style>
 </head>
@@ -60,9 +69,11 @@
           <p class="content-title">
             온스터디 참여내역
           </p>
-          <form><input type="checkbox" id="participation-onstudy" name="participation-onstudy">
-            <label for="participation-onstudy">참여중인 온스터디</label>
+          
+          <form class="custom-control custom-checkbox "><input type="checkbox" id="participation-onstudy" name="participation-onstudy"  class="custom-control-input">
+            <label for="participation-onstudy" class="custom-control-label">참여중인 온스터디</label>
           </form>
+          
           <div class="row">
           <% if(myList.isEmpty()){ %>
 			<div class="col-md-12">
@@ -70,10 +81,10 @@
 				<br><br>
 				<i class="fa fa-exclamation-circle fa-5x"></i><br><br>
 				<h2 style="text-align: center;">
-				온스터디 참여 내역이 없습니다.
+				현재 진행중인 온스터디 내역이 없습니다.
 				</h2>
 				<br><br>
-				<a class="btn btn-outline-secondary more-btn" href="onstudy_main.html">온스터디 보러가기</a>
+				<a class="btn btn-outline-secondary more-btn" href="../onstudy/main">온스터디 보러가기</a>
 				<br><br>
 				</div>
 			</div>
@@ -97,9 +108,9 @@
 					<img class="mb-3" alt="랜덤 이미지" style="height: 200px" src="<%=request.getContextPath()%>/resources/onstudyThumbnails/<%=onstudy.getImageName()%>">
 					<%-- <div class="<%=overlay %> mb-3">완 료</div> --%>
 					<%=overlay %> 
-					<div class="card-block" style="padding-left: 10px; padding-right: 10px;">
+					<div class="card-block">
  						<div class="card-title">
-   						<%= onstudy.getOnstudyTitle() %>
+   						<h5><%= onstudy.getOnstudyTitle() %></h5>
  						</div>
 					  	<div class="card-text">
 					  		<table>
@@ -158,14 +169,14 @@
 	<%@ include file="../common/footer.jsp"%>
 	<script>
 	 // 무한스크롤 인식
-	   var page = 2;
+	   /* var page = 2;
 	   $(window).scroll(function() { // 스크롤 이벤트가 발생할 때마다 인식
 	        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
 	          console.log(++page);
 	          $("body").append('<div class="big-box"><h1>Page ' + page + '</h1></div>');
 
 	        }
-	    });
+	    }); */
 	   
 	   	$("input:checkbox").on("click", function(){
 

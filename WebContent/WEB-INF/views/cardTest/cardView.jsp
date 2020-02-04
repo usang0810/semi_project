@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
     
 <%
-	String msg = (String)session.getAttribute("msg");
     String msg2 = (String)session.getAttribute("msg2");
 	//int resetNote = (int)session.getAttribute("resetNote");
 	
@@ -69,7 +68,7 @@ session.removeAttribute("msg");
 
 <body>
   <!-- 헤더 시작     -->
-    <%@ include file="../common/loginedHeader.jsp" %>
+    <%@ include file="../common/loginedHeader.jsp"%>
 
     <!-- content 시작 -->
     <div id="container" style="margin:350px auto; text-align:center; font-size:50px; color:#333333;">

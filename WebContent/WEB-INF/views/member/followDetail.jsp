@@ -34,13 +34,15 @@
                 <ul>
                 	<%for(Member following : followList[0]){ %>
 	                  <li class="id-list" name="id" value="<%=following.getMemberNo() %>">
-	                  	<%if(followImageMap.get(following.getMemberNo()) != null){ %>
-		                  	<img src="<%=request.getContextPath() + followImageMap.get(following.getMemberNo()) %>">	                  	
-	                  	<%}else{ %>
-		                  	<img src="<%=request.getContextPath() %>/images/navi-icon-default.png">	                  	
-	                  	<%} %>
-                  		<span><%=following.getMemberId() %></span>
-	                    <div class="fa fa-window-close follow-cancle-btn" display="inline-block"></div>
+	                  	<div style="display: inline-block" class="member-wrap">
+		                  	<%if(followImageMap.get(following.getMemberNo()) != null){ %>
+			                  	<img src="<%=request.getContextPath() + followImageMap.get(following.getMemberNo()) %>">	                  	
+		                  	<%}else{ %>
+			                  	<img src="<%=request.getContextPath() %>/images/navi-icon-default.png">	                  	
+		                  	<%} %>
+	                  		<span><%=following.getMemberId() %></span>
+	                  	</div>
+	                    <div class="fa fa-window-close cancle-follow-btn" style="display: inline-block"></div>
 	                  </li>
                 	<%} %>
                 </ul>
@@ -48,7 +50,7 @@
             </div>
             <div class="col-md-6 p-1 follower-list">
               <p class="follower-list-title">Follower<span class="mr-2 follower-count" style="float:right;"><%=follow[1] %></span></p>
-              <div class="col-md-12 pt-3 pb-3 mt-0 following-list-content">
+              <div class="col-md-12 pt-3 pb-3 mt-0 following-list-content follower-list-content">
                 <ul>
                 	<%for(Member follower : followList[1]){ %>
                 		<li value="<%=follower.getMemberNo() %>">
@@ -69,19 +71,12 @@
     </div>
   </div>
 
-
-
-
-
-
-
-
-
   <script>
     $(function () {
-      $(".follow-cancle-btn").on({
+      $(".cancle-follow-btn").on({
         "click": function () {
           var result = confirm('팔로우를 취소하시겠습니까?');
+       	 console.log($(this).parent().val());
           if (result) {
         	  var memberNo = $(this).parent();
               
@@ -108,9 +103,13 @@
         }
       });
       
-      $(".following-list-content li").on("click", function(){
+      $(".follower-list-content li").on("click", function(){
     	 location.href="../member/profileDetail?memberNo=" + $(this).val();
       });
+      
+      $(".id-list .member-wrap").on("click", function(){
+    	  location.href="../member/profileDetail?memberNo=" + $(this).parent().val();
+      })
       
     });
   </script>

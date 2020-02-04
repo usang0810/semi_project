@@ -37,3 +37,14 @@
 	        -webkit-appearance: none;
 	        margin: 0;
 	    }
+	    
+	    #container .card{
+	    	padding : 15px;
+	    }
+	    #container .cancel-join-onstudy{
+	    	    width: 100px;
+    line-height: 38px;
+	    }
+	    .onstyle-thumbnail{
+	    	min-height : 200px;
+	    }

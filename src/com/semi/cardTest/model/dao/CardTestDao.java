@@ -32,11 +32,12 @@ public class CardTestDao {
 	 
 	/** 카드 조회용 Dao
 	 * @param conn
+	 * @param memberNo 
 	 * @param cardSetNo
 	 * @return sCard
 	 * @throws Exception
 	 */
-	public StudyCard selectCard(Connection conn, int cardSetNum) throws Exception{
+	public StudyCard selectCard(Connection conn, int cardSetNum, int memberNo) throws Exception{
 		
 		PreparedStatement pstmt = null;
 		
@@ -51,6 +52,8 @@ public class CardTestDao {
 			pstmt = conn.prepareStatement(query);
 			
 			pstmt.setInt(1, cardSetNum);
+			pstmt.setInt(2, cardSetNum);
+			pstmt.setInt(3, memberNo);
 			
 			rset = pstmt.executeQuery();
 			

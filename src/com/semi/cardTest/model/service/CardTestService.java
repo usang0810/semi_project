@@ -17,17 +17,18 @@ public class CardTestService {
 	
 	/** 카드 조회용 Service
 	 * @param memberNo 
+	 * @param memberNo 
 	 * @param cardSetNo
 	 * @return sCard
 	 * @throws Exception
 	 */
-	public StudyCard selectCard(int cardSetNum) throws Exception {
+	public StudyCard selectCard(int cardSetNum, int memberNo) throws Exception {
 
 		Connection conn = getConnection();
 		
 		CardTestDao ctDao = new CardTestDao();
 		
-		StudyCard sCard = ctDao.selectCard(conn, cardSetNum);
+		StudyCard sCard = ctDao.selectCard(conn, cardSetNum, memberNo);
 		
 		close(conn);
 		

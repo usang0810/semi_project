@@ -74,7 +74,9 @@
 				              <div class="col-md-4">
 				                <div class="card mb-4 shadow-sm">
 				         			<img class="mb-3" alt="온스타일 이미지" style="height: 200px;"
-				         				src="<%if(onstudy.getThumbnail() != null) { %><%=request.getContextPath()%>/resources/onstudyThumbnails/<%=onstudy.getThumbnail()%> <%} else { %><%=request.getContextPath()%>/resources/onstudyThumbnails/noimage.png"<%}%>>
+				         				src="<%= onstudy.getThumbnail() != null ? request.getContextPath() + "/resources/onstudyThumbnails/" + onstudy.getThumbnail() : request.getContextPath() + "/resources/onstudyThumbnails/noimage.png" %>
+				         				">
+			                		
 			                		<div class="card-body">
 			                    		<p class="card-title"><%=onstudy.getOnstudyTitle() %></p>
 			                    		<p class="card-text">
@@ -85,7 +87,7 @@
 			                    		</p>
 			                    		<div class="d-flex justify-content-between align-items-center ">
 			                      			<div class="btn-group">
-			                        			<a class="btn btn-sm form-control orange-hover-btn" href="../onstudy/detail?no=<%=onstudy.getOnstudyNo() %>">자세히</a>
+			                        			<a class="btn btn-sm form-control orange-hover-btn" href="../onstudy/detail?oNo=<%=onstudy.getOnstudyNo() %>">자세히</a>
 			                      			</div>
 			                    		</div>
 			                  		</div>

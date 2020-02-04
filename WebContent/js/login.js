@@ -61,12 +61,6 @@ $(function () {
         $("#findPwdModal").modal({ backdrop: "static" });
     });
     
-//    // 비밀번호 변경 버튼 클릭 시
-//    $("#changePwdBtn").click(function(){
-//        $("#changePwdModal").modal("hide");
-//        alert("비밀번호가 성공적으로 변경되었습니다.");
-//    });
-    
     // 아이디 찾기 버튼 클릭 시 
     $("#findIdBtn").click(function(){
     	console.log("check : " + phoneCheck);
@@ -193,6 +187,8 @@ $(function () {
 						}else{
 							alert("비밀번호 변경에 실패하였습니다");
 						}
+						
+						$("#changePwdModal").modal("hide");
 						
 					},
 

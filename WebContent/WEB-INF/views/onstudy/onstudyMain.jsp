@@ -27,14 +27,14 @@
     <link rel="apple-touch-icon-precomposed" href="img/icon114.png">
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/common.css">
-    <link rel="stylesheet" href="../css/onstudyMain.css">
+    <link rel="stylesheet" href="../css/onstudy.css">
 	
    
     <title>온스터디</title>
     <style>
-      #container{
-        margin: 200px 0 100px 0;
-      }
+    	#container{
+    		margin : 200px auto 100px auto;
+    	}
     </style>
 
 
@@ -49,8 +49,8 @@
             <!-- 타이틀 -->
             <div class="row"> 
               <div class="col-md-12">
-                <div class="page-header">
-                  온스터디 검색
+                <div class="page-header content-title">
+                		  온스터디 검색
                 </div>
               </div>
             </div>
@@ -59,8 +59,10 @@
             <div class="row">
               <div class="col-md-12 onstudy-main-search">
                 <form method="get" action="../onstudy/searchList" onsubmit="return validate();">
-                  <input type="text"  class="col-sm-10" id="search-keyword" name="search-keyword" placeholder="검색할 단어를 입력하세요">
-                  <button class="btn btn-outline-secondary more-btn" id="search-btn" type="submit">검색</button><br>
+                  <div class="onstudy-search-wrap">
+	                 <input type="text"  class="col-sm-8 form-control input-content input-comment" id="search-keyword" name="search-keyword" placeholder="검색할 단어를 입력하세요">
+	                 <button class="more-btn form-control orange-btn-style orange-hover-btn" id="search-btn" type="submit">검색</button><br>
+                  </div>
                   <a class="option-detail-btn" href="#option-detail" data-toggle="collapse"><b>세부 옵션 설정 <span id="option-detail-icon">▼</span></b></a><br>
                   <div id="option-detail" class="collapse">
                     <b>- 카테고리</b><br>
@@ -127,10 +129,10 @@
 									</label>&nbsp;
 								</div>
                     <br>
-                    <b>- 기간설정</b><br>
-                    <input type="date" id="search-start" name="search-start">
+                    <b>- 기간설정</b><br><br>
+                    <input class="form-control input-content input-comment" type="date" id="search-start" name="search-start">
                     ~
-                    <input type="date" id="search-end" name="search-end">
+                    <input class="form-control input-content input-comment" type="date" id="search-end" name="search-end">
                   </div>
                 </form>
               </div>
@@ -165,7 +167,7 @@
                               <b>참여 인원</b>&nbsp;&nbsp;<%=onstudy.getMemberCount() %>명<br>
                               <b>인증 횟수</b>&nbsp;&nbsp;주 <%=onstudy.getOnstudyCertifyCount() %>회<br>
                               <b>참 가 비</b>&nbsp;&nbsp;<%=onstudy.getOnstudyFee() %>원<br>
-                              <a class="btn btn-outline-secondary more-btn" href="../onstudy/detail?oNo=<%=onstudy.getOnstudyNo() %>" style="float: right;">자세히보기</a>
+                              <a class="btn form-control orange-btn-style orange-hover-btn" href="../onstudy/detail?oNo=<%=onstudy.getOnstudyNo() %>" style="float: right;">자세히보기</a>
                             </p>
                           </div>
                         </div>
@@ -204,7 +206,7 @@
                               <b>참여  기간</b>&nbsp;&nbsp;<%=onstudy.getOnstudyStartDt() %> ~ <%=onstudy.getOnstudyEndDt() %> (<%=onstudy.getOnstudyWeeks() %>주)<br>
                               <b>인증  횟수</b>&nbsp;&nbsp;주 <%=onstudy.getOnstudyCertifyCount() %>회<br>
                               <b>참 가 비</b>&nbsp;&nbsp; <%=onstudy.getOnstudyFee() %> 원 <br>
-                              <a class="btn btn-outline-secondary more-btn" href="../onstudy/detail?oNo=<%=onstudy.getOnstudyNo() %>" style="float: right;">자세히보기</a>
+                              <a class="btn form-control orange-btn-style orange-hover-btn" href="../onstudy/detail?oNo=<%=onstudy.getOnstudyNo() %>" style="float: right;">자세히보기</a>
                             </p>
                           </div>
                         </div>

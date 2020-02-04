@@ -414,8 +414,6 @@ public class OnstudyService {
 
 		result = onstudyDao.updateOnstudy(conn, onstudy); // 썸네일을 제외한 온스터디 정보 update
 
-		System.out.println("result : " + result);
-
 		if (result > 0 && thumbImg.getChangeName() != null) { // 온스터디 정보가 수정되고, 수정 화면에서 선택한 썸네일이 있다면
 
 			result = 0; // 재활용
@@ -710,8 +708,6 @@ public class OnstudyService {
 		board.setBoardNo(boardNo);
 		result = onstudyDao.updateBoard(conn, board, boardWriter);
 
-		System.out.println(fList);
-
 		if (result > 0 && !fList.isEmpty()) { // 게시글 수정 성공 시
 			result = 0; // 트랜잭션 처리를 위해 재활용
 			// 기존 수정
@@ -737,20 +733,14 @@ public class OnstudyService {
 					}
 				}
 
-				System.out.println("idx : " + idx);
-				System.out.println("fList.size() : " + fList.size());
-
 				// if(result !=0 && idx < fList.size()) {
 				if (idx < fList.size()) {
 					for (int i = idx; i < fList.size(); i++) {
 						result = onstudyDao.insertAttachment(conn, fList.get(i));
-						System.out.println("1111111111111 : " + result);
 						if (result == 0)
 							break;
 					}
 				}
-
-				System.out.println("insertR : " + result);
 
 			} else {
 				// 이미지가 없던글에 이미지 추가 시

@@ -38,8 +38,8 @@ public class OnstudyDao {
 		Statement stmt = null;
 		ResultSet rset = null;
 		List<Onstudy> mainList = null;
-		String query = prop.getProperty("selectMainList");
 
+		String query = prop.getProperty("selectMainList");
 		try {
 			stmt = conn.createStatement();
 			rset = stmt.executeQuery(query);
@@ -286,8 +286,6 @@ public class OnstudyDao {
 						rset.getInt("ONSTUDY_FEE"), rset.getInt("ONSTUDY_WEEKS"), rset.getDate("ONSTUDY_DEADLINE_DT"),
 						rset.getString("IMAGE_PATH"), rset.getString("CATEGORY_NM"));
 				sameList.add(sameCategory);
-				System.out.println(sameCategory);
-				System.out.println("sameList : " + sameList);
 			}
 		} finally {
 			close(rset);
@@ -1604,7 +1602,6 @@ public class OnstudyDao {
 		List<MyOnstudy> myList = null;
 
 		String query = prop.getProperty("myOnstudyList");
-		System.out.println(query);
 		try {
 
 			// 쿼리문 실행 시 between 조건에 사용될 값

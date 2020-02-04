@@ -426,6 +426,9 @@ html body .content-title{
 .no-has-list{
 	display:none;
 }
+#container .writer-onstudy-certi-btn{
+	width : 11%;
+}
 </style>
 </head>
 <body>
@@ -437,8 +440,7 @@ html body .content-title{
 	          <div class="container">
 	            <div class="row">
 	              <div id="board-wrap" class="col-md-12">
-	              	<h2 class="content-title">인증 게시판
-	              	시작일 전/ 종료일 후에는 게시글 못쓰게 막아야 함</h2>
+	              	<h2 class="content-title">인증 게시판</h2>
 	                <div class="board-content">
 	                  <form action="<%= request.getContextPath() %>/onstudy/searchBoard?oNo=<%= oNo %>" method="post" class="board-form" onsubmit="return checkSearchVal();"> 
 	                    <div id="search-wrap">                  
@@ -484,7 +486,7 @@ html body .content-title{
 	                            </tbody>
 	                          </table>
 	                          <%if(weekCertifyCount >= onstudyCertifyCount){ %>
-								<a class="write-content-btn form-control gray-btn" disabled>글쓰기</a>
+								<a class="write-content-btn form-control gray-btn writer-onstudy-certi-btn" disabled>글쓰기</a>
 								<p align="right"> <%=checkCertify.getnWeek() %>주차 인증이 완료되어 글작성이 제한됩니다.</p>
 	                          <%} else{%>
 	                          	<%if(todayCount > 0){ %>

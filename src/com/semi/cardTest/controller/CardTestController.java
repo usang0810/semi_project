@@ -61,8 +61,6 @@ public class CardTestController extends HttpServlet {
 		if (command.equals("/test")) {
 			// studynoteNo 가져옴
 
-			System.out.println(request.getParameter("SNnum"));
-			
 			 int SNnum = Integer.parseInt(request.getParameter("SNnum"));
 			 
 //			 session.setMaxInactiveInterval(600);
@@ -83,7 +81,7 @@ public class CardTestController extends HttpServlet {
 
 				int leftCardNum = (pBar.getWholeQuestion() - pBar.getSolvedQuestion());
 
-				StudyCard sCard = ctService.selectCard(SNnum);
+				StudyCard sCard = ctService.selectCard(SNnum, memberNo);
 
 				if (leftCardNum > 0) {
 //
@@ -96,7 +94,7 @@ public class CardTestController extends HttpServlet {
 //					request.setAttribute("proBar", pBar);
 					
 					request.setAttribute("SNnum", SNnum);
-					
+					System.out.println("이상없음");
 //					System.out.println("문제 : " + sCard.getCardSetMean());
 //					response.sendRedirect("test?SNnum=" + SNnum);
 					path = "/WEB-INF/views/cardTest/examPage.jsp";
@@ -107,8 +105,6 @@ public class CardTestController extends HttpServlet {
 
 				} else {
 					String reset = "초기화";
-
-					System.out.println(reset);
 
 					request.getSession().setAttribute("msg2", reset);
 					response.sendRedirect("../StudyNoteController/movetodetail?noteNumber=" + SNnum);
@@ -126,8 +122,6 @@ public class CardTestController extends HttpServlet {
 			int SNnum = Integer.parseInt(request.getParameter("SNnum"));
 //			int CardNo = Integer.parseInt(request.getParameter("CardNo"));
 			
-			System.out.println(SNnum);
-
 			String answer = request.getParameter("answer").toUpperCase();
 
 			StudyCard sCard3 = (StudyCard) session.getAttribute("sCard");
@@ -135,10 +129,6 @@ public class CardTestController extends HttpServlet {
 			String cardName = sCard3.getStudyNoteTitle();
 
 			int questionNo = sCard3.getCardSetNo();
-
-			System.out.println("사용자가 입력한 정답 :" + answer);
-
-			System.out.println("문제번호 :" + questionNo);
 
 			Member loginMember = (Member) session.getAttribute("loginMember");
 
@@ -159,8 +149,6 @@ public class CardTestController extends HttpServlet {
 
 				StudyCard sCard = ctService.checkAnswer(sCard2);
 
-				System.out.println(sCard.getCardSetWord());
-				
 				String answer1 = sCard.getCardSetWord().toUpperCase();
 
 				PrintWriter out = response.getWriter();
@@ -182,8 +170,6 @@ public class CardTestController extends HttpServlet {
 						// checkReset = true;
 					}
 
-					System.out.println("DB에 있는 정답 :" + answer1);
-
 					int setNo = sCard.getCardSetNo();
 
 					// 정답 여부 기록용
@@ -199,8 +185,6 @@ public class CardTestController extends HttpServlet {
 
 					String msg2 = msg + "\\n\\n모든 문제를 풀었습니다.\\n\\n" + cardName + " 학습카드 문제\\n" + "총 " + wholeQNum
 							+ " 문제중  " + correctQNum + " 문제 맞으셨습니다.\\n" + "\\n정답률 " + percentage + "%";
-
-					System.out.println("결과 :" + msg2);
 
 					session.setAttribute("msg", msg2);
 
@@ -218,9 +202,6 @@ public class CardTestController extends HttpServlet {
 						out.println("N");
 						result = 0;
 					}
-
-					System.out.println("DB에 있는 정답 :" + answer1);
-					System.out.println("결과 :" + msg);
 
 					int setNo = sCard.getCardSetNo();
 
@@ -261,7 +242,7 @@ public class CardTestController extends HttpServlet {
 
 				int leftCardNum = (pBar.getWholeQuestion() - pBar.getSolvedQuestion());
 
-				StudyCard sCard = ctService.selectCard(cardSetNo);
+				StudyCard sCard = ctService.selectCard(cardSetNo,memberNo);
 
 				int recordResult = ctService.recordResult(cardSetNo, memberNo, wholeQ, rightQ);
 
@@ -291,20 +272,13 @@ public class CardTestController extends HttpServlet {
 
 				if (record > 0) {
 
-					System.out.println("초기화 성공");
-
 					response.sendRedirect("../StudyNoteController/movetodetail?noteNumber=" + cardSetNo);
 
 				} else {
-					System.out.println("초기화 실패");
-
 					response.sendRedirect("../StudyNoteController/movetodetail?noteNumber" + cardSetNo);
 				}
 
 			} catch (Exception e) {
-
-				System.out.println("조회된 회원번호 : " + memberNo);
-				System.out.println("조회된 카드셋 번호 : " + cardSetNo);
 
 				ExceptionForward.errorPage(request, response, "초기화 하는 과정", e);
 

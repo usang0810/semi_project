@@ -11,13 +11,7 @@ import java.util.List;
 import com.semi.studynote.model.dao.StudyNoteDao;
 import com.semi.studynote.model.vo.StudyNote;
 import com.semi.studynote.model.vo.StudyNoteSet;
-
-
-
 public class StudyNoteService{
-
-
-
 
 	/** 좋아요 입력용 service 좋아요 추가시 1 / 삭제시 2
 	 * @param memberNo

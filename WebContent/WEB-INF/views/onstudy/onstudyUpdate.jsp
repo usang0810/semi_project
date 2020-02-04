@@ -23,6 +23,27 @@
       #container{
         margin: 200px 0 100px 0;
       }
+      .week-certify-count{
+       font-weight: bold;
+    min-width: 430px;
+    overflow : hidden;
+    line-height: 39px;
+      }
+      .week-certify-count span{
+      float: left;
+      margin : 0 10px;
+      }
+      #onstudy-times{
+      float: left;
+      width : 200px;
+      }
+      #onstudy-button{
+      	position : relative;
+      }
+      #onstudy-button a{
+          position: absolute;
+    	right: 60px;
+      }
     </style>
 <body>
 
@@ -47,7 +68,7 @@
                   <form method="POST" action="../onstudy/updateOnstudy?no=<%=onstudy.getOnstudyNo() %>" enctype="multipart/form-data" onsubmit="sendEnd();">
                     <p id="title" class="form-row">
                       <label for="onstudy-title" class="col-sm-2" style="font-weight: bolder;" >제목</label>
-                      <input type="text" id="onstudy-title" class="col-sm-10 form-control input-comment" value="<%=onstudy.getOnstudyTitle()%>" readonly>
+                       <p id="onstudy-title"><%=onstudy.getOnstudyTitle()%></p>
                     </p>
                     <p id="thumbnail"  class="form-row">
                       <label for="onstudy-thumbnail"  class="col-sm-2" style="font-weight: bolder;" >썸네일</label>
@@ -58,7 +79,7 @@
                     </p>
                     <p id="times"  class="form-row" class="col-sm-12">
                       <label for="onstudy-times" class="col-sm-2" style="font-weight: bolder;">인증 횟수</label>
-                      <p style="font-weight: bold;" class="col-sm-2" >주 <input type="number" id="onstudy-times" name="onstudy-times" class="form-control input-comment" value="<%=onstudy.getOnstudyCertifyCount()%>" min="3" max="7" style="text-align: right;">회 (최소 3회)</p>
+                      <span style="font-weight: bold;" class="col-sm-2 week-certify-count" >주 <input type="number" id="onstudy-times" name="onstudy-times" class="form-control input-comment" value="<%=onstudy.getOnstudyCertifyCount()%>" min="3" max="7" style="text-align: right;">회 (최소 3회)</span>
                     </p>
                     <p id="add-notice"  class="form-row">
 						<label for="add-notice" style="font-weight: bolder;">추가 입력사항(<span id="add-notice-count"></span>/1000자)</label><br>

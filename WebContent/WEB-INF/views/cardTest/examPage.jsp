@@ -59,6 +59,7 @@
 <link rel="apple-touch-icon-precomposed" href="images/icon57.png">
 <link rel="apple-touch-icon-precomposed" href="images/icon114.png">
 <link rel="stylesheet" href="../css/header2.css">
+<link rel="stylesheet" href="../css/common.css">
 <title>학습노트 시험보기</title>
 <style>
 /* .outer {
@@ -110,7 +111,6 @@ session.removeAttribute("msg");
 </head>
 <body>
 	<!-- 헤더 시작 -->
-	<%@ include file="../common/loginedHeader.jsp"%>
 
 	<!-- content 시작 -->
 	<div id="container" style="margin: 240px auto; text-align: center; font-size: 50px; color: #333333;">
@@ -210,9 +210,9 @@ session.removeAttribute("msg");
                                         </div>    
                                     </div> 
                                  <div class="row" style="font-size: 20px;" id="answerArea">       
-                                    <input type="text" placeholder="정답입력" id="answer" name="answer" style="width: 70%; " >
+                                    <input type="text" placeholder="정답입력" id="answer" name="answer" style="width: 70%; " class="form-control input-content input-comment">
                                     &nbsp; &nbsp;
-                                    <button type="submit" class="btn form-control orange-hover-btn" id="submitBtn"
+                                    <button type="submit" class="btn form-control orange-btn-style orange-hover-btn" id="submitBtn"
                                         style="width: 25%">정답</button>
                                 </div>
                                 <div class="row" id="msgArea">

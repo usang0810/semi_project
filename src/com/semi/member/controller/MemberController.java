@@ -308,8 +308,6 @@ public class MemberController extends HttpServlet {
 			String memberPwd = request.getParameter("inputPassword");
 			String setPath = request.getParameter("setPath");
 
-			System.out.println("컨트롤러 단 : " + memberPwd);
-			System.out.println("컨트롤러 단 : " + setPath);
 			try {
 				int result = memberService.pwdCheck(memberNo, memberPwd);
 
@@ -666,9 +664,6 @@ public class MemberController extends HttpServlet {
 			String impUid = request.getParameter("imp_uid");
 			String merchantUid = request.getParameter("merchant_uid");
 			Order order = new Order(merchantUid, impUid, '2');
-
-			System.out.println(impUid);
-			System.out.println(merchantUid);
 
 			int memberPoint = 0;
 			try {

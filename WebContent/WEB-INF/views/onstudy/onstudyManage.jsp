@@ -16,6 +16,9 @@
       #container{
         margin: 200px 0 100px 0;
       }
+      .card{
+      	margin-top : 15px;
+      }
     </style>
 </head>
 <body>

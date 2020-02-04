@@ -37,5 +37,47 @@
   background-color : #f15a25;
   color: #ffffff;
 }
-
-
+.onstudy-search-wrap{
+       overflow: hidden;
+    margin: 0 auto;
+    position: relative;
+}
+#search-keyword{
+      float: left;
+    height: 45px;
+    margin-bottom: 20px;
+}
+#search-btn{
+    float: left;
+    margin-left: 10px;
+    height: 45px;
+    width: 8%;
+}
+.btn-category label{
+	margin-top : 10px;
+}
+#option-detail{
+	margin-top : 10px;
+}
+#search-start, 
+#search-end{
+	    width: 30%;
+    display: inline-block;
+}
+html .card{
+	padding : 15px;
+}
+.option-detail-btn{
+    display: block;
+    position: relative;
+    top: 30px;
+    height: 40px;
+    line-height: 40px;
+}
+.option-detail-btn{
+    left: 0;
+}
+.option-detail b{
+	position : absolute;
+	left : 0;
+}
