@@ -1,6 +1,7 @@
 KH SemiProject OnStudy
 ======================
 KH 정보교육원에서 진행하는 SemiProject로 개발 및 구현한 OnStudy Project이다.
+![Alt text](/WebContent/images/onstudy_main.png)
 
 ## 개발환경
 * JDK 8u212
